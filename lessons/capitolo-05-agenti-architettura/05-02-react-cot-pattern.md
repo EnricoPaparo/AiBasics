@@ -278,6 +278,59 @@ Il risultato finale potrebbe essere identico in entrambi i casi — ma solo nell
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Cosa aggiunge ReAct 🟢 Base
+
+Rispetto al loop "muto" della Lezione 5.1, cosa aggiunge ReAct? Cita le due ragioni (una tecnica, una pratica) per cui rendere il ragionamento esplicito migliora l'agente.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+ReAct aggiunge un **PENSIERO esplicito prima di ogni AZIONE**: il modello scrive *perché* sta scegliendo quell'azione, alternando ragionamento e azione in modo osservabile.
+
+Le due ragioni:
+1. **Tecnica:** scrivere il ragionamento migliora la **qualità della decisione** stessa (stesso principio del chain-of-thought, Lezione 3.4 — ogni passaggio esplicito diventa contesto per il successivo, riducendo errori).
+2. **Pratica:** dà **osservabilità** a chi sviluppa il sistema. Se l'agente sbaglia, la traccia mostra il perché di ogni scelta, invece di una scatola nera.
+
+</details>
+
+### Esercizio 2 — Quando usare Tree of Thoughts 🟡 Intermedio
+
+ReAct segue un singolo filo di ragionamento; Tree of Thoughts ne esplora più in parallelo, ma costa di più. In quale tipo di compito il costo extra è giustificato? E quando invece basta il ReAct lineare?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Tree of Thoughts è giustificato** quando esistono **più strategie plausibili** da confrontare e un errore di strategia iniziale sarebbe costoso da correggere: pianificazione complessa, problemi con più soluzioni valide, ragionamenti dove conviene valutare alternative prima di impegnarsi.
+
+**ReAct lineare basta** per la maggior parte dei compiti comuni, dove esiste un percorso ragionevolmente chiaro: è più semplice ed economico (meno chiamate API).
+
+Criterio: il costo extra di esplorare più rami si ripaga solo quando il rischio/valore della scelta strategica è alto. Per compiti diretti, l'esplorazione parallela è uno spreco.
+
+</details>
+
+### Esercizio 3 — Diagnosi di un agente bloccato 🔴 Avanzato
+
+Un agente ReAct produce per tre iterazioni il PENSIERO "Riprovo lo strumento con parametri diversi" sulla stessa azione, senza progredire. Quali due problemi descritti nella lezione possono spiegarlo? Cosa lo ferma e cosa servirebbe di meglio?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+I due problemi:
+1. **Loop:** l'agente ripete la stessa azione senza fare progressi reali (es. uno strumento restituisce sempre un errore che il modello non sa diagnosticare).
+2. **Ragionamento circolare:** il PENSIERO *sembra* una giustificazione valida ("riprovo con parametri diversi") ma in realtà non fa avanzare la comprensione — una razionalizzazione plausibile a posteriori, collegata al fatto che il modello genera testo plausibile, non necessariamente corretto (Lezione 3.5).
+
+**Cosa lo ferma:** `max_iterazioni` (Lezione 5.1) — ma solo dopo aver sprecato tutte le iterazioni.
+
+**Cosa servirebbe di meglio:** rilevare il loop *prima* del limite (es. riconoscere azioni/risultati ripetuti e cambiare strategia o interrompere), più supervisione e gestione errori — i temi della Lezione 5.5. Il PENSIERO esplicito aiuta a *diagnosticare*, ma non garantisce da solo la correttezza.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 5.1 (Cos'è un Agente AI) — qui rendiamo esplicita e osservabile la fase "ragiona" del loop costruito in quella lezione. Lezione 3.4 (Il Prompting) — ReAct è l'estensione diretta del chain-of-thought al contesto agentivo.

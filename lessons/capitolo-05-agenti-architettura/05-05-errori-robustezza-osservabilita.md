@@ -296,6 +296,54 @@ Cosa puoi dedurre, solo da questi log, senza nemmeno guardare il contenuto speci
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Ogni errore, la sua strategia 🟢 Base
+
+Associa ogni tipo di errore alla strategia di gestione più appropriata: (a) errore di strumento (timeout di rete), (b) loop, (c) allucinazione, (d) errore di piano.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) errore di strumento** → **retry** (con backoff) ed eventuale **fallback**.
+- **(b) loop** → **limiti** (`max_iterazioni`) e **rilevamento di pattern ripetitivi**.
+- **(c) allucinazione** → **verifica e ancoraggio ai dati** (principio del RAG, Lezione 4.3).
+- **(d) errore di piano** → **intervento umano** (Lezione 7.4) o **revisione del piano**.
+
+Lezione chiave: non esiste una soluzione unica. Classificare correttamente il tipo di errore è il primo passo per scegliere la difesa giusta.
+
+</details>
+
+### Esercizio 2 — Circuit breaker vs retry 🟡 Intermedio
+
+Un servizio esterno è in down per manutenzione programmata. Più agenti continuano a chiamarlo. Perché il solo retry con backoff non basta, e cosa aggiunge un circuit breaker?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Perché il solo retry non basta:** se il servizio è *davvero* giù, ogni agente continua a ritentare (anche con backoff), sommando tentativi inutili. In un sistema multi-agente, decine di agenti che ritentano **sovraccaricano** un servizio già in difficoltà, rallentandone il recupero.
+
+**Cosa aggiunge il circuit breaker:** dopo troppi fallimenti consecutivi, "apre il circuito" e **smette di tentare** per un periodo di raffreddamento — usando subito il fallback o segnalando errore, senza nemmeno provare. Dopo il raffreddamento, prova *una* chiamata di test (semi-aperto): se riesce, torna normale; se no, resta bloccato. Così protegge il servizio e libera risorse, invece di accanirsi.
+
+</details>
+
+### Esercizio 3 — Diagnosi dai log e degradazione controllata 🔴 Avanzato
+
+(a) I log mostrano 4 iterazioni consecutive con `stop_reason: tool_use` e poi `limite_iterazioni_raggiunto`. Cosa sospetti? Quale dato aggiuntivo distinguerebbe un loop "problematico" da uno legittimo? (b) Perché restituire un campo `"limitazioni"` è meglio che fallire in silenzio?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Diagnosi:** probabile **loop** — l'agente richiede sempre uno strumento senza mai convergere a una risposta finale. Dato aggiuntivo utile: **quale strumento e con quali parametri** a ogni iterazione. Se sono *sempre gli stessi*, è un loop problematico (nessun progresso); se sono strumenti/parametri *diversi*, potrebbe essere un compito legittimo che richiede molti passi (basterebbe alzare `max_iterazioni`). Anche loggare un riassunto del risultato di ogni strumento aiuterebbe a vedere se c'è progresso.
+
+**(b) Graceful degradation:** restituire `"limitazioni"` rende **esplicito** all'utente che la risposta è un compromesso (es. dati non aggiornati perché il servizio realtime era down). Fallire in silenzio e mostrare solo la risposta darebbe l'illusione di un risultato completo e affidabile quando non lo è — pericoloso. La trasparenza sui limiti è onestà resa garanzia *del codice*, non lasciata al comportamento del modello.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 4.1 (exponential backoff), Lezione 5.1 (max_iterazioni), Lezione 5.2 (problema del loop) — questa lezione raccoglie e sistematizza precauzioni introdotte in forma semplice nelle lezioni precedenti.

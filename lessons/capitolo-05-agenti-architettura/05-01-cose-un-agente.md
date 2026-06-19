@@ -300,6 +300,62 @@ Questa traccia rende tangibile cosa significa, in pratica, "un numero non predet
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Le fasi e i componenti 🟢 Base
+
+Elenca le quattro fasi del loop agentivo e i quattro componenti di un agente. Per ciascun componente, indica in quale lezione del Capitolo 4 era stato costruito.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Le quattro fasi del loop:** Percepisce → Ragiona → Agisce → Osserva il risultato (e ricomincia).
+
+**I quattro componenti:**
+- **LLM core** (il motore di ragionamento) → Capitolo 3.
+- **Memoria** (cosa ricorda dai passi precedenti) → Lezione 4.6.
+- **Strumenti** (cosa può fare nel mondo) → Lezione 4.4.
+- **Obiettivo** (cosa cerca di raggiungere).
+
+Punto chiave: nessun componente è nuovo. Ciò che rende il sistema un *agente* è l'**organizzazione** di questi pezzi nel loop, con un obiettivo che persiste su più iterazioni.
+
+</details>
+
+### Esercizio 2 — Reattivo o agentivo? 🟡 Intermedio
+
+Classifica come **reattivo** o **agentivo**: (a) tradurre una frase, (b) "pianifica un viaggio confrontando voli e hotel da più fonti", (c) rispondere a "che ore sono?", (d) "trova il bug in questo codice, correggilo e verifica che i test passino". Perché una singola chiamata API non basta per (b) e (d)?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) tradurre** → **reattivo**: un input, una risposta.
+- **(b) pianifica viaggio** → **agentivo**: più passi non predeterminati (cerca voli, confronta, verifica hotel…).
+- **(c) che ore sono** → **reattivo** (eventualmente con un singolo strumento).
+- **(d) trova/correggi bug + test** → **agentivo**: ciclo di tentativi, errori e correzioni.
+
+**Perché una sola chiamata non basta per (b) e (d):** il numero di passi non è noto in anticipo e ogni passo dipende dal **risultato** del precedente (l'esito di una ricerca, l'output dei test). Serve un loop che decide autonomamente quando ha finito — esattamente la differenza tra reattivo e agentivo.
+
+</details>
+
+### Esercizio 3 — Il ruolo di max_iterazioni 🔴 Avanzato
+
+Nel loop agentivo della lezione, cosa succederebbe rimuovendo `max_iterazioni`? Descrivi uno scenario concreto in cui causerebbe un problema. Perché è un meccanismo di sicurezza e non solo un dettaglio?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Senza `max_iterazioni`, se l'agente entra in un **ciclo senza progresso** continuerebbe a fare chiamate API **all'infinito**.
+
+Scenario concreto: uno strumento restituisce sempre un errore che il modello non riesce a diagnosticare. A ogni iterazione il modello "riprova" lo stesso strumento, l'errore si ripresenta, e il loop non termina mai → costi crescenti senza limite e nessuna risposta.
+
+**Perché è sicurezza:** `max_iterazioni` garantisce una **terminazione** anche nel caso peggiore, indipendentemente dal comportamento del modello. È la prima, semplice linea di difesa contro loop e comportamenti imprevisti — la Lezione 5.5 aggiungerà strategie più intelligenti (rilevare il loop *prima* del limite). Negli agenti, ogni meccanismo che garantisce terminazione e contenimento dei costi è una scelta di robustezza, non un dettaglio.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** L'intero Capitolo 4 — questa lezione assembla, per la prima volta, tutti i componenti infrastrutturali costruiti separatamente (API, output strutturati, RAG, Function Calling, MCP, memoria) in un singolo sistema funzionante.

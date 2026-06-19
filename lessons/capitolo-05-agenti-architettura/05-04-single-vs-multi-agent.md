@@ -260,6 +260,59 @@ Applichiamo i criteri di questa lezione a tre scenari concreti:
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Quando servono più agenti 🟢 Base
+
+Elenca i quattro segnali che indicano che un singolo agente non basta più. Se nessuno è presente, cosa conviene fare?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+I quattro segnali:
+1. **Eterogeneità delle competenze** richieste (es. rigore quantitativo *vs* creatività discorsiva).
+2. **Crescita incontrollata del contesto** (troppi strumenti/istruzioni, ci si avvicina al limite del context window).
+3. **Necessità di checkpoint intermedi** (verificare risultati parziali prima di proseguire).
+4. **Riusabilità** di un componente in altri contesti.
+
+Se **nessun** segnale è presente: conviene un **singolo agente ben progettato** (buon prompt + strumenti giusti + loop ReAct). Il multi-agente aggiunge complessità, costi e punti di fallimento — non va introdotto senza una ragione concreta.
+
+</details>
+
+### Esercizio 2 — Scegli la topologia 🟡 Intermedio
+
+Scegli la topologia (pipeline sequenziale, grafo, rete/parallelo) per: (a) tradurre un testo in 3 lingue indipendenti; (b) estrai dati da fattura → verifica contro DB → genera conferma; (c) monitora un sistema e reagisci ad anomalie imprevedibili.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) 3 traduzioni** → **rete/parallelo**: i compiti sono indipendenti, nessun ordine necessario → tre chiamate parallele.
+- **(b) fattura → verifica → conferma** → **pipeline sequenziale** (eventualmente con arco condizionale sulla verifica): ogni fase dipende dalla precedente e un errore deve bloccare le successive.
+- **(c) monitora + reagisci ad anomalie** → **grafo con pattern event-driven**: il flusso non è prevedibile in anticipo, dipende da eventi nel tempo.
+
+Criterio: indipendenza → parallelo; dipendenza lineare → pipeline; imprevedibilità/condizioni → grafo.
+
+</details>
+
+### Esercizio 3 — Coerenza terminologica 🔴 Avanzato
+
+L'agente di estrazione produce `{"importo_totale": 1200000}` ma l'agente di analisi si aspetta un campo `valore_vendite`. Che problema crea? Perché i prompt scritti separatamente non bastano, e quale soluzione introduce la Lezione 6.5?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Il problema:** l'agente di analisi cerca `valore_vendite` ma riceve `importo_totale` — non trova l'informazione attesa, o la interpreta in modo inconsistente. L'incoerenza si **propaga** silenziosamente nella pipeline e produce risultati sbagliati difficili da diagnosticare.
+
+**Perché i prompt non bastano:** scritti separatamente, magari in momenti diversi, due agenti possono usare nomi diversi per lo stesso concetto. Affidarsi alla "coerenza informale" è fragile: nessuno garantisce che restino allineati.
+
+**La soluzione (Lezione 6.5): contratti espliciti.** Uno schema formale e **condiviso** (basato su Pydantic/JSON Schema, Lezione 4.2) definisce esattamente i nomi, i tipi e la struttura che l'output di un agente e l'input del successivo devono rispettare. La coerenza diventa **verificabile automaticamente**, non una speranza. È il salto dall'artigianato all'ingegneria dei sistemi multi-agente.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 5.3 (L'Orchestratore) — questa lezione formalizza e generalizza le topologie di coordinamento solo accennate in quella lezione.

@@ -296,6 +296,55 @@ Questo confronto rende tangibile perché la scomposizione orchestrata non sia se
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Le quattro responsabilità 🟢 Base
+
+Elenca le quattro responsabilità di un orchestratore e descrivi in una frase cosa fa ciascuna. Cosa NON fa mai l'orchestratore?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. **Pianificazione:** scompone l'obiettivo generale in sotto-task più piccoli.
+2. **Delega:** decide quale agente specializzato si occupa di ciascun sotto-task.
+3. **Monitoraggio:** verifica che i risultati intermedi siano coerenti e completi.
+4. **Sintesi:** combina i risultati dei singoli agenti in un output finale coerente.
+
+**Cosa NON fa:** non esegue mai direttamente il lavoro specializzato (non analizza i dati né scrive il report). Coordina soltanto — decide *come* scomporre e *a chi* affidare. Il principio è "responsabilità singola": l'orchestratore orchestra, gli agenti eseguono.
+
+</details>
+
+### Esercizio 2 — Top-down o event-driven? 🟡 Intermedio
+
+Spiega la differenza tra orchestrazione top-down e event-driven. Per ciascuno, un caso d'uso dove è la scelta migliore.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Top-down:** l'orchestratore pianifica *tutta* la sequenza in anticipo, poi la esegue. Più semplice e prevedibile, ma poco flessibile. **Caso adatto:** un processo ben definito e stabile, es. "estrai dati → analizza → scrivi report", dove le fasi sono note in anticipo.
+- **Event-driven:** l'orchestratore reagisce a eventi man mano che si presentano, decidendo il passo successivo solo quando serve. Più flessibile, più complesso. **Caso adatto:** monitoraggio di un sistema dove le azioni dipendono da anomalie imprevedibili che si verificano nel tempo.
+
+Il pattern **ibrido** (piano di alto livello + adattamento) è il più comune nei sistemi maturi.
+
+</details>
+
+### Esercizio 3 — Incapsulamento e monitoraggio robusto 🔴 Avanzato
+
+(a) Cosa vede e cosa NON vede l'orchestratore di ciascun agente? A quale principio già visto (Lezione 1.5) corrisponde? (b) Il monitoraggio d'esempio era `len(risultato) < 10`. Come lo renderesti più robusto usando la Lezione 4.2?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Incapsulamento:** l'orchestratore vede l'**obiettivo**, le **fasi completate** e i **risultati (output)** di ciascun agente, e se un agente ha fallito. **Non** vede i dettagli interni: il system prompt specifico né il ragionamento ReAct interno di ogni agente. È il principio di **incapsulamento** delle API (Lezione 1.5): "non devi sapere come funziona la cucina, solo cosa puoi ordinare". Ogni agente è una scatola con interfaccia chiara e interni nascosti.
+
+**(b) Monitoraggio più robusto:** invece di controllare solo la lunghezza, far produrre all'agente un **output strutturato** (Lezione 4.2) validato con uno schema Pydantic. Così il monitoraggio verifica che i **campi attesi siano presenti, dei tipi giusti e dentro i vincoli** (es. che `percentuale` sia un numero tra -100 e 100), rilevando subito un'analisi malformata invece di accorgersene solo dalla lunghezza del testo.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezioni 5.1 e 5.2 — l'orchestratore coordina agenti costruiti esattamente secondo i pattern (loop agentivo, ReAct) visti in quelle lezioni.
