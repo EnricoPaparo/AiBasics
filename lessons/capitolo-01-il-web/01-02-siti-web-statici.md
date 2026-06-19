@@ -188,6 +188,62 @@ Prova questo confronto: visita una pagina di documentazione tecnica semplice (sp
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — HTML o CSS? 🟢 Base
+
+Per ciascuna responsabilità, indica se è compito di **HTML** (struttura) o **CSS** (presentazione): (a) definire che un testo è un titolo, (b) rendere quel titolo blu, (c) creare un elenco puntato, (d) mettere l'elenco su due colonne, (e) inserire un link.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) titolo** → HTML (`<h1>`): definisce *cosa è* l'elemento.
+- **(b) blu** → CSS: definisce *come appare*.
+- **(c) elenco puntato** → HTML (`<ul><li>`): è struttura del contenuto.
+- **(d) due colonne** → CSS: è disposizione visiva.
+- **(e) link** → HTML (`<a href>`): è un elemento strutturale del documento.
+
+Principio: **HTML dice cosa è una cosa, CSS dice come appare.** È la separazione contenuto/presentazione vista nella Sezione 3.
+
+</details>
+
+### Esercizio 2 — Statico o dinamico? 🟡 Intermedio
+
+Per ognuno, decidi se può essere un sito **statico** o richiede logica **dinamica**, e spiega perché: (a) il menù di una pizzeria, (b) il profilo personale di un utente loggato, (c) la documentazione di una libreria software, (d) il carrello di un e-commerce.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) menù pizzeria** → **statico**: stesso contenuto per tutti, cambia raramente. Un file HTML servito così com'è basta.
+- **(b) profilo utente** → **dinamico**: il contenuto dipende da *chi* sta guardando. Il server deve costruire la pagina su misura.
+- **(c) documentazione** → **statico** (tipicamente): stessa per tutti. Come ricorda la lezione, molti siti di docs sono statici apposta per velocità e sicurezza.
+- **(d) carrello** → **dinamico**: cambia in tempo reale in base alle azioni dell'utente e allo stock.
+
+Regola: se il contenuto è **uguale per tutti e cambia di rado**, statico basta. Se dipende dall'utente o dal momento, serve dinamico.
+
+</details>
+
+### Esercizio 3 — Perché un chatbot non può essere statico 🔴 Avanzato
+
+Un sito statico consegna sempre lo stesso file. Spiega, usando questa proprietà, perché un'interfaccia di chat con un LLM **non può** essere un sito puramente statico. Quale parte *potrebbe* comunque essere statica e quale no?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Un sito statico serve un file **fisso**: la risposta è decisa prima ancora che l'utente arrivi. Una chat con un LLM produce invece una risposta **diversa per ogni messaggio**, generata al momento — l'opposto di "fisso".
+
+Distinzione precisa:
+- **Può essere statico:** il *guscio* dell'interfaccia (HTML/CSS/JS della pagina: campo di input, layout, stile). Questi file non cambiano. Infatti **questo stesso corso è un sito statico** ospitato su GitHub Pages.
+- **Non può essere statico:** le *risposte* del modello. Il JavaScript della pagina (statica) chiama a runtime un'API (dinamica) che genera la risposta.
+
+Conclusione: il confine non è "tutto statico o tutto dinamico". L'interfaccia è statica, la generazione del contenuto è un servizio dinamico chiamato via API — anticipazione diretta delle Lezioni 1.4 e 1.5.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 1.1 — qui vediamo concretamente cosa contiene il "corpo" della risposta HTTP che avevamo solo menzionato.

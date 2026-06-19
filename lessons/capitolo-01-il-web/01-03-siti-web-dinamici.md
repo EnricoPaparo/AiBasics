@@ -191,6 +191,63 @@ Questo è un segnale chiaro che dietro c'è un backend che interroga dati specif
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Cosa fa il backend in più 🟢 Base
+
+Un server statico legge un file e lo restituisce. Elenca almeno tre cose che un server **dinamico** può fare prima di rispondere, che un server statico non fa.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Un server dinamico, prima di rispondere, può:
+1. **Controllare chi fa la richiesta** (sei loggato? chi sei?) tramite il cookie di sessione.
+2. **Interrogare un database** con una query per recuperare dati specifici (i tuoi ordini, i tuoi messaggi).
+3. **Eseguire calcoli** (totale del carrello, disponibilità di un prodotto).
+4. **Costruire l'HTML al volo**, inserendo i dati appena recuperati.
+
+Il punto chiave: l'HTML che ricevi **non esisteva prima della richiesta** — è stato generato in quel momento, su misura.
+
+</details>
+
+### Esercizio 2 — Traccia la pagina "i miei ordini" 🟡 Intermedio
+
+Un utente loggato apre `GET /miei-ordini`. Descrivi i passi che il backend esegue per costruire la risposta, indicando dove interviene il cookie e dove interviene il database.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. Il browser invia `GET /miei-ordini` includendo **automaticamente il cookie di sessione**.
+2. Il backend legge il cookie → ne ricava l'identificativo di sessione → da questo capisce **chi è l'utente** (es. id 42).
+3. Il backend interroga il **database**: `SELECT * FROM ordini WHERE utente_id = 42;`
+4. Il database restituisce la lista ordini di quell'utente.
+5. Il backend **costruisce l'HTML** inserendo quegli ordini.
+6. Invia la risposta `200 OK` con l'HTML personalizzato.
+
+Senza il cookie il server non saprebbe *chi* sei (HTTP è stateless); senza il database non avrebbe *cosa* mostrarti. Servono entrambi.
+
+</details>
+
+### Esercizio 3 — HTTP stateless e LLM stateless 🔴 Avanzato
+
+La lezione dice che HTTP è *stateless* e che lo stato "sei loggato" viene ricostruito con i cookie. Spiega il parallelo con gli LLM: anche una chiamata a un modello è stateless. Come viene ricostruita la "memoria" di una conversazione? Cosa corrisponde, lì, al cookie?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Il parallelo:** sia HTTP che un LLM "dimenticano" tutto tra una richiesta e l'altra. Ogni chiamata è indipendente.
+
+- **Web:** il server non ricorda nativamente le richieste precedenti → si rispedisce a ogni richiesta un **cookie** con l'identità, e il server ricostruisce il contesto dal database.
+- **LLM:** il modello non ricorda i messaggi precedenti → si rispedisce a ogni chiamata **l'intera cronologia della conversazione** nel campo `messages`. Il "ricordo" è un'illusione costruita reinviando tutto il contesto ogni volta.
+
+**Cosa corrisponde al cookie:** la cronologia dei messaggi (`messages`) inviata a ogni chiamata API. È il meccanismo che fa viaggiare lo stato attraverso richieste altrimenti indipendenti — esattamente come il cookie fa viaggiare l'identità. Questo è il problema centrale che la Lezione 4.6 (Memory) affronta in profondità.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 1.2 — qui abbiamo "rotto" l'idea del file fisso, introducendo logica ed elaborazione.

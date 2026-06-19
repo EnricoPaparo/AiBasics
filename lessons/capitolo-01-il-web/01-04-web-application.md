@@ -175,6 +175,61 @@ Questo conferma empiricamente quanto descritto: la pagina HTML viene caricata un
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Stato locale o remoto? 🟢 Base
+
+Per ciascun elemento, indica se è **stato locale** (nel browser) o **stato remoto** (sul server): (a) il testo che stai digitando ma non hai ancora inviato, (b) la cronologia delle conversazioni salvate, (c) il menu a tendina aperto, (d) le tue preferenze di account.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) testo non inviato** → **locale**: esiste solo nel browser; se chiudi la scheda, sparisce.
+- **(b) cronologia salvata** → **remoto**: persiste sul server, recuperabile da qualsiasi dispositivo.
+- **(c) menu aperto** → **locale**: pura interazione visiva, il server non ne sa nulla.
+- **(d) preferenze account** → **remoto**: devono sopravvivere e seguirti ovunque ti logghi.
+
+Criterio: se l'informazione deve **sopravvivere alla chiusura della scheda** ed essere recuperabile altrove, è remota; se è temporanea e legata a quel momento di interazione, è locale.
+
+</details>
+
+### Esercizio 2 — Perché la pagina non si ricarica 🟡 Intermedio
+
+In una SPA come Gmail, clicchi su un'email diversa e il contenuto cambia senza che la pagina "lampeggi" in ricaricamento. Spiega cosa succede davvero sotto il cofano, e cosa viene richiesto al server (e cosa no).
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. Il JavaScript già presente nel browser **intercetta il clic** (non lascia che il browser segua un link verso una nuova pagina).
+2. Fa una richiesta API al server chiedendo **solo i dati di quella email** (tipicamente JSON), non una pagina HTML completa.
+3. Riceve il JSON e **aggiorna solo la porzione di schermo** che mostra il contenuto dell'email.
+4. Barra laterale, intestazione e menu **restano invariati** — non vengono ricaricati.
+
+Cosa NON viene richiesto: una nuova pagina HTML completa. Cosa viene richiesto: solo i dati necessari. È la differenza chiave tra sito dinamico classico (ricarica tutto) e SPA (aggiorna il minimo indispensabile).
+
+</details>
+
+### Esercizio 3 — Progetta la divisione di responsabilità 🔴 Avanzato
+
+Stai progettando un'interfaccia di chat con un LLM (come Claude.ai). Distribuisci queste responsabilità tra **frontend** e **backend**, motivando: (a) mostrare la conversazione, (b) custodire la API key del modello, (c) gestire il testo in fase di digitazione, (d) chiamare l'API del modello AI, (e) salvare le conversazioni.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) mostrare la conversazione** → **frontend**: è interfaccia e interazione.
+- **(b) custodire la API key** → **backend**, sempre. Se la chiave fosse nel frontend, sarebbe visibile a chiunque ispezioni il browser (Lezione 1.5: la key è una password).
+- **(c) testo in digitazione** → **frontend**: stato locale temporaneo.
+- **(d) chiamare l'API del modello** → **backend**: così la key resta segreta e il backend può applicare regole, limiti e logica. Il frontend chiama *il backend*, il backend chiama *il modello*.
+- **(e) salvare le conversazioni** → **backend**: stato remoto persistente nel database.
+
+Principio chiave: tutto ciò che è **segreto o persistente** vive nel backend; tutto ciò che è **interazione visiva immediata** vive nel frontend. Mettere la API key nel frontend è l'errore classico da evitare.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 1.3 — qui il backend "costruiva" l'HTML; ora il frontend si emancipa e costruisce l'interfaccia da solo, comunicando con il backend solo per i dati.

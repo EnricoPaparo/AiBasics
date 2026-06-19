@@ -853,6 +853,43 @@ body {
   margin: 2.5rem 0;
 }
 
+/* ── Esercizi: collapsible solutions ───────────────────────── */
+.md-content details {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--cyan);
+  border-radius: 4px;
+  background: rgba(0,212,255,.03);
+  margin: 1rem 0 1.75rem;
+  padding: 0 1.25rem;
+  transition: border-color .2s, background .2s;
+}
+.md-content details[open] {
+  border-left-color: var(--green);
+  background: rgba(0,255,65,.03);
+}
+.md-content summary {
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .8rem;
+  letter-spacing: .05em;
+  color: var(--cyan);
+  padding: .9rem 0;
+  list-style: none;
+  user-select: none;
+  transition: color .2s;
+}
+.md-content summary:hover { color: var(--green); }
+.md-content summary::-webkit-details-marker { display: none; }
+.md-content summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform .2s;
+}
+.md-content details[open] > summary { color: var(--green); }
+.md-content details[open] > summary::before { content: '▾ '; }
+.md-content details > *:not(summary) { margin-bottom: 1rem; }
+.md-content details > summary + * { margin-top: .25rem; }
+
 /* ── Navigation Buttons ────────────────────────────────────── */
 .lesson-nav {
   display: flex; justify-content: space-between; align-items: center;

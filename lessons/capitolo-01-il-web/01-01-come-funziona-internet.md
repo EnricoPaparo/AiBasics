@@ -270,6 +270,62 @@ Questo non è un esercizio teorico: è lo stesso strumento che userai per diagno
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo: scrivi la tua risposta prima di aprire la soluzione. Il valore è nel tentativo, non nella lettura.
+
+### Esercizio 1 — Internet o Web? 🟢 Base
+
+Per ciascuna di queste situazioni, indica se sta usando **il Web** (pagine HTML nel browser) o **un altro servizio su Internet**: (a) guardi un film su Netflix, (b) il tuo programma Python chiama l'API di un LLM, (c) leggi una pagina Wikipedia nel browser, (d) fai una videochiamata.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) Netflix:** Internet ma non "Web" nel senso classico — lo streaming usa protocolli dedicati per il video, anche se l'interfaccia di scelta dei film è una web app.
+- **(b) API LLM:** Internet, **non** Web — nessun browser, nessun HTML, un programma parla direttamente con un server via HTTP/JSON.
+- **(c) Wikipedia:** Web vero e proprio — browser, pagine HTML collegate da link.
+- **(d) Videochiamata:** Internet ma non Web — usa protocolli real-time audio/video.
+
+Il punto chiave: **Internet è l'autostrada, il Web è solo uno degli operatori che la percorre.**
+
+</details>
+
+### Esercizio 2 — Diagnosi da codice di stato 🟡 Intermedio
+
+Il tuo agente chiama un'API e riceve, in tre momenti diversi: `401 Unauthorized`, `429 Too Many Requests`, `503 Service Unavailable`. Per ognuno: di chi è il problema (tuo codice o server remoto)? Cosa faresti concretamente?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **401 Unauthorized** → problema **tuo**: la API key è mancante, sbagliata o scaduta. Azione: verifica la chiave e come la stai inviando negli header. Un retry identico non servirà a nulla.
+- **429 Too Many Requests** → problema **tuo** (di ritmo): stai facendo troppe richieste. Azione: aspetta e riprova con *exponential backoff*; valuta di rallentare le chiamate.
+- **503 Service Unavailable** → problema **del server remoto**: è temporaneamente sovraccarico o in manutenzione. Azione: retry con backoff; se persiste, è fuori dal tuo controllo.
+
+Regola generale: **4xx = colpa del client (tu), 5xx = colpa del server.** Questa distinzione decide se ha senso ritentare la stessa richiesta o no.
+
+</details>
+
+### Esercizio 3 — Traccia il viaggio verso un LLM 🔴 Avanzato
+
+Il tuo programma chiama `https://api.anthropic.com/v1/messages`. Descrivi i 7 passi del viaggio della richiesta (come nella Sezione 5), ma adattati a questo caso: cosa cambia rispetto a un browser che apre una pagina? Quale passo "rendering" non avviene e cosa lo sostituisce?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. **DNS:** `api.anthropic.com` → indirizzo IP del server.
+2. **Connessione TCP** sulla porta **443** (HTTPS).
+3. **Handshake TLS:** negoziazione della cifratura.
+4. **Richiesta HTTP:** qui cambia tutto — non è un `GET` di una pagina, ma un `POST` con header di autenticazione (`x-api-key`) e un **corpo JSON** (model, messages, max_tokens).
+5. **Elaborazione:** il server non cerca un file HTML, ma esegue il modello per generare la risposta token per token.
+6. **Risposta HTTP:** `200 OK` con `Content-Type: application/json` e un corpo **JSON**, non HTML.
+7. **Rendering → NON avviene.** Non c'è browser. Al suo posto, il tuo programma **fa il parsing del JSON** (Lezione 4.2) ed estrae il testo per usarlo nel codice.
+
+La differenza fondamentale: il browser è uno strumento per umani; l'API è lo strumento per programmi. Stesso protocollo HTTP, payload e destinatario diversi.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Porta a:** Lezione 1.2 (Siti Web Statici) — vedremo cosa contiene esattamente una risposta HTTP quando il server invia una pagina HTML completa.

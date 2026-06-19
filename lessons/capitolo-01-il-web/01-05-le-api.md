@@ -265,6 +265,83 @@ Questo schema — endpoint, richiesta con autenticazione, risposta JSON, estrazi
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Anatomia di un endpoint 🟢 Base
+
+Data la riga `POST /v1/messages`, identifica: qual è il **metodo**? Qual è il **percorso**? Cosa significa scegliere `POST` invece di `GET`? E in quale parte della richiesta metteresti la API key?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Metodo:** `POST`.
+- **Percorso:** `/v1/messages`.
+- **Perché POST e non GET:** `GET` serve a *leggere/ottenere* qualcosa; `POST` serve a *creare/inviare* qualcosa di nuovo. Mandando un messaggio al modello stai creando una nuova richiesta con un corpo di dati, quindi `POST`.
+- **Dove va la API key:** in un **header** (es. `x-api-key: ...`), non nell'URL né nel corpo. Gli header sono il posto standard per le credenziali.
+
+</details>
+
+### Esercizio 2 — Scrivi il corpo JSON 🟡 Intermedio
+
+Vuoi chiedere a Claude di tradurre in inglese la frase "Buongiorno mondo", con un limite di 100 token. Scrivi il corpo JSON della richiesta. Poi: per "leggere la lista dei modelli disponibili" useresti `GET` o `POST`?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Corpo JSON:
+
+```json
+{
+  "model": "claude-sonnet-4-6",
+  "max_tokens": 100,
+  "messages": [
+    { "role": "user", "content": "Traduci in inglese: Buongiorno mondo" }
+  ]
+}
+```
+
+Elementi obbligatori: `model`, `max_tokens`, e `messages` (un array di oggetti con `role` e `content`).
+
+Per **leggere la lista dei modelli**: `GET` — stai solo ottenendo informazioni esistenti, non creando nulla.
+
+</details>
+
+### Esercizio 3 — Progetta un contratto API + scegli il formato 🔴 Avanzato
+
+Devi progettare un piccolo servizio "riassumi testo". Definisci: endpoint (metodo + percorso), corpo della richiesta, corpo della risposta, e come gestiresti l'autenticazione. Inoltre: useresti JSON o YAML per (a) il corpo che viaggia nella richiesta API, e (b) un file di configurazione che un umano modifica ogni giorno?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Un contratto ragionevole:
+
+```http
+POST /v1/riassumi
+Host: api.mioservizio.com
+Content-Type: application/json
+x-api-key: <chiave-segreta>
+
+{ "testo": "...testo lungo da riassumere...", "lunghezza_max": 80 }
+```
+
+Risposta:
+
+```json
+{ "riassunto": "...", "parole": 76, "lingua": "it" }
+```
+
+- **Autenticazione:** API key in header `x-api-key`; il server risponde `401` se invalida, `429` se oltre i limiti.
+- **(a) corpo della richiesta API → JSON:** deve essere generato e letto velocemente da codice, senza ambiguità.
+- **(b) file di configurazione modificato a mano → YAML:** più leggibile per un umano, basato su indentazione, senza il rumore di parentesi e virgolette.
+
+Regola da ricordare: **JSON per parlare tra programmi, YAML per i file che scrivono gli umani** — la stessa ragione per cui questa lezione ha il frontmatter in YAML.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezioni 1.1–1.4 — questa lezione è la sintesi naturale di client/server, HTTP, logica dinamica e separazione frontend/backend, tutti applicati al caso specifico della comunicazione programma-programma.
