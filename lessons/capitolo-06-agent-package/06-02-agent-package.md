@@ -321,6 +321,57 @@ Il punto cruciale: `esegui_da_package` non contiene **nulla** di specifico sull'
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — A cosa serve ogni cartella 🟢 Base
+
+Associa ogni cartella/file al suo ruolo: (a) `agent.yaml`, (b) `prompts/`, (c) `tools/`, (d) `schemas/`, (e) `evals/`.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) `agent.yaml`** → configurazione e identità: punto di ingresso unico (modello, parametri, riferimenti agli altri file).
+- **(b) `prompts/`** → i prompt come file separati e versionabili (system prompt, esempi few-shot).
+- **(c) `tools/`** → implementazione degli strumenti + manifest.
+- **(d) `schemas/`** → contratti formali di input e output (input_schema, output_schema).
+- **(e) `evals/`** → casi di test e valutazione.
+
+Idea: ogni responsabilità in una cartella dedicata, invece di tutto mescolato in un unico script.
+
+</details>
+
+### Esercizio 2 — Modificare il prompt in sicurezza 🟡 Intermedio
+
+Un esperto di dominio (non sviluppatore) deve migliorare il comportamento dell'agente modificando `prompts/system.md`. Quali file restano intoccati? Perché questo riduce il rischio di bug?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Restano **completamente intoccati** il codice Python di esecuzione (`carica_agent_package`, `esegui_da_package`), gli `schemas/`, i `tools/`, gli `evals/`. Si modifica **solo** il file `.md` del prompt.
+
+**Perché riduce il rischio:** il comportamento (prompt) è separato dalla logica (codice). Cambiando solo testo non si può introdurre un bug nella logica di esecuzione. Inoltre permette la **separazione dei ruoli**: chi scrive prompt non deve toccare codice, chi sviluppa codice non deve toccare i prompt. È il vantaggio centrale del package rispetto allo script monolitico.
+
+</details>
+
+### Esercizio 3 — Script vs package e riuso 🔴 Avanzato
+
+(a) Cita due differenze pratiche concrete tra agente "script" e agente "package". (b) Vuoi un secondo agente che usa lo stesso strumento `query_database` del primo. Come eviti di duplicare il codice?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Due differenze (tra le tante):**
+- **Versionamento:** nello script ogni modifica cambia l'intero `.py`, difficile isolare *cosa* è cambiato; nel package ogni componente (prompt, schema, tool) è versionato indipendentemente.
+- **Esecuzione generica:** una funzione come `esegui_da_package()` funziona per *qualsiasi* package ben strutturato, mentre lo script richiede una funzione dedicata per ogni agente con config cablata.
+
+**(b) Evitare la duplicazione:** mettere `query_database` in una posizione **condivisa** (es. una cartella `tools/` comune o una libreria di strumenti riutilizzabili) e fare in modo che entrambi gli agent package vi facciano **riferimento** dal proprio manifest, invece di copiare il codice. È lo stesso principio del tool registry (Lezione 4.4) e anticipa la skill library (Lezione 6.7): centralizzare ciò che è condiviso, non duplicarlo.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 6.1 (YAML e Frontmatter) — il formato usato per ogni file di configurazione di questa lezione. Capitolo 5 (tutti gli agenti costruiti come script) — questa lezione ne mostra l'evoluzione naturale verso una forma professionale.

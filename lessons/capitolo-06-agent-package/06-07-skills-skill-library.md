@@ -260,6 +260,60 @@ Applica questo criterio: **una logica merita di diventare una skill condivisa qu
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Tool o skill? 🟢 Base
+
+Spiega la differenza tra un **tool** e una **skill**. Classifica: (a) una funzione che interroga un database, (b) un documento che spiega come calcolare correttamente la crescita percentuale gestendo i casi limite.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Tool:** è **codice eseguibile**. Il modello lo *richiede*, il programma lo *esegue*, restituisce un risultato concreto.
+- **Skill:** è **conoscenza/istruzione strutturata**. Il modello la *usa* come parte del proprio ragionamento; arricchisce il prompt, non esegue nulla.
+
+Classificazione:
+- **(a) query al database** → **tool** (codice che esegue e restituisce dati).
+- **(b) documento sul calcolo percentuale** → **skill** (procedura/conoscenza che guida *come* ragionare).
+
+Analogia: il tool è la calcolatrice; la skill è aver studiato un metodo per risolvere un tipo di problema.
+
+</details>
+
+### Esercizio 2 — Perché una skill library 🟡 Intermedio
+
+(a) Quale problema risolve centralizzare una logica in una skill library invece di duplicarla in due prompt? (b) "Rispondi sempre in italiano formale" è una buona candidata a skill condivisa? Perché?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Evita la **duplicazione** e la conseguente **divergenza silenziosa**: se la stessa logica è scritta in due prompt e una viene corretta per un bug mentre l'altra no, le due versioni divergono. Con una skill library c'è **una fonte di verità unica**: aggiornarla propaga la correzione a tutti gli agenti che la caricano.
+
+**(b)** **No.** "Rispondi in italiano formale" è una **preferenza di comportamento** di un singolo agente, non una competenza procedurale condivisibile e mantenibile nel tempo. Sta meglio nel system prompt di quell'agente. Una skill è giustificata quando la logica è **riutilizzata da più agenti** e **richiede mantenimento** (es. "come gestire date ambigue giorno/mese").
+
+</details>
+
+### Esercizio 3 — Skill vs tool e versionamento 🔴 Avanzato
+
+(a) Il calcolo della variazione percentuale: meglio implementarlo come tool o come skill? Vantaggi e svantaggi di ciascuno. (b) Perché senza versionamento dichiarato delle skill un aggiornamento può rompere un agente?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Tool vs skill per il calcolo percentuale:**
+- **Come tool** (funzione Python): garantisce **precisione assoluta** del calcolo (nessun errore aritmetico del modello) e ripetibilità. Svantaggio: meno flessibile nell'adattare la spiegazione/gestione dei casi limite al contesto.
+- **Come skill** (procedura nel prompt): flessibile e adattabile (il modello può spiegare il caso "valore precedente = 0" nel contesto), ma il calcolo resta soggetto agli errori di generazione del modello.
+
+Spesso la scelta migliore è **combinare**: un tool per il calcolo esatto + una skill per spiegare come interpretarlo e gestire i casi limite.
+
+**(b) Versionamento:** un agente è progettato e **testato** assumendo un certo comportamento della skill. Se la skill condivisa cambia silenziosamente (es. cambia il modo di gestire un caso limite), l'agente eredita un comportamento diverso da quello con cui è stato validato — possibile regressione inattesa. Dichiarare la versione attesa permette di **rilevare** che un agente sta usando una versione diversa e di verificarne l'impatto prima di adottarla.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 6.4 (I Prompt come Artefatti) — una skill è concettualmente un frammento di prompt riutilizzabile, con la stessa disciplina di versionamento. Lezione 4.4 (Function Calling) — la distinzione tool/skill richiama e completa quella distinzione.

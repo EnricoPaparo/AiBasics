@@ -270,6 +270,71 @@ La correzione, applicando i principi di questa lezione, separerebbe questo testo
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Le sezioni di un prompt professionale 🟢 Base
+
+Elenca le sezioni tipiche di un prompt professionale ben strutturato e, per ciascuna, di' a quale domanda risponde.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Ruolo:** chi è l'agente?
+- **Contesto:** cosa riceverà e cosa no?
+- **Istruzioni:** come deve comportarsi?
+- **Vincoli:** cosa NON deve fare?
+- **Formato di Output:** quale struttura deve avere la risposta? (collega agli output strutturati, Lezione 4.2)
+- **Esempi:** few-shot prompting (Lezione 3.4).
+
+Avere queste sezioni in modo consistente rende il prompt **revisionabile** come si fa con una code review: un collega può controllare se ciascuna è presente e ben formulata.
+
+</details>
+
+### Esercizio 2 — Template vs instance 🟡 Intermedio
+
+(a) Qual è la differenza tra prompt *template* e prompt *instance*? Quale dei due viene versionato in git? (b) Cosa dovrebbe fare `compila_template` se manca una variabile richiesta, e perché?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Il **template** è la struttura riutilizzabile con segnaposto (`{{periodo}}`), statica e **versionata in git**. L'**instance** è la versione concreta compilata con i dati reali a runtime, diversa a ogni esecuzione, **mai salvata** come file permanente.
+
+**(b)** Deve **sollevare un errore esplicito** (fail-fast). Se invece sostituisse silenziosamente con stringa vuota, invieresti al modello un prompt malformato (un'istruzione con un buco), ottenendo risposte sbagliate **senza accorgertene**. Meglio un fallimento immediato e diagnosticabile che un comportamento scorretto silenzioso (stesso principio delle Lezioni 4.2 e 5.5).
+
+</details>
+
+### Esercizio 3 — Separa stabile da dinamico 🔴 Avanzato
+
+Questo prompt mescola stabile e dinamico: *"Sei un analista. Analizza Q3-2026 vs Q3-2025: 1.2M€ contro 1.1M€. Rispondi con TREND, VARIAZIONE, CONFIDENZA. Niente linguaggio vago."* Spiega perché è un problema e riscrivilo separando system prompt e task template.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Perché è un problema:** mescola informazioni **stabili** (ruolo, formato, vincoli) con **dati specifici** della richiesta (i numeri di Q3). Se versionassi questo come system prompt, il file cambierebbe a *ogni richiesta* per ragioni non legate al comportamento → il versionamento perde significato.
+
+**Riscrittura:**
+
+System prompt (stabile, in `prompts/system.md`):
+```
+Sei un analista di dati di vendita. Analizza solo i numeri forniti.
+Rispondi sempre con: TREND (crescita/calo/stabile), VARIAZIONE (%),
+CONFIDENZA (alta/media/bassa). Non usare linguaggio vago.
+```
+
+Task template (dinamico, compilato a runtime):
+```
+Analizza il periodo {{periodo}} confrontandolo con {{periodo_confronto}}.
+Dati: {{dati_grezzi}}
+```
+
+A runtime: `{{periodo}}`=Q3-2026, `{{periodo_confronto}}`=Q3-2025, `{{dati_grezzi}}`="1.2M€ vs 1.1M€". Ora il system prompt resta stabile e versionabile, i dati variano solo nell'istanza.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 3.4 (Il Prompting) e Lezione 3.3 (ruoli system/user) — questa lezione formalizza con rigore professionale concetti introdotti lì in forma base. Lezione 6.2 (L'Agent Package) — approfondisce la cartella `prompts/` introdotta in quella lezione.

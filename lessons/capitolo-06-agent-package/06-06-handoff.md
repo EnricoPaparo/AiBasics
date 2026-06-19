@@ -288,6 +288,58 @@ Il criterio distintivo, in ciascun caso, è la **quantità di contesto e respons
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Chiamata o handoff? 🟢 Base
+
+Qual è la differenza fondamentale tra una chiamata di funzione e un handoff? Chi resta "responsabile" del processo in ciascun caso?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Chiamata di funzione:** l'agente A passa *un valore*, attende il risultato, e **riprende il controllo**. A resta responsabile del processo complessivo; usa B come uno strumento.
+- **Handoff:** A passa *un documento completo di lavoro* e la **responsabilità di continuare**. A **termina** il proprio coinvolgimento; B diventa il nuovo responsabile, con tutto il contesto per procedere autonomamente.
+
+La differenza non è solo tecnica: nell'handoff si trasferisce la **responsabilità**, non solo un dato.
+
+</details>
+
+### Esercizio 2 — Cosa contiene un handoff 🟡 Intermedio
+
+(a) Classifica come **chiamata** o **handoff**: "calcola la somma di questi numeri" vs "analizza questi documenti e prepara tutto perché un altro team progetti". (b) Quali quattro categorie di informazione contiene un buon documento di handoff?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)**
+- "calcola la somma" → **chiamata di funzione**: interazione puntuale, risposta puntuale.
+- "analizza e prepara tutto per un altro team" → **handoff**: si trasferisce un intero contesto di lavoro e la responsabilità.
+
+**(b) Le quattro categorie:**
+1. **Output prodotto** (validato contro il contratto, Lezione 6.5).
+2. **Contesto rilevante** (vincoli scoperti, decisioni prese e perché).
+3. **Istruzioni per il successivo** (cosa deve fare il destinatario).
+4. **Metadati** di tracciabilità (chi, quando, quale versione).
+
+</details>
+
+### Esercizio 3 — Ambiguità e sincrono vs asincrono 🔴 Avanzato
+
+Nell'handoff Requirement Analyst → Architect: (a) perché segnalare un'ambiguità sui formati come "contesto" invece di deciderla da soli è più sicuro? (b) Per un flusso con revisione umana intermedia, meglio handoff sincrono o asincrono? Perché?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Segnalare invece di decidere:** l'agente analista **non ha l'autorità/contesto** per risolvere un'ambiguità di business (due documenti chiedono PDF, uno Markdown). Decidere autonomamente significherebbe nascondere un conflitto reale e potenzialmente sbagliare. Segnalarlo come "contesto da risolvere" preserva l'informazione per chi (umano o Architect) ha l'autorità di decidere — è onestà sui limiti applicata all'architettura.
+
+**(b) Sincrono vs asincrono:** con revisione umana intermedia è più appropriato l'**asincrono**. L'handoff viene **depositato** (coda/database), l'umano lo revisiona quando può — anche ore/giorni dopo — e solo poi l'Architect procede. Un flusso sincrono terrebbe il programma bloccato in attesa di un umano per un tempo arbitrario, il che non è praticabile. L'asincrono disaccoppia produzione dell'handoff e sua elaborazione (anticipa il checkpointing della Lezione 7.2 e l'HITL della 7.4).
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 6.5 (Contratti tra Agenti) — l'output di un handoff deve rispettare i contratti lì definiti. Lezione 6.1 (YAML e Frontmatter) — il formato esatto del documento di handoff.

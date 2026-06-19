@@ -241,6 +241,57 @@ Questo esercizio di classificazione, semplice in apparenza, è precisamente il t
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — agent.yaml o Agent Card? 🟢 Base
+
+Classifica ciascuna informazione come **agent.yaml** (config interna) o **Agent Card** (interfaccia pubblica): (a) valore di `temperature`, (b) domini di competenza dell'agente, (c) percorso del file Python di uno strumento, (d) schema di output garantito, (e) cosa l'agente NON fa.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) temperature** → **agent.yaml**: dettaglio implementativo interno, irrilevante dall'esterno.
+- **(b) domini di competenza** → **Agent Card**: serve a chi decide se delegare un compito.
+- **(c) percorso file dello strumento** → **agent.yaml**: dettaglio implementativo.
+- **(d) schema di output** → **Agent Card**: chi usa l'agente deve conoscerlo per elaborare il risultato.
+- **(e) cosa NON fa** → **Agent Card**: essenziale per la discovery ed evitare usi scorretti.
+
+Domanda guida: "questo serve a chi *mantiene* l'agente o a chi lo *usa* dall'esterno?"
+
+</details>
+
+### Esercizio 2 — NON_fa e discovery 🟡 Intermedio
+
+(a) Perché dichiarare esplicitamente cosa un agente NON fa è importante quanto dichiarare cosa fa? (b) Cos'è la "discovery" e quale vantaggio dà rispetto ad agenti cablati nel codice dell'orchestratore?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) `NON_fa`:** previene l'errore comune di assumere che un agente gestisca un compito fuori dal suo dominio solo perché nessuno lo ha escluso. È la stessa logica della `description` di uno strumento (Lezione 4.4): l'ambiguità porta a usi scorretti. Dichiarare i confini protegge il sistema.
+
+**(b) Discovery:** è il processo con cui un orchestratore **sceglie dinamicamente** l'agente adatto leggendo le Agent Card disponibili, invece di avere ogni agente importato/cablato staticamente. Vantaggio: il catalogo di agenti può **crescere nel tempo** senza modificare il codice dell'orchestratore — basta aggiungere un nuovo agente con la sua Agent Card.
+
+</details>
+
+### Esercizio 3 — Quando cambia la versione 🔴 Avanzato
+
+Il team rinomina nello schema di output `percentuale_variazione` in `variazione_percentuale` senza preavviso. (a) Cosa succede a chi dipende dall'agente? (b) Cosa imponeva di fare il versionamento semantico? (c) Perché cambiare `temperature` invece non richiede un cambio di versione dell'Agent Card?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Conseguenza:** ogni orchestratore/agente che si aspettava `percentuale_variazione` ora **non trova il campo** → fallimento silenzioso o errori difficili da diagnosticare. L'Agent Card è un **contratto di servizio**: romperlo senza avviso rompe i consumatori.
+
+**(b) Versionamento semantico:** una modifica che **rompe la compatibilità** dell'interfaccia pubblica deve corrispondere a un incremento della versione **maggiore** (es. `1.2.0` → `2.0.0`). Così chi dipende dall'agente sa, dal solo numero di versione, che l'aggiornamento potrebbe richiedere modifiche dal suo lato.
+
+**(c) `temperature`:** è un **dettaglio interno** (agent.yaml), non fa parte dell'interfaccia pubblica dichiarata. Cambiarlo non altera cosa l'agente riceve/restituisce, quindi non rompe nessun consumatore → nessun cambio di versione dell'Agent Card. (Stesso principio dell'incapsulamento delle API, Lezione 1.5: l'interno può cambiare se l'interfaccia resta stabile.)
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 6.2 (L'Agent Package) — l'Agent Card è un componente specifico, con uno scopo distinto da `agent.yaml`, di quella stessa struttura. Lezione 5.3 (L'Orchestratore) — il principio di incapsulamento introdotto lì trova qui una formalizzazione completa.

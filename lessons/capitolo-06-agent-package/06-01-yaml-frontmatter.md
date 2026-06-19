@@ -267,6 +267,62 @@ Questo script, per quanto semplice, rappresenta un concetto che diventerà centr
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Trova gli errori YAML 🟢 Base
+
+Questo YAML ha tre problemi. Trovali: `nome:Agente` / `versione: 1.0` (indentato con un tab) / `strumenti: cerca, invia`.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. **`nome:Agente`** → manca lo **spazio** dopo i due punti: deve essere `nome: Agente`.
+2. **Indentazione con tab** → YAML vieta i tab per l'indentazione; usa **solo spazi** (molti parser falliscono in modo criptico sui tab).
+3. **`strumenti: cerca, invia`** → non è una lista YAML valida. Una lista si scrive con trattini su righe separate:
+   ```yaml
+   strumenti:
+     - cerca
+     - invia
+   ```
+   (oppure in forma inline `[cerca, invia]`).
+
+</details>
+
+### Esercizio 2 — Perché il frontmatter, e perché safe_load 🟡 Intermedio
+
+(a) Quale problema risolve il frontmatter (blocco YAML + corpo Markdown)? (b) Perché usare `yaml.safe_load` invece di `yaml.load`?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Il frontmatter** risolve il bisogno di un documento che sia **sia leggibile da un umano** (il corpo Markdown) **sia interpretabile da un programma** (i metadati YAML). Un orchestratore può estrarre `versione`, `strumenti`, `stato` con un parsing affidabile, mentre un umano legge la prosa — senza sacrificare nessuna delle due esigenze.
+
+**(b) `safe_load` vs `load`:** `yaml.load` senza restrizioni può, con YAML malevolo, **eseguire codice arbitrario**. `safe_load` interpreta solo strutture dati semplici (stringhe, numeri, liste, oggetti), eliminando il rischio. È una scelta di **sicurezza**, importante se il sistema elabora file da fonti non pienamente fidate.
+
+</details>
+
+### Esercizio 3 — Convenzioni e automazione 🔴 Avanzato
+
+(a) Due agenti usano `responsabile` e `owner` per la stessa cosa. Che problema crea per la validazione automatica, e come si chiamava nella Lezione 5.4? (b) Il frontmatter di questa lezione ha `prerequisiti: ["05-05", "01-05"]`. Come potrebbe usarlo un programma, senza intervento umano?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Uno script di validazione che cerca `owner` non troverebbe il campo nell'agente che usa `responsabile` → falsi allarmi o controlli che falliscono. È il problema di **coerenza terminologica** della Lezione 5.4, qui a livello di metadati. Soluzione: **convenzioni di naming condivise** (chiavi standard, valori di stato vincolati a un insieme fisso).
+
+**(b) Uso automatico di `prerequisiti`:** un programma può:
+- costruire automaticamente il **grafo delle dipendenze** del corso/sistema e verificare che non ci siano riferimenti rotti o cicli;
+- impedire di pubblicare/eseguire un artefatto i cui prerequisiti non sono ancora "in produzione";
+- ordinare le lezioni/gli agenti in sequenza valida; suggerire i prerequisiti mancanti a uno studente.
+
+Tutto questo senza che un umano legga manualmente il campo — è il valore dei metadati machine-readable.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 1.5 (Le API) — qui approfondiamo YAML, introdotto lì in contrapposizione a JSON. Lezione 5.4 (Single vs Multi-Agent) — il problema di coerenza terminologica trova qui una prima soluzione strutturale a livello di metadati.

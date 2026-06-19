@@ -242,6 +242,56 @@ Senza questa validazione esplicita, l'Agente Scrittore avrebbe potuto ricevere "
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Cos'è un contratto 🟢 Base
+
+(a) Con parole tue, cos'è un contratto tra agenti? (b) Perché usare `Literal["crescita","calo","stabile"]` è più rigoroso di un semplice `str` per il campo `trend`?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Un contratto è la **dichiarazione esplicita e verificabile automaticamente** di cosa un agente si aspetta come input e cosa garantisce come output, indipendentemente da come è implementato. È una promessa su "cosa entra e cosa esce".
+
+**(b) `Literal` vs `str`:** `str` accetterebbe *qualsiasi* stringa, incluse varianti come "in aumento" o "positivo". `Literal["crescita","calo","stabile"]` accetta **solo quei tre valori esatti**. Elimina alla radice il rischio che un agente a valle riceva una variante semanticamente equivalente ma testualmente diversa, che causerebbe incoerenze silenziose. Più rigore = meno ambiguità.
+
+</details>
+
+### Esercizio 2 — Validazione ai confini 🟡 Intermedio
+
+(a) Perché l'agente valida il proprio *output* PRIMA di restituirlo, invece di lasciare che sia l'agente successivo a scoprire eventuali problemi? (b) Perché i contratti diventano *indispensabili* con 10 agenti ma sono quasi superflui con 2?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Validare l'output ai confini significa **fallire immediatamente, vicino all'origine** del problema. Se invece il dato malformato passasse all'agente successivo, l'errore emergerebbe più a valle, dove è molto più difficile rintracciare *dove* è nato. Validare in uscita localizza il problema al punto esatto in cui si è verificato.
+
+**(b)** Per la **crescita combinatoria**: con N agenti le possibili interazioni a coppie crescono ~ N². Con 2 agenti c'è 1 connessione, mantenibile "a memoria". Con 10 agenti ci sono fino a 45 coppie: impossibile garantire coerenza informale. I contratti formali rendono la coerenza **verificabile automaticamente** invece che sperata.
+
+</details>
+
+### Esercizio 3 — Traccia e gestisci una violazione 🔴 Avanzato
+
+L'agente a valle riceve `{"trend": "in aumento", ...}` ma il contratto ammette solo `crescita/calo/stabile`. (a) Cosa succede alla validazione? (b) Per ogni possibile causa (modello / chiamante / contratto cambiato), quale strategia adotti? (c) Quando scatta l'escalation umana?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Pydantic solleva un `ValidationError` su `trend` (literal_error): "in aumento" non è tra i valori ammessi. La violazione è **intercettata subito**, invece di propagarsi.
+
+**(b) Strategie per causa:**
+- **Il modello** ha prodotto "in aumento" → ri-tentare con prompt rafforzato, o normalizzare le varianti comuni con un mapping.
+- **Il chiamante** ha fornito input non conforme (es. periodo nel formato sbagliato) → **rifiutare** esplicitamente con un errore chiaro sul campo problematico; mai "indovinare".
+- **Il contratto è cambiato** (nuova versione dell'agente) senza avviso → problema di **processo/versioning** (Lezioni 6.3/8.4): serve un cambio di versione esplicito e comunicazione ai dipendenti.
+
+**(c) Escalation umana:** quando le violazioni dello stesso tipo si ripetono con frequenza anomala nonostante i tentativi di correzione. Non è qualcosa che un sistema automatico debba continuare a ritentare all'infinito — è un segnale per un intervento umano (anticipa la Lezione 7.4).
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 4.2 (Output Strutturati) — i contratti sono l'applicazione diretta di Pydantic a livello di intero agente, non solo di singola chiamata. Lezione 5.4 (Single vs Multi-Agent) — questa lezione risolve formalmente il problema di coerenza terminologica lì identificato.
