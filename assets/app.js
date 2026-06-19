@@ -8,7 +8,6 @@
 const state = {
   manifest: null,
   current: { chapterId: null, lessonId: null },
-  completed: new Set(JSON.parse(localStorage.getItem('completed') || '[]')),
 };
 
 // ── DOM refs ─────────────────────────────────────────────────
@@ -103,7 +102,6 @@ function buildSidebar() {
     sidebarEl.appendChild(item);
   });
 
-  updateProgress();
 }
 
 function toggleChapter(item, forceOpen) {
@@ -202,9 +200,6 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
           <span>←</span>
           <div><div class="nav-btn-label">PRECEDENTE</div>${prev.l.titolo}</div>
         </a>` : '<div></div>'}
-        <button class="nav-btn" onclick="markComplete('${chapterId}','${lessonId}')">
-          ✓ Segna completata
-        </button>
         ${next ? `<a class="nav-btn" onclick="openLesson('${next.chId}','${next.l.id}')">
           <div><div class="nav-btn-label">SUCCESSIVA</div>${next.l.titolo}</div>
           <span>→</span>
@@ -269,25 +264,6 @@ function showWelcome() {
   `;
 }
 
-// ── Progress ──────────────────────────────────────────────────
-function markComplete(chapterId, lessonId) {
-  const key = `${chapterId}/${lessonId}`;
-  state.completed.add(key);
-  localStorage.setItem('completed', JSON.stringify([...state.completed]));
-  updateProgress();
-  const btn = document.querySelector('.lesson-nav .nav-btn:nth-child(2)');
-  if (btn) { btn.textContent = '✓ Completata!'; btn.style.color = 'var(--green)'; btn.style.borderColor = 'var(--green)'; }
-}
-
-function updateProgress() {
-  const total = state.manifest?.totale_lezioni || 0;
-  const done = state.completed.size;
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-  const fill = $('progress-fill');
-  const text = $('progress-text');
-  if (fill) fill.style.width = `${pct}%`;
-  if (text) text.textContent = `${done} / ${total} lezioni (${pct}%)`;
-}
 
 // ── Mobile sidebar ────────────────────────────────────────────
 function setupMobileToggle() {
