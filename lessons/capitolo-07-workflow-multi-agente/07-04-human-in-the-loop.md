@@ -273,6 +273,59 @@ Nota come questo documento applica esattamente il principio "mostra il contesto 
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Necessità tecnica, non solo etica 🟢 Base
+
+Perché l'Human-in-the-Loop è una **necessità tecnica** e non solo una precauzione etica? Collega la risposta ai limiti del Capitolo 3.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Perché nessuna tecnica costruita finora **elimina** i limiti strutturali degli LLM (Lezione 3.5): allucinazioni, knowledge cutoff, bias. Le tecniche li **riducono**:
+- RAG riduce ma non azzera le allucinazioni;
+- i contratti rilevano violazioni di *formato*, non di *giudizio*;
+- il review layer è comunque un LLM, soggetto agli stessi limiti di fondo.
+
+Per decisioni ad alto impatto, ambigue, o che richiedono un giudizio fuori dalla competenza tecnica dell'agente, un punto di verifica umana resta indispensabile. HITL non è il segno che il sistema "non funziona": è il segno di un sistema progettato con maturità, che riconosce i confini della propria automazione.
+
+</details>
+
+### Esercizio 2 — Interrupt-and-wait o async review? 🟡 Intermedio
+
+Spiega la differenza tra i due pattern. Per il caso "Requirement Analyst genera un PDF da far revisionare a un umano prima dell'handoff", quale scegli e perché?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Interrupt-and-wait (sincrono):** il workflow si **ferma e resta bloccato** finché l'umano non risponde. Adatto a interazioni in tempo reale ("conferma questa azione ora").
+- **Async review (asincrono):** il workflow **persiste lo stato** (checkpointing) e **termina** l'esecuzione attiva; un umano revisiona quando può (anche giorni dopo) e il workflow **riprende** in un'esecuzione separata.
+
+Per il caso del PDF da revisionare: **async review**. Non ha senso tenere un intero processo bloccato in attesa che un umano trovi il tempo di leggere un documento, magari il giorno dopo. È l'implementazione tecnica dell'handoff asincrono (Lezione 6.6).
+
+</details>
+
+### Esercizio 3 — Policy di escalation e interfaccia 🔴 Avanzato
+
+(a) Perché i criteri di escalation vanno espressi come condizioni **oggettive e misurabili** invece di "se la situazione sembra complicata"? (b) Cosa mostreresti all'operatore umano al checkpoint, e cosa NO?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Criteri oggettivi:** "se sembra complicata" non è **verificabile, testabile né ripetibile** — dipende dall'intuizione del momento di chi ha scritto il prompt. Criteri misurabili (es. `ambiguità > 2`, `tentativi_correzione > 3`, `decisione == escala_a_umano`) rendono la policy **esplicita nel codice**, quindi testabile, migliorabile e coerente tra esecuzioni. Evita sia l'escalation eccessiva (vanifica l'automazione) sia quella insufficiente (lascia passare decisioni rischiose).
+
+**(b) Cosa mostrare all'operatore:**
+- ✅ il risultato prodotto (il PDF), il **contesto** che ha portato all'interruzione (es. "ambiguità sui formati"), e le **azioni possibili** chiare (approva / modifica / rifiuta).
+- ❌ NON i dettagli implementativi (prompt esatto, log tecnici del nodo): irrilevanti per la decisione e generano rumore.
+
+È lo stesso principio di incapsulamento dell'Agent Card (Lezione 6.3): dare a chi consuma l'interfaccia ciò che serve per agire, non ogni dettaglio interno.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 7.3 (Il Layer di Review) — l'esito "escala_a_umano" trova qui la propria implementazione completa. Lezione 6.6 (Gli Handoff) — il pattern async review formalizza tecnicamente l'handoff asincrono con revisione umana già accennato in quella lezione per il tuo caso d'uso specifico.

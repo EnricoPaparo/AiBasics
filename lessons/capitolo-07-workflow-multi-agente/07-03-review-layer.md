@@ -226,6 +226,53 @@ Applichiamo i criteri della Sezione 4 a tre scenari, riprendendo il caso del Req
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Perché un critico indipendente 🟢 Base
+
+Perché far valutare l'output da un **agente critico indipendente** è meglio che far auto-valutare lo stesso agente che l'ha prodotto?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Un agente che valuta il **proprio** output tende a **ripetere gli stessi errori di giudizio** che hanno prodotto l'output: se ha trascurato un'ambiguità nel produrre, è probabile che la trascuri anche nel valutare. È una forma di **bias di conferma**.
+
+Un agente **indipendente**, con prompt e criteri di valutazione separati, guarda l'output con "occhi diversi" ed è meno soggetto a questo bias. (La self-critique resta utile come *primo* filtro economico, ma non sostituisce il critico indipendente — vedi Lezione 8.1.)
+
+</details>
+
+### Esercizio 2 — I tre esiti del review 🟡 Intermedio
+
+Il campo `decisione` ha tre valori: `approva`, `richiedi_revisione`, `escala_a_umano`. Classifica: (a) "il requisito 2 non specifica un limite di tempo"; (b) "i documenti chiedono sia massima personalizzazione sia massima standardizzazione"; (c) "tutti i criteri soddisfatti".
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) manca il limite di tempo** → **richiedi_revisione**: omissione **specifica e correggibile** con un nuovo tentativo guidato dal feedback.
+- **(b) personalizzazione vs standardizzazione** → **escala_a_umano**: è una **contraddizione di business strategico**, non un problema tecnico risolvibile rianalizzando i documenti. Richiede un giudizio umano.
+- **(c) tutto a posto** → **approva**: il workflow procede.
+
+Criterio: correggibile da solo → richiedi_revisione; fuori dalla competenza tecnica/ambiguo → escala a umano; conforme → approva.
+
+</details>
+
+### Esercizio 3 — Contraddizioni e loop infiniti 🔴 Avanzato
+
+(a) Perché la contraddizione di business (caso b sopra) non si risolve nemmeno con infiniti `richiedi_revisione`? (b) Cosa impedisce al ciclo `analisi → review → analisi` di diventare infinito?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** `richiedi_revisione` fa rianalizzare gli **stessi documenti** dal **produttore**. Ma la contraddizione è **nei dati di partenza** (gli stakeholder vogliono due cose incompatibili) — nessuna rianalisi può inventare una decisione che spetta a un umano con autorità di business. Ripetere all'infinito produrrebbe solo lo stesso stallo. Serve l'escalation: è un problema di *contenuto*, non di *qualità dell'analisi*.
+
+**(b)** Serve un **limite di tentativi** sul ciclo di revisione (lo stesso principio del `max_iterazioni`, Lezione 5.1): dopo N round di `richiedi_revisione` senza arrivare ad `approva`, il sistema deve forzare l'`escala_a_umano`. Senza questo contatore, un problema non auto-correggibile (come la contraddizione di business) farebbe rimbalzare il workflow tra analisi e review all'infinito. La soglia trasforma un loop potenzialmente infinito in un'escalation controllata.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 7.2 (LangGraph) — il nodo di review è implementato esattamente con i meccanismi di ciclo controllato visti in quella lezione. Lezione 6.5 (Contratti tra Agenti) — la rubrica di valutazione è un'applicazione diretta dei principi di validazione strutturata.

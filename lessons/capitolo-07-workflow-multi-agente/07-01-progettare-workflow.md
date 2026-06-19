@@ -251,6 +251,57 @@ Completa tu stesso questo schema, identificando quali altri checkpoint, secondo 
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Pipeline o workflow? 🟢 Base
+
+Qual è la differenza fondamentale tra una pipeline statica e un workflow adattivo? Dai un esempio di ciascuno.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Pipeline statica:** sequenza **fissa** di passi, identica a ogni esecuzione. Es. `estrai → analizza → scrivi`, sempre.
+- **Workflow adattivo:** il percorso **si adatta** ai risultati intermedi — può saltare passi, ripeterne, o seguire rami diversi in base a condizioni. Es. `estrai → SE dati incompleti, richiedi chiarimenti → analizza → SE il revisore rileva un problema, torna indietro → altrimenti scrivi`.
+
+Non è "una pipeline più complicata": è un cambio di paradigma. La pipeline assume un processo sempre uguale; il workflow assume che il processo debba adattarsi al caso specifico.
+
+</details>
+
+### Esercizio 2 — Dove mettere i checkpoint 🟡 Intermedio
+
+Elenca i tre principi per posizionare i checkpoint. In un workflow che, alla fine, **invia un'email al cliente**, dove aggiungeresti un checkpoint e secondo quale principio?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+I tre principi:
+1. **Dopo ogni nodo che introduce incertezza** (es. estrazione da documenti non strutturati).
+2. **Prima di ogni azione irreversibile**.
+3. **Ai confini di responsabilità** (handoff verso un altro agente/team).
+
+Nel workflow che invia un'email: un checkpoint **prima del nodo di invio**, secondo il **Principio 2** — inviare un'email è un'azione **irreversibile** (non puoi "richiamarla"). Conviene verificare/approvare il contenuto prima dell'invio.
+
+</details>
+
+### Esercizio 3 — A2A e Agent Card 🔴 Avanzato
+
+(a) Che differenza c'è tra MCP (Lezione 4.5) e A2A? (b) Perché un agente esposto via A2A deve avere un'Agent Card ben fatta, con una sezione `NON_fa` chiara, prima di poter essere usato da un sistema esterno?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) MCP vs A2A:**
+- **MCP** standardizza la connessione tra **un agente e risorse/strumenti** esterni (es. accedere a Google Drive).
+- **A2A** standardizza la comunicazione **tra agenti diversi**, anche di organizzazioni/sistemi diversi (es. un tuo agente che parla con l'agente di un fornitore).
+
+**(b) Perché serve l'Agent Card:** un sistema esterno **non conosce nulla** dell'implementazione interna dell'agente. L'unico modo per scoprire cosa fa e come interfacciarsi è la sua **Agent Card** (discovery, Lezione 6.3): capacità, schema di input/output e — cruciale — la sezione **`NON_fa`**. Senza confini chiari, il sistema esterno potrebbe delegargli compiti fuori dal suo dominio, con risultati scorretti. È il principio di incapsulamento e contratto pubblico esteso oltre i confini dell'organizzazione.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** L'intero Capitolo 6 — questa lezione assembla gli agent package in un processo coordinato. Lezione 5.4 (Single vs Multi-Agent) — qui formalizziamo con il vocabolario di "workflow" le topologie introdotte in quella lezione.

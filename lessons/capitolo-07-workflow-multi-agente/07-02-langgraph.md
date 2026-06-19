@@ -276,6 +276,55 @@ Questa traccia rende esplicito un punto importante: il **codice del grafo non de
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Perché LangGraph 🟢 Base
+
+LangGraph non introduce concetti nuovi rispetto al Capitolo 5. Quali tre problemi del codice Python "fatto a mano" risolve quando il workflow cresce?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. **Archi condizionali multipli:** gestirli con `if/else` annidati diventa illeggibile; LangGraph li dichiara in modo pulito.
+2. **Cicli controllati:** tornare a un nodo precedente richiede logica manuale di iterazione (rischio di loop infiniti); LangGraph li gestisce in modo strutturato.
+3. **Persistenza dello stato** tra esecuzioni: implementare manualmente serializzazione/salvataggio/ripristino è oneroso; LangGraph offre il **checkpointing** pronto all'uso.
+
+In sintesi: LangGraph formalizza e rende robusti pattern (cicli, condizioni, persistenza) che a mano diventano fragili al crescere della complessità.
+
+</details>
+
+### Esercizio 2 — Nodi paralleli 🟡 Intermedio
+
+Perché i tre nodi di estrazione (PDF, audio, immagini) possono essere eseguiti in parallelo, mentre i nodi "estrazione" e "analisi" no? Cosa li distingue?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+I tre nodi di estrazione (PDF/audio/immagini) operano su **parti indipendenti dello stato**: l'estrazione dal PDF non dipende dal risultato dell'estrazione audio. Nessuna dipendenza di dati → possono partire insieme e i risultati si raccolgono dopo.
+
+"Estrazione" e "analisi" invece hanno una **dipendenza di dati**: l'analisi ha bisogno del `testo_estratto` *prodotto* dall'estrazione. Non può iniziare prima che l'estrazione sia finita → devono essere sequenziali.
+
+Criterio: si può parallelizzare solo ciò che è **indipendente nei dati**. Se B ha bisogno dell'output di A, B aspetta A.
+
+</details>
+
+### Esercizio 3 — Checkpointing e routing 🔴 Avanzato
+
+(a) A cosa serve il `thread_id` nel checkpointing, e perché ne serve uno univoco per esecuzione? (b) Se la funzione di routing `decidi_se_richiedere_chiarimento` avesse un bug e restituisse sempre lo stesso ramo, cosa succederebbe?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) `thread_id`:** identifica una specifica esecuzione del workflow, permettendo di **riprenderla esattamente dal punto in cui si era interrotta** (es. dopo un'attesa di revisione umana), anche in un processo separato. Serve **univoco per esecuzione** perché ogni workflow/progetto ha il proprio stato salvato: un id condiviso mischierebbe gli stati di esecuzioni diverse, facendo riprendere un workflow dallo stato sbagliato.
+
+**(b) Bug nel routing:** il grafo seguirebbe **sempre lo stesso arco**, indipendentemente dallo stato reale. Es. se restituisse sempre `"richiedi_chiarimento"`, ogni esecuzione finirebbe per richiedere un chiarimento anche quando non ci sono ambiguità — il ramo `costruisci_handoff` non verrebbe mai raggiunto. Importante: il grafo definisce la **struttura delle possibilità**; il comportamento reale dipende dalla logica di routing. Un bug lì rompe il comportamento pur con un grafo "corretto".
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 7.1 (Progettare un Workflow Agentivo) — questa lezione implementa fedelmente il grafo progettato concettualmente in quella lezione. Lezione 5.4 (Single vs Multi-Agent) — l'architettura a grafo introdotta lì trova qui un'implementazione tecnica completa.

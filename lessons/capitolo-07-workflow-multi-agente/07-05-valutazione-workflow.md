@@ -300,6 +300,59 @@ Cosa puoi dedurre? La modifica al prompt **non ha risolto** il problema preesist
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Metriche di agente vs di sistema 🟢 Base
+
+Classifica come **metrica di agente singolo** o **metrica di sistema**: (a) latenza end-to-end, (b) tasso di violazione del contratto di un agente, (c) tasso di errore end-to-end, (d) token consumati da un agente per esecuzione.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) latenza end-to-end** → **sistema** (tempo totale dall'input dell'utente all'output finale).
+- **(b) violazione contratto di un agente** → **agente singolo**.
+- **(c) tasso di errore end-to-end** → **sistema** (quante esecuzioni complete falliscono).
+- **(d) token per esecuzione di un agente** → **agente singolo** (costo).
+
+Servono **entrambi i livelli**: un sistema può avere ottime metriche per ogni agente e una metrica di sistema preoccupante (piccoli errori che si combinano in più nodi).
+
+</details>
+
+### Esercizio 2 — Rischi dell'LLM-as-judge 🟡 Intermedio
+
+Elenca i rischi principali dell'usare un LLM come "giudice" della qualità, e per ciascuno una mitigazione pratica.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Rischi e mitigazioni:
+1. **Bias condivisi** (se il giudice usa lo stesso modello del sistema valutato) → usare criteri molto strutturati; affiancare verifica umana periodica.
+2. **Inconsistenza** tra valutazioni (natura probabilistica) → eseguire la valutazione **più volte** e controllarne la coerenza.
+3. **Ingannabilità** da output stilisticamente brillante ma sostanzialmente carente (plausibilità ≠ verità, Lezione 3.5) → rubriche specifiche e oggettive; non affidarsi *solo* al giudice per le decisioni critiche.
+
+Regola: l'LLM-as-judge è utile per valutare qualità non riducibile a numeri, ma non va mai usato come unica fonte di verità per decisioni ad alto impatto.
+
+</details>
+
+### Esercizio 3 — Diagnosi di una regressione 🔴 Avanzato
+
+Prima di una modifica al prompt: 9/10 test passano (fallisce `caso-007`). Dopo: 7/10 (falliscono `caso-007`, `caso-003`, `caso-009`). (a) Cosa deduci? (b) Cosa fai? (c) Come si collega al versionamento dei prompt (Lezione 6.4)?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Deduzione:** la modifica **non ha risolto** il problema preesistente (`caso-007` fallisce ancora) e ha **introdotto due regressioni** (`caso-003` e `caso-009` prima passavano). Bilancio netto: peggiorativo.
+
+**(b) Azione:** **non procedere col deploy.** Investigare cosa, nel nuovo prompt, ha alterato il comportamento sui casi che prima funzionavano — un'indagine mirata, resa possibile solo dalla test suite.
+
+**(c) Collegamento al versionamento:** poiché i prompt sono versionati in git (Lezione 6.4), puoi fare il **diff** tra la versione precedente e quella nuova per vedere esattamente cosa è cambiato, e fare **rollback** alla versione che dava 9/10. Senza versionamento e regression testing, avresti deployato un peggioramento senza accorgertene. È il prerequisito che rende possibile l'auto-miglioramento del Capitolo 8.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 5.5 (Gestione degli Errori) — il logging strutturato lì introdotto è la materia prima per le metriche di questa lezione. Lezione 7.3 (Il Layer di Review) — le rubriche di valutazione si estendono qui a un sistema di misurazione completo.
