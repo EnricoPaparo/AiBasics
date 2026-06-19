@@ -180,6 +180,56 @@ Prova a immaginare, come abbiamo fatto per "banca", quali parole della frase ric
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — I due problemi delle RNN 🟢 Base
+
+Le RNN elaborano il testo una parola alla volta. Indica i due problemi gravi che ne derivano e che il Transformer risolve.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. **Degrado della memoria a lunga distanza:** l'informazione delle prime parole deve "viaggiare" attraverso una lunga catena di stati intermedi e si diluisce. Una parola molto lontana fatica a influenzare l'interpretazione di una successiva.
+2. **Impossibilità di parallelizzare:** per calcolare lo stato alla parola 50 serve aver già calcolato le 49 precedenti, in sequenza. Quindi non si può accelerare con più GPU → addestramento impraticabilmente lento su grandi testi.
+
+Il Transformer risolve **entrambi** con l'attention: ogni parola guarda direttamente ogni altra (niente catena → niente degrado) e i punteggi si calcolano tutti insieme con moltiplicazioni di matrici (parallelizzabili sulle GPU).
+
+</details>
+
+### Esercizio 2 — Assegna l'attention 🟡 Intermedio
+
+Nella frase "ho lasciato le **chiavi** sul tavolo perché erano pesanti", quali parole dovrebbero ricevere un punteggio di attention alto per interpretare correttamente "erano"? A cosa si riferisce?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+"Erano" si riferisce a **"chiavi"** (plurale, "erano pesanti").
+
+Parole con attention alta per disambiguare "erano": **"chiavi"** (l'antecedente, plurale) e **"pesanti"** (l'aggettivo che concorda). Parole come "tavolo" (singolare) o "perché" riceverebbero punteggi bassi per questo scopo.
+
+Il punto: l'attention permette a "erano" di **guardare direttamente** "chiavi" anche se separate da diverse parole, pesando le informazioni rilevanti — senza dover trasportare l'informazione attraverso una catena, come dovrebbe fare un'RNN.
+
+</details>
+
+### Esercizio 3 — Perché il decoder guarda solo indietro 🔴 Avanzato
+
+Un decoder, durante la generazione, può guardare (via attention) solo le parole **già generate**, non quelle future. Spiega perché è necessario e cosa succederebbe logicamente se potesse "guardare avanti". Poi collega la parallelizzazione alla scala degli LLM.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Perché solo indietro:** al momento di generare la parola N, le parole future (N+1, N+2…) **non esistono ancora** — devono ancora essere prodotte. Non c'è nulla da guardare avanti.
+
+**Se potesse "guardare avanti":** durante l'addestramento sarebbe un imbroglio — il modello vedrebbe la risposta che deve predire. Imparerebbe a "copiare" il token successivo invece di predirlo davvero, e a generazione reale (dove il futuro non c'è) crollerebbe. Per questo il decoder è "causale": ogni token dipende solo dal passato.
+
+**Parallelizzazione e scala:** poiché l'attention si calcola con moltiplicazioni di matrici eseguibili simultaneamente su tutta la sequenza, l'addestramento sfrutta a pieno GPU/TPU. Questo ha reso praticabile addestrare su quantità enormi di testo, e si è osservato empiricamente che **aumentando parametri e dati le prestazioni continuano a migliorare in modo prevedibile** — la "scalabilità" che ha giustificato gli investimenti negli LLM giganti del Capitolo 3.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 2.4 — qui risolviamo esplicitamente il limite del vettore fisso per parola, lasciato aperto in chiusura della lezione precedente.

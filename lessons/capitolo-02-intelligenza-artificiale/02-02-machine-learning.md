@@ -224,6 +224,59 @@ Prova a determinare quale dei tre paradigmi di apprendimento (supervisionato, no
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Quale paradigma di apprendimento? 🟢 Base
+
+Associa ogni scenario al paradigma giusto (**supervisionato**, **non supervisionato**, **per rinforzo**): (a) prevedere il prezzo di una casa da migliaia di vendite passate con prezzo noto, (b) raggruppare clienti simili senza categorie predefinite, (c) insegnare a un robot a camminare per tentativi ed errori.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) prezzo casa** → **supervisionato**: ogni esempio passato ha l'output corretto noto (il prezzo finale). Il modello impara a mappare input → output.
+- **(b) raggruppare clienti** → **non supervisionato**: nessuna etichetta, il sistema scopre da solo strutture/gruppi nascosti.
+- **(c) robot che cammina** → **per rinforzo**: nessun esempio etichettato, ma un ambiente con azioni e un segnale di ricompensa/penalità (cade o no).
+
+Chiave di lettura: c'è una **risposta corretta per ogni esempio**? → supervisionato. Solo dati **senza etichette**? → non supervisionato. Un **ambiente con ricompense**? → rinforzo.
+
+</details>
+
+### Esercizio 2 — Diagnosi: overfitting o underfitting? 🟡 Intermedio
+
+Un modello ha il 99% di accuratezza sui dati di training ma solo il 60% sui dati di test mai visti. Qual è il problema? Cosa significa concretamente? Cosa si potrebbe provare a fare?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Problema: overfitting.** Il divario enorme tra training (99%) e test (60%) è la firma classica: il modello ha **memorizzato** i dati di addestramento (incluso il rumore irrilevante) invece di imparare i pattern generali.
+
+Concretamente: è come lo studente che ha imparato a memoria le risposte degli esercizi svolti in classe ma crolla davanti a un esercizio nuovo.
+
+Possibili rimedi: usare **più dati** di training, **semplificare** il modello (meno parametri), usare tecniche di regolarizzazione, o fermare l'addestramento prima (early stopping). L'obiettivo è ridurre il divario training/test, non massimizzare il training.
+
+Nota: se invece fosse stato 62% su training E 60% su test, il problema sarebbe **underfitting** (modello troppo semplice, va male ovunque).
+
+</details>
+
+### Esercizio 3 — Correlazione statistica vs comprensione 🔴 Avanzato
+
+La lezione insiste sulla differenza tra "correlazione statistica scoperta" e "comprensione semantica". Spiega questa distinzione con un esempio e anticipa perché sarà la chiave per capire le allucinazioni degli LLM (Lezione 3.5).
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**La distinzione:** un classificatore di spam non *sa* cosa sia una truffa. Ha solo trovato che certe parole/combinazioni **correlano statisticamente** con l'etichetta "spam" nei dati. Non c'è comprensione del significato — solo regolarità numeriche tra caratteristiche del testo ed etichetta.
+
+**Esempio:** un modello potrebbe marcare come spam un'email legittima che contiene "vincita" e "clicca qui" semplicemente perché quelle parole comparivano spesso nello spam dei dati — senza capire che *questo specifico* messaggio è genuino.
+
+**Collegamento alle allucinazioni:** un LLM genera il token statisticamente più probabile dato il contesto, non quello "vero". Produce testo plausibile sulla base di pattern, non sulla base di una verifica di verità. Per questo può generare con sicurezza un'affermazione falsa ma *linguisticamente plausibile*: sta facendo correlazione statistica, non comprensione né fact-checking. Le allucinazioni non sono un bug occasionale, ma una conseguenza diretta di come funziona il meccanismo.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 2.1 — qui rendiamo concreto il meccanismo di "apprendimento dai dati" solo accennato in precedenza.

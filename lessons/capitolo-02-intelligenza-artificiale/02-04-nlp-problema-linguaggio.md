@@ -177,6 +177,57 @@ Questi esercizi mentali sono esattamente il tipo di intuizione che userai, più 
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Bag of words 🟢 Base
+
+Vocabolario: `[sole, pioggia, oggi, domani]`. Costruisci il vettore bag of words per la frase "oggi sole domani pioggia". Poi: quale vettore produrrebbe "domani pioggia oggi sole"? Cosa dimostra questo?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Frase "oggi sole domani pioggia": `sole=1, pioggia=1, oggi=1, domani=1` → **`[1, 1, 1, 1]`**.
+
+Frase "domani pioggia oggi sole": **`[1, 1, 1, 1]`** — identico!
+
+**Cosa dimostra:** bag of words **perde completamente l'ordine**. Due frasi con parole uguali ma disposte diversamente producono lo stesso vettore, anche se il significato cambiasse (come "il cane morde l'uomo" vs "l'uomo morde il cane"). È il limite fondamentale che gli embedding contestuali e i Transformer risolvono.
+
+</details>
+
+### Esercizio 2 — L'algebra del significato 🟡 Intermedio
+
+Sfruttando lo stesso principio di `re - uomo + donna ≈ regina`, prevedi il risultato di `Parigi - Francia + Giappone ≈ ?`. Che tipo di relazione stai usando?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Risultato: **≈ Tokyo**.
+
+La relazione sfruttata è **"capitale di un paese"**. Il vettore `Parigi - Francia` isola, grosso modo, il concetto astratto di "essere la capitale di"; aggiungendolo a `Giappone` si arriva vicino a `Tokyo`.
+
+Il punto importante: nessuno ha codificato a mano "Tokyo è la capitale del Giappone". La relazione emerge perché gli embedding catturano dimensioni semantiche multiple e coerenti, apprese dai contesti in cui le parole compaiono nei testi. La stessa coerenza geometrica vale per genere, tempo verbale, ecc.
+
+</details>
+
+### Esercizio 3 — Perché serve il contesto 🔴 Avanzato
+
+La parola "banca" significa cose diverse in "mi siedo sulla banca del fiume" e "vado in banca". Spiega perché un embedding **fisso** per parola (come Word2Vec) non gestisce bene questo caso, e collega il problema all'architettura Transformer e al RAG.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Il problema dell'embedding fisso:** Word2Vec assegna a "banca" **un solo vettore**, uguale in ogni frase. Ma "banca" finanziaria e "banca" del fiume hanno significati opposti: comprimere entrambi in un unico punto dello spazio è una media insoddisfacente che non rappresenta bene nessuno dei due sensi.
+
+**Collegamento al Transformer:** i modelli moderni non usano un vettore fisso per parola. Calcolano una rappresentazione **dinamica**, che cambia in base a *tutto il resto della frase*, grazie al meccanismo di **attenzione** (Lezione 2.5). Così "banca" vicino a "fiume" e "banca" vicino a "contanti" ricevono rappresentazioni diverse.
+
+**Collegamento al RAG (Lezione 4.3):** la stessa idea di "vicinanza nello spazio degli embedding" che qui mette vicine parole simili, là serve a trovare i documenti più rilevanti per una domanda — anche quando domanda e documento non condividono nessuna parola esatta. La vicinanza è **semantica**, non testuale.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 2.3 — qui applichiamo la rete neurale, vista in astratto, al problema specifico di rappresentare il linguaggio.

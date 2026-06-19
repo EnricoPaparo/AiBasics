@@ -225,6 +225,60 @@ Nota che i pesi (`0.7` e `-0.5`) incorporano già un'informazione sensata: il pe
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Calcola un neurone 🟢 Base
+
+Un neurone ha due input `x1 = 3`, `x2 = 2`, con pesi `w1 = 0.5`, `w2 = -1`, e bias `1`. Calcola la somma pesata (prima dell'attivazione). Poi: cosa rappresentano, concettualmente, i pesi?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Somma pesata = `(3 × 0.5) + (2 × -1) + 1` = `1.5 - 2 + 1` = **`0.5`**.
+
+(Poi a `0.5` si applicherebbe la funzione di attivazione, es. ReLU → resta `0.5` perché positivo.)
+
+**Cosa sono i pesi:** sono i **parametri regolabili** del modello — gli stessi "parametri" della Lezione 2.2. Non vengono scritti a mano: vengono aggiustati dalla backpropagation durante l'addestramento. Un peso negativo (come `w2 = -1`) indica che quell'input *spinge verso il basso* l'output.
+
+</details>
+
+### Esercizio 2 — A cosa serve la funzione di attivazione 🟡 Intermedio
+
+Cosa succederebbe alla capacità della rete se togliessimo la funzione di attivazione da ogni neurone, lasciando solo somma e moltiplicazione? Perché è un problema per un compito come il linguaggio?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Senza funzione di attivazione, ogni neurone fa solo combinazioni **lineari** (moltiplica e somma). Il fatto matematico chiave: **comporre più funzioni lineari dà sempre un'altra funzione lineare.** Quindi una rete profonda senza attivazioni collasserebbe nell'equivalente di **un singolo strato lineare**, per quanti strati avesse — la profondità diventerebbe inutile.
+
+Perché è un problema: il linguaggio (e il mondo reale) è pieno di relazioni **non lineari** — soglie, eccezioni, combinazioni complesse. Una retta non può rappresentarle. La funzione di attivazione (es. ReLU) introduce la **non-linearità** che permette alla rete di approssimare funzioni arbitrariamente complesse. È letteralmente ciò che rende "profondo" il Deep Learning utile.
+
+</details>
+
+### Esercizio 3 — Spiega la backpropagation 🔴 Avanzato
+
+Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispondi: perché la backpropagation richiede di conoscere la "risposta corretta"? Che relazione ha con la distinzione supervisionato/non supervisionato della Lezione 2.2?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**I passi:**
+1. La rete riceve un input e produce un output (con i pesi attuali, all'inizio quasi a caso → sbagliato).
+2. Si confronta l'output prodotto con l'output **desiderato** → si misura l'errore.
+3. Si calcola, andando **all'indietro** dall'output verso l'input, quanto ciascun peso ha contribuito a quell'errore (retro-propagazione).
+4. Ogni peso viene aggiustato leggermente nella direzione che avrebbe ridotto l'errore.
+5. Si ripete milioni di volte su milioni di esempi.
+
+**Perché serve la risposta corretta:** il passo 2 calcola l'errore come differenza tra output prodotto e output *atteso*. Senza conoscere l'output atteso, non c'è errore da misurare né direzione in cui correggere.
+
+**Relazione con la Lezione 2.2:** questo requisito è esattamente ciò che definisce l'**apprendimento supervisionato** — servono esempi *etichettati* con la risposta giusta. Per questo l'addestramento classico con backpropagation è supervisionato: ha bisogno del "libro con le soluzioni in fondo".
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 2.2 — qui diamo forma concreta al "modello come funzione matematica con parametri regolabili" descritto in astratto.

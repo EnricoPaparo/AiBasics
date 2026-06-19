@@ -192,6 +192,61 @@ Questo esercizio di classificazione non è fine a se stesso: ti abitua a guardar
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Regole esplicite o Machine Learning? 🟢 Base
+
+Per ciascun compito, indica se conviene l'approccio a **regole esplicite** o il **Machine Learning**: (a) convertire gradi Celsius in Fahrenheit, (b) riconoscere un gatto in una foto, (c) calcolare l'IVA su un prezzo, (d) capire se una recensione è positiva o negativa.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) Celsius→Fahrenheit** → **regole esplicite**: c'è una formula esatta e nota (`F = C × 9/5 + 32`). Usare il ML sarebbe assurdo.
+- **(b) gatto in una foto** → **Machine Learning**: impossibile scrivere a mano tutte le regole per ogni luce/angolo/posa. Servono esempi.
+- **(c) IVA** → **regole esplicite**: aliquota fissa, calcolo deterministico.
+- **(d) sentiment di una recensione** → **Machine Learning**: il linguaggio è troppo vario e ambiguo per regole esaustive.
+
+Criterio: se esiste una **regola precisa e completa**, scrivila a mano. Se il problema è pieno di eccezioni e sfumature, fornisci **esempi** e lascia che il sistema impari.
+
+</details>
+
+### Esercizio 2 — Correggi l'affermazione 🟡 Intermedio
+
+Un collega dice: *"Il Deep Learning contiene il Machine Learning, e l'NLP è un tipo di Computer Vision."* Ci sono due errori. Trovali e correggili, descrivendo le relazioni corrette.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Errore 1:** "Il Deep Learning contiene il Machine Learning" → è il contrario. **Machine Learning ⊃ Deep Learning**: il Deep Learning è un *sottoinsieme* del ML (quello che usa reti neurali profonde). E ML è a sua volta sottoinsieme dell'AI.
+
+**Errore 2:** "L'NLP è un tipo di Computer Vision" → no. **NLP** (linguaggio) e **Computer Vision** (immagini) sono due *aree applicative distinte*, allo stesso livello. Nessuna contiene l'altra. Entrambe oggi si appoggiano sul Deep Learning, ma risolvono problemi diversi.
+
+Gerarchia corretta: `AI ⊃ Machine Learning ⊃ Deep Learning`, con NLP e Computer Vision come applicazioni trasversali che usano il Deep Learning.
+
+</details>
+
+### Esercizio 3 — Perché progettiamo la supervisione 🔴 Avanzato
+
+La lezione dice che sapere che i modelli sono "AI ristretta" e fallibili ci rende, paradossalmente, capaci di costruire sistemi più affidabili. Spiega questo paradosso e collegalo a cosa costruiremo nei capitoli avanzati (review, human-in-the-loop).
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Il paradosso: **proprio perché non ci fidiamo ciecamente del modello**, progettiamo difese attorno a esso. Chi crede che l'AI "capisca" come un umano tende a darle troppa autonomia e a non controllare l'output. Chi sa che il modello è uno strumento ristretto che sbaglia in modi specifici e prevedibili, invece, progetta:
+
+- **layer di review** (Lezione 7.3): un secondo agente che critica l'output del primo.
+- **human-in-the-loop** (Lezione 7.4): un umano che approva nei punti critici.
+- **gestione errori e fallback** (Lezione 5.5): cosa fare quando il modello sbaglia.
+- **self-reflection** (Lezione 8.1): far rivalutare al modello il proprio lavoro.
+
+Conclusione: l'onestà sui limiti non è pessimismo — è ingegneria. L'affidabilità di un sistema agentivo nasce dai controlli che mettiamo *attorno* a un componente intrinsecamente fallibile, non dalla pretesa che quel componente sia infallibile.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Capitolo 1 — abbiamo capito come due sistemi comunicano (API); ora iniziamo a capire cosa può esserci, concettualmente, dall'altra parte di quella comunicazione.
