@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corso — AI Agent Factory</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- ══ LAYOUT ═════════════════════════════════════════════════ -->
+<div class="course-layout">
+
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header class="site-header">
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+
+    <a href="index.html" class="header-logo">⬡ AI<span>·</span>AGENT<span>·</span>FACTORY</a>
+
+    <div class="header-divider"></div>
+
+    <div class="header-breadcrumb" id="breadcrumb">
+      <span>Seleziona una lezione</span>
+    </div>
+
+    <a href="index.html" class="header-home-btn">← Home</a>
+  </header>
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">// PROGRESSO</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-text" id="progress-text">0 / 43 lezioni (0%)</div>
+    </div>
+
+    <div id="sidebar-chapters"></div>
+  </aside>
+
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ── CONTENT ─────────────────────────────────────────────── -->
+  <main class="content-area" id="content-area">
+    <!-- Populated by app.js -->
+  </main>
+
+</div>
+
+<!-- marked.js for markdown rendering -->
+<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+<script>
+  // Configure marked
+  if (typeof marked !== 'undefined') {
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+    });
+  }
+</script>
+
+<!-- Embedded lesson content (all .md files pre-bundled) -->
+<script src="lessons/content.js"></script>
+
+<!-- Application logic -->
+<script src="assets/app.js"></script>
+
+</body>
+</html>

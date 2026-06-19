@@ -1,0 +1,338 @@
+/* ============================================================
+   CYBERPUNK COURSE APP — Main Application Logic
+   ============================================================ */
+
+'use strict';
+
+// ── State ────────────────────────────────────────────────────
+const state = {
+  manifest: null,
+  current: { chapterId: null, lessonId: null },
+  completed: new Set(JSON.parse(localStorage.getItem('completed') || '[]')),
+};
+
+// ── DOM refs ─────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+
+// ── Init ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    state.manifest = await loadManifest();
+    buildSidebar();
+    setupMobileToggle();
+    const hash = location.hash.slice(1);
+    if (hash === 'roadmap') {
+      showRoadmap();
+    } else if (hash) {
+      const [chId, lesId] = hash.split('/');
+      if (chId && lesId) openLesson(chId, lesId, false);
+      else showWelcome();
+    } else {
+      showWelcome();
+    }
+  } catch (e) {
+    console.error('Init error:', e);
+    showError('Errore durante il caricamento del corso.');
+  }
+});
+
+// ── Load manifest ─────────────────────────────────────────────
+async function loadManifest() {
+  const res = await fetch('lessons/manifest.json');
+  if (!res.ok) throw new Error('manifest.json non trovato');
+  return res.json();
+}
+
+// ── Build sidebar ─────────────────────────────────────────────
+function buildSidebar() {
+  const sidebarEl = $('sidebar-chapters');
+  if (!sidebarEl) return;
+  sidebarEl.innerHTML = '';
+
+  // Roadmap button
+  const roadmapBtn = document.createElement('div');
+  roadmapBtn.className = 'sidebar-roadmap-btn';
+  roadmapBtn.id = 'roadmap-btn';
+  roadmapBtn.innerHTML = `<span>🗺</span> ROADMAP DEL CORSO`;
+  roadmapBtn.addEventListener('click', () => { showRoadmap(); closeMobileSidebar(); });
+  sidebarEl.appendChild(roadmapBtn);
+
+  // Chapters
+  state.manifest.roadmap.forEach((chapter, ci) => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.id = `chap-${chapter.id}`;
+
+    const header = document.createElement('div');
+    header.className = 'chapter-header';
+    header.style.setProperty('--chap-color', chapter.colore);
+    header.innerHTML = `
+      <span class="chapter-icon" style="color:${chapter.colore}">${chapter.icona}</span>
+      <div>
+        <div class="chapter-num">CAP. ${String(chapter.numero).padStart(2,'0')}</div>
+        <div class="chapter-name">${chapter.titolo}</div>
+      </div>
+      <span class="chapter-toggle">›</span>
+    `;
+    header.addEventListener('click', () => toggleChapter(item));
+
+    const lessonsList = document.createElement('div');
+    lessonsList.className = 'lessons-list';
+
+    chapter.lezioni.forEach((lesson, li) => {
+      const link = document.createElement('a');
+      link.className = 'lesson-link';
+      link.id = `lesson-${chapter.id}-${lesson.id}`;
+      link.style.setProperty('--chap-color', chapter.colore);
+      link.innerHTML = `
+        <span class="lesson-dot"></span>
+        <span>${lesson.titolo}</span>
+      `;
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLesson(chapter.id, lesson.id);
+        closeMobileSidebar();
+      });
+      lessonsList.appendChild(link);
+    });
+
+    item.appendChild(header);
+    item.appendChild(lessonsList);
+    sidebarEl.appendChild(item);
+  });
+
+  updateProgress();
+}
+
+function toggleChapter(item, forceOpen) {
+  const isOpen = item.classList.contains('open');
+  if (forceOpen === true || !isOpen) {
+    item.classList.add('open');
+  } else {
+    item.classList.remove('open');
+  }
+}
+
+// ── Lesson loading ────────────────────────────────────────────
+async function openLesson(chapterId, lessonId, pushHistory = true) {
+  const chapter = state.manifest.roadmap.find(c => c.id === chapterId);
+  const lesson = chapter?.lezioni.find(l => l.id === lessonId);
+  if (!chapter || !lesson) { showError(`Lezione non trovata: ${chapterId}/${lessonId}`); return; }
+
+  state.current = { chapterId, lessonId };
+
+  // Update URL
+  if (pushHistory) history.pushState({}, '', `#${chapterId}/${lessonId}`);
+
+  // Update sidebar active state
+  $$('.lesson-link').forEach(el => el.classList.remove('active'));
+  $$('.chapter-header').forEach(el => el.classList.remove('active'));
+  const activeLink = $(`lesson-${chapterId}-${lessonId}`);
+  if (activeLink) activeLink.classList.add('active');
+
+  // Open chapter in sidebar
+  const chapEl = $(`chap-${chapterId}`);
+  if (chapEl) toggleChapter(chapEl, true);
+
+  // Update roadmap btn
+  $('roadmap-btn')?.classList.remove('active');
+
+  // Update breadcrumb
+  const bc = $('breadcrumb');
+  if (bc) bc.innerHTML = `<span>${chapter.titolo}</span> › ${lesson.titolo}`;
+
+  // Get content from embedded JS object
+  let rawMd = getEmbeddedContent(chapterId, lessonId);
+  if (!rawMd) {
+    showError(`Contenuto non trovato per ${lessonId}`);
+    return;
+  }
+
+  // Parse frontmatter
+  const { meta, body } = parseFrontmatter(rawMd);
+
+  // Render
+  renderLesson(chapter, lesson, meta, body, chapterId, lessonId);
+}
+
+function getEmbeddedContent(chapterId, lessonId) {
+  if (typeof LEZIONI_CONTENT === 'undefined') return null;
+  const cap = LEZIONI_CONTENT[chapterId];
+  if (!cap) return null;
+  return cap[lessonId] || null;
+}
+
+function parseFrontmatter(raw) {
+  const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+  if (!match) return { meta: {}, body: raw };
+  const meta = {};
+  match[1].split('\n').forEach(line => {
+    const [key, ...vals] = line.split(':');
+    if (key && vals.length) meta[key.trim()] = vals.join(':').trim().replace(/^"(.*)"$/, '$1');
+  });
+  return { meta, body: match[2] };
+}
+
+function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
+  const area = $('content-area');
+  if (!area) return;
+
+  // Find prev/next
+  const allLessons = [];
+  state.manifest.roadmap.forEach(ch => ch.lezioni.forEach(l => allLessons.push({ chId: ch.id, l })));
+  const idx = allLessons.findIndex(x => x.chId === chapterId && x.l.id === lessonId);
+
+  const prev = idx > 0 ? allLessons[idx - 1] : null;
+  const next = idx < allLessons.length - 1 ? allLessons[idx + 1] : null;
+
+  const html = typeof marked !== 'undefined' ? marked.parse(body) : `<pre>${escHtml(body)}</pre>`;
+
+  area.innerHTML = `
+    <div class="content-inner" id="content-inner">
+      <div class="lesson-meta">
+        <span class="meta-tag chapter">CAP. ${String(chapter.numero).padStart(2,'0')} — ${chapter.titolo}</span>
+        ${meta.durata_stimata ? `<span class="meta-tag duration">⏱ ${meta.durata_stimata}</span>` : ''}
+        ${meta.difficolta ? `<span class="meta-tag difficulty">▲ ${meta.difficolta}</span>` : ''}
+      </div>
+      <div class="md-content">${html}</div>
+      <div class="lesson-nav">
+        ${prev ? `<a class="nav-btn" onclick="openLesson('${prev.chId}','${prev.l.id}')">
+          <span>←</span>
+          <div><div class="nav-btn-label">PRECEDENTE</div>${prev.l.titolo}</div>
+        </a>` : '<div></div>'}
+        <button class="nav-btn" onclick="markComplete('${chapterId}','${lessonId}')">
+          ✓ Segna completata
+        </button>
+        ${next ? `<a class="nav-btn" onclick="openLesson('${next.chId}','${next.l.id}')">
+          <div><div class="nav-btn-label">SUCCESSIVA</div>${next.l.titolo}</div>
+          <span>→</span>
+        </a>` : '<div></div>'}
+      </div>
+    </div>
+  `;
+  area.scrollTop = 0;
+}
+
+// ── Roadmap ───────────────────────────────────────────────────
+function showRoadmap() {
+  state.current = { chapterId: null, lessonId: null };
+  history.pushState({}, '', '#roadmap');
+
+  $$('.lesson-link').forEach(el => el.classList.remove('active'));
+  $$('.chapter-header').forEach(el => el.classList.remove('active'));
+  $('roadmap-btn')?.classList.add('active');
+
+  const bc = $('breadcrumb');
+  if (bc) bc.innerHTML = `<span>Roadmap</span>`;
+
+  let content = '';
+  if (typeof ROADMAP_CONTENT !== 'undefined') {
+    const { body } = parseFrontmatter(ROADMAP_CONTENT);
+    content = typeof marked !== 'undefined' ? marked.parse(body) : `<pre>${escHtml(body)}</pre>`;
+  }
+
+  const area = $('content-area');
+  area.innerHTML = `
+    <div class="content-inner">
+      <div class="roadmap-content">${content}</div>
+    </div>
+  `;
+  area.scrollTop = 0;
+}
+
+// ── Welcome ───────────────────────────────────────────────────
+function showWelcome() {
+  const area = $('content-area');
+  if (!area) return;
+  const m = state.manifest;
+  area.innerHTML = `
+    <div class="welcome-screen">
+      <div class="welcome-logo">⬡</div>
+      <div class="welcome-title">${m.corso}</div>
+      <p class="welcome-sub">${m.sottotitolo}</p>
+      <div style="margin-bottom:2rem">
+        <div class="terminal-line">$ corso --init<span>_</span></div>
+        <div class="terminal-line" style="color:var(--text-dim)">  ${m.roadmap.length} capitoli · ${m.totale_lezioni} lezioni caricate</div>
+        <div class="terminal-line" style="color:var(--text-dim)">  livello: principianti → avanzato</div>
+      </div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-primary" onclick="openLesson('${m.roadmap[0].id}','${m.roadmap[0].lezioni[0].id}')">
+          Inizia dal Cap. 1
+        </button>
+        <button class="btn btn-outline" onclick="showRoadmap()">
+          🗺 Vedi Roadmap
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// ── Progress ──────────────────────────────────────────────────
+function markComplete(chapterId, lessonId) {
+  const key = `${chapterId}/${lessonId}`;
+  state.completed.add(key);
+  localStorage.setItem('completed', JSON.stringify([...state.completed]));
+  updateProgress();
+  const btn = document.querySelector('.lesson-nav .nav-btn:nth-child(2)');
+  if (btn) { btn.textContent = '✓ Completata!'; btn.style.color = 'var(--green)'; btn.style.borderColor = 'var(--green)'; }
+}
+
+function updateProgress() {
+  const total = state.manifest?.totale_lezioni || 0;
+  const done = state.completed.size;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const fill = $('progress-fill');
+  const text = $('progress-text');
+  if (fill) fill.style.width = `${pct}%`;
+  if (text) text.textContent = `${done} / ${total} lezioni (${pct}%)`;
+}
+
+// ── Mobile sidebar ────────────────────────────────────────────
+function setupMobileToggle() {
+  const toggle = $('sidebar-toggle');
+  const sidebar = $('sidebar');
+  const overlay = $('sidebar-overlay');
+  if (!toggle || !sidebar) return;
+
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay?.classList.toggle('show');
+  });
+  overlay?.addEventListener('click', closeMobileSidebar);
+}
+
+function closeMobileSidebar() {
+  $('sidebar')?.classList.remove('open');
+  $('sidebar-overlay')?.classList.remove('show');
+}
+
+// ── Error ─────────────────────────────────────────────────────
+function showError(msg) {
+  const area = $('content-area');
+  if (area) area.innerHTML = `
+    <div class="welcome-screen">
+      <div style="color:var(--pink);font-size:3rem;margin-bottom:1rem">⚠</div>
+      <div class="welcome-title" style="color:var(--pink)">Errore</div>
+      <p class="welcome-sub">${msg}</p>
+      <p style="font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--text-dim)">
+        Assicurati di aprire il sito tramite un server locale (es. <code>python -m http.server</code>)
+      </p>
+    </div>
+  `;
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', () => {
+  const hash = location.hash.slice(1);
+  if (hash === 'roadmap') showRoadmap();
+  else if (hash) {
+    const [chId, lesId] = hash.split('/');
+    if (chId && lesId) openLesson(chId, lesId, false);
+  } else showWelcome();
+});
