@@ -185,6 +185,60 @@ Molti provider (incluso Anthropic) offrono strumenti online per contare esattame
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Token, non parole 🟢 Base
+
+Spiega perché un token non è né una lettera né una parola. Poi stima (con la regola ~4 caratteri/token) quanti token occupa circa la frase: "Gli agenti AI useranno strumenti esterni" (~40 caratteri).
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Cos'è un token:** un'unità di testo prodotta dalla tokenizzazione. Può essere una parola intera comune ("casa"), un **frammento** di parola lunga/rara ("anti", "issimo"), un singolo carattere, o punteggiatura/spazi. Sta "in mezzo" tra lettera e parola: più grande di una lettera, spesso più piccolo di una parola intera.
+
+**Stima:** ~40 caratteri ÷ 4 ≈ **10 token** (stima grossolana; in italiano spesso un po' di più per via delle parole lunghe).
+
+Perché conta: context window e costo delle API si misurano in **token**, non in parole. Saper stimare i token è un'abilità pratica.
+
+</details>
+
+### Esercizio 2 — Modello o prodotto? 🟡 Intermedio
+
+Classifica come **modello** o **prodotto**: (a) Claude Sonnet 4.6, (b) Claude.ai, (c) GPT-4, (d) ChatGPT. Poi: elenca almeno tre cose che il *prodotto* aggiunge attorno al modello.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) Claude Sonnet 4.6** → **modello** (insieme di pesi, accessibile via API).
+- **(b) Claude.ai** → **prodotto** (web app che usa il modello).
+- **(c) GPT-4** → **modello**.
+- **(d) ChatGPT** → **prodotto**.
+
+Cosa aggiunge il prodotto attorno al modello: interfaccia di chat, gestione della cronologia delle conversazioni, autenticazione/account, e funzionalità extra (ricerca web, caricamento file, generazione di immagini…). Il modello è il "motore"; il prodotto è l'auto costruita attorno.
+
+Questa distinzione è ciò che ci permetterà, dal Capitolo 4, di costruire **i nostri** prodotti/agenti attorno allo stesso modello via API.
+
+</details>
+
+### Esercizio 3 — Coerenza e verità 🔴 Avanzato
+
+Se un LLM "prevede solo il token successivo", come fa a restare coerente su un intero paragrafo? E perché "testo statisticamente plausibile" non è la stessa cosa di "testo vero"? Che conseguenza pratica ha per chi lo usa al lavoro?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Coerenza:** a ogni previsione il modello considera **tutto il contesto fino a quel punto** (grazie all'attention, Lezione 2.5), inclusi i token che ha appena generato. Ogni nuovo token diventa contesto per il successivo. Così la "coerenza" emerge: ogni passo è condizionato da tutto ciò che precede, non è una catena di scelte indipendenti.
+
+**Plausibile ≠ vero:** l'obiettivo di addestramento è "qual è il token più probabile dato il contesto", **non** "qual è la verità". Un'affermazione falsa può essere statisticamente molto plausibile (suona giusta, è grammaticale, assomiglia a frasi viste nei dati). Il modello non ha un modulo di verifica della verità.
+
+**Conseguenza pratica:** mai fidarsi ciecamente di un output, specie su fatti, numeri, citazioni. Servono verifica, fonti (RAG, Lezione 4.3), strumenti per i calcoli (Function Calling, Lezione 4.4) e supervisione. È la radice delle allucinazioni (Lezione 3.5).
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 2.5 — il Transformer descritto lì è esattamente l'architettura che, addestrata su scala enorme, costituisce un LLM.

@@ -239,6 +239,60 @@ Nota come questo prompt migliorato combina più tecniche viste in questa lezione
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Quale tecnica di prompting? 🟢 Base
+
+Associa ogni scenario alla tecnica giusta (**zero-shot**, **few-shot**, **chain-of-thought**): (a) un compito comune senza esempi, ti fidi del modello; (b) vuoi un formato di output preciso e insolito, quindi mostri 2-3 esempi; (c) un problema di logica/calcolo dove vuoi ridurre gli errori facendo "ragionare ad alta voce".
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a)** → **zero-shot**: nessun esempio, si sfrutta la conoscenza già acquisita dal modello. Funziona bene per compiti comuni.
+- **(b)** → **few-shot**: mostri esempi nel prompt per fissare un formato/stile specifico difficile da indovinare a parole.
+- **(c)** → **chain-of-thought**: chiedi al modello di esplicitare i passaggi prima della risposta, riducendo gli errori nei compiti complessi.
+
+</details>
+
+### Esercizio 2 — Migliora un prompt vago 🟡 Intermedio
+
+Trasforma "Parlami dei cani" in un prompt efficace, applicando i principi della lezione (specificità, formato, pubblico, eventuale esempio). Spiega cosa hai aggiunto e perché.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Una versione migliorata:
+
+> "Scrivi un elenco di 5 razze di cani adatte a famiglie con bambini piccoli. Per ciascuna indica: nome, taglia, livello di energia (basso/medio/alto) e una frase sul carattere. Pubblico: genitori senza esperienza cinofila, linguaggio semplice."
+
+Cosa è stato aggiunto e perché:
+- **Specificità del tema** (razze adatte a bambini) → restringe lo spazio delle risposte plausibili.
+- **Formato preciso** (elenco di 5, campi fissi) → output prevedibile e strutturato.
+- **Pubblico** (genitori senza esperienza) → vincola registro e profondità.
+
+Più il prompt è preciso, meno è ambiguo lo spazio delle continuazioni plausibili → risposta più mirata.
+
+</details>
+
+### Esercizio 3 — Scegli la temperature 🔴 Avanzato
+
+Per ciascun caso scegli temperature **bassa** o **alta** e motiva: (a) un agente che estrae dati strutturati da fatture; (b) un assistente che genera nomi creativi per un brand; (c) un agente che deve eseguire un protocollo passo-passo in modo ripetibile. Come si collega questa scelta al design degli agenti?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) estrazione dati da fatture** → **bassa**: serve precisione, coerenza e ripetibilità. Niente creatività.
+- **(b) nomi creativi per un brand** → **alta**: vuoi varietà e soluzioni inaspettate.
+- **(c) protocollo passo-passo ripetibile** → **bassa**: comportamento deterministico e affidabile.
+
+**Collegamento al design degli agenti:** la temperature non è un dettaglio estetico. Un agente che esegue calcoli, segue contratti o protocolli rigorosi (Capitolo 5-6) vuole temperature bassa per essere prevedibile e testabile; un agente in fase di brainstorming può beneficiare di temperature più alta. Scegliere la temperature è una decisione architetturale legata al *ruolo* dell'agente nel sistema.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 3.3 — qui rendiamo operativa la distinzione tra ruoli system/user/assistant appena introdotta.

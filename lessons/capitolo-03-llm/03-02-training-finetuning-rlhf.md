@@ -201,6 +201,57 @@ La prossima volta che usi un'interfaccia come Claude.ai, osserva consapevolmente
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Le tre fasi 🟢 Base
+
+Metti in ordine le tre fasi di costruzione di un assistente e indica cosa produce ciascuna: pre-training, fine-tuning, RLHF.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+1. **Pre-training** → produce un **modello base**: addestrato su enormi quantità di testo grezzo a prevedere il token successivo. Fluente ma non orientato a fare l'assistente. (Fase di gran lunga più costosa.)
+2. **Fine-tuning** (supervisionato) → produce un **modello istruito**: addestrato su un set curato di esempi {domanda → risposta ideale}. Impara il *comportamento* da assistente.
+3. **RLHF** → affina il comportamento usando **confronti tra risposte** valutati da umani, per orientare verso risposte utili, oneste e sicure.
+
+Ordine: pre-training → fine-tuning → RLHF, dal grezzo all'assistente raffinato.
+
+</details>
+
+### Esercizio 2 — Base vs istruito 🟡 Intermedio
+
+Alla domanda "Come si prepara la pasta al pomodoro?", come potrebbe rispondere diversamente un modello **base** rispetto a uno **istruito**? Entrambi conoscono la ricetta — cosa cambia davvero?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Modello base:** completa il testo in modo *statisticamente plausibile*. Potrebbe rispondere con un'altra domanda simile (come in un forum/FAQ), elencare altre domande, o divagare — perché ha imparato solo "che testo segue di solito", non "comportati da assistente".
+- **Modello istruito:** riconosce la richiesta e fornisce **direttamente** la ricetta, in modo utile e strutturato.
+
+Cosa cambia: **non la conoscenza, ma il comportamento.** Entrambi "sanno" la ricetta; solo l'istruito ha imparato (via fine-tuning + RLHF) a *usare* quella conoscenza nel modo che un utente si aspetta da un assistente.
+
+</details>
+
+### Esercizio 3 — Mappa RLHF sull'apprendimento per rinforzo 🔴 Avanzato
+
+Nella Lezione 2.2 l'apprendimento per rinforzo era: agente, ambiente, ricompensa. Identifica questi tre elementi nel processo RLHF. Poi spiega perché spesso è più facile *confrontare* due risposte che *scrivere* la risposta ideale.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Mappatura:
+- **Agente** = il modello principale che genera risposte.
+- **Ambiente** = il compito di rispondere alle domande.
+- **Ricompensa** = il punteggio dato dal **reward model** (che ha imparato le preferenze umane dai confronti).
+
+**Perché confrontare è più facile che scrivere l'ideale:** per ogni possibile domanda è difficilissimo definire a priori "la" risposta perfetta da fornire come esempio. È invece molto più gestibile, per un valutatore umano, guardare *due* risposte concrete e dire quale preferisce (più utile/sicura/chiara). Questi confronti, raccolti in scala, addestrano il reward model, che poi fa da "giudice automatico" — evitando di dover interpellare un umano a ogni passo. È il modo pratico per insegnare giudizi sottili e dipendenti dal contesto, difficili da codificare in regole esplicite.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 3.1 — qui vediamo come il "semplice" compito di prevedere il token successivo, dopo il pre-training, viene ulteriormente plasmato in un comportamento utile e sicuro.

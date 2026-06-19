@@ -190,6 +190,61 @@ Questo esperimento rende tangibile un limite che altrimenti resterebbe puramente
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — I tre ruoli 🟢 Base
+
+Per ciascun contenuto, indica il ruolo giusto (**system**, **user**, **assistant**): (a) "Sei un assistente esperto di cucina", (b) "Come si fa la carbonara?", (c) "Ecco la ricetta classica: ...", (d) "Posso usare la panna?".
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a)** → **system**: istruzione di comportamento generale, valida per tutta la conversazione.
+- **(b)** → **user**: domanda della persona.
+- **(c)** → **assistant**: risposta generata dal modello.
+- **(d)** → **user**: nuova domanda della persona.
+
+`system` configura il comportamento; `user` sono i messaggi dell'utente; `assistant` sono le risposte del modello (rispedite anche nei turni successivi come contesto).
+
+</details>
+
+### Esercizio 2 — Il costo di una conversazione lunga 🟡 Intermedio
+
+Il modello non ha memoria: a ogni turno il backend rinvia *tutta* la cronologia. Il costo (in token elaborati) di una conversazione che si allunga è costante, lineare, o cresce più rapidamente? Spiega cosa succede al 100° messaggio rispetto al 10°.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Cresce **più rapidamente del lineare** (quadraticamente, sommando turno per turno).
+
+Perché: a ogni turno si rispedisce **l'intera cronologia precedente** + il nuovo messaggio. Al 10° messaggio si reinviano ~10 messaggi; al 100° se ne reinviano ~100. Quindi il singolo turno costa di più man mano che la conversazione cresce, e il costo *cumulativo* dell'intera conversazione è la somma 1+2+3+...+N, che cresce con il quadrato di N.
+
+Conseguenza pratica: conversazioni molto lunghe diventano costose e prima o poi sbattono contro il **context window** — il problema che motiva le tecniche di memoria della Lezione 4.6 (riassunto, recupero selettivo).
+
+</details>
+
+### Esercizio 3 — Dove va l'istruzione di comportamento 🔴 Avanzato
+
+Stai costruendo un prodotto che deve comportarsi sempre come "tutor di matematica per le superiori". In quale ruolo metti questa istruzione e perché? Cosa succederebbe se la mettessi come messaggio `user` a ogni turno?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Va nel **system prompt**. È un'istruzione di **comportamento stabile** che deve valere per *tutta* la conversazione, indipendentemente da cosa chiede l'utente. Il `system` è esattamente il ruolo pensato per questo.
+
+Se la mettessi come `user` a ogni turno:
+- **Funzionerebbe** parzialmente, ma sprecheresti token ripetendola ad ogni messaggio.
+- Si **mescolerebbe** alle richieste reali dell'utente, rendendo più probabile che il modello la confonda con una richiesta puntuale o che l'utente la sovrascriva.
+- Perderesti la distinzione pulita tra "configurazione del comportamento" (stabile) e "richiesta del turno" (variabile).
+
+Questa distinzione tra prompt stabili (system) e prompt dinamici (task) è la base del Capitolo 6, quando i prompt diventano artefatti versionati.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezioni 3.1 e 3.2 — qui vediamo, concretamente, come il modello istruito descritto in quelle lezioni viene effettivamente utilizzato all'interno di un prodotto reale.

@@ -187,6 +187,62 @@ Questo tipo di valutazione del rischio — non un giudizio binario "vero/falso" 
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Rischio di allucinazione 🟢 Base
+
+Ordina queste richieste da **rischio basso** a **rischio alto** di allucinazione: (a) "Qual è la capitale dell'Italia?", (b) "Cita testualmente la riga 3 di pagina 88 di un libro specifico", (c) "Spiega cos'è la gravità", (d) "Chi ha vinto la partita di ieri sera?".
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Dal rischio più basso al più alto:
+1. **(a) capitale d'Italia** e **(c) gravità** → rischio **basso**: fatti/concetti stabili e ben rappresentati nei dati.
+2. **(d) partita di ieri** → rischio **alto**: evento recente, quasi certamente oltre il knowledge cutoff.
+3. **(b) citazione letterale riga/pagina** → rischio **alto**: il modello può generare una citazione "nello stile" senza che corrisponda al testo reale.
+
+Criterio: più la richiesta riguarda **fatti specifici, recenti, o citazioni precise**, più è probabile l'allucinazione.
+
+</details>
+
+### Esercizio 2 — Ogni limite, la sua cura 🟡 Intermedio
+
+Per ciascun limite, indica la tecnica/pattern (anche solo per nome) concepito per compensarlo: (a) knowledge cutoff, (b) mancanza di azione, (c) mancanza di stato, (d) bias.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) knowledge cutoff** → **RAG** (Lezione 4.3) e **ricerca web via Tool Use** (4.4): forniscono al modello informazioni recenti/esterne nel contesto.
+- **(b) mancanza di azione** → **Function Calling / Tool Use** (4.4) e l'intera **architettura agentiva** (Cap. 5): danno al modello la capacità di agire.
+- **(c) mancanza di stato** → **Memory** (4.6) e, più avanti, **memoria episodica** (8.3): gestiscono la persistenza tra chiamate.
+- **(d) bias** → **supervisione umana** (7.4) e **valutazione/evals** (7.5): controlli che nessuna soluzione puramente tecnica elimina del tutto.
+
+Idea chiave: l'intero Capitolo 4 in poi esiste per **compensare** i limiti strutturali visti qui.
+
+</details>
+
+### Esercizio 3 — Sicuro ma falso 🔴 Avanzato
+
+Spiega perché un modello può affermare con grande sicurezza un fatto completamente falso. Poi: hai ricevuto una risposta dettagliata e sicura su un evento della settimana scorsa — cosa dovresti sospettare e come verificheresti?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Perché sicuro ma falso:** la "sicurezza apparente" è solo fluidità linguistica. Il modello genera il testo *statisticamente più plausibile*, non quello *vero* (Lezione 3.1). Una frase falsa può seguire perfettamente uno schema linguistico comune ("Il libro X è stato scritto da Y nel Z") ed essere prodotta con la stessa scioltezza di un fatto vero. Non c'è un modulo interno che verifica la verità, né un "tono di incertezza" legato alla correttezza.
+
+**Sull'evento della settimana scorsa, dovresti sospettare:** che sia oltre il **knowledge cutoff**. Il modello, da solo, non può conoscere fatti così recenti; dettagli specifici e sicuri sono un campanello d'allarme per un'allucinazione.
+
+**Come verificare:**
+- Controlla **fonti esterne** affidabili (la verità non è nel modello).
+- Chiedi al modello stesso le fonti e verificale (spesso le citazioni inventate non reggono).
+- Usa un sistema con **ricerca web / RAG** che porti dati reali nel contesto invece di affidarti alla sola memoria del modello.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezioni 3.1–3.4 — questa lezione applica con rigore critico tutto ciò che abbiamo imparato sul funzionamento degli LLM, trasformando la comprensione tecnica in consapevolezza pratica dei limiti.
