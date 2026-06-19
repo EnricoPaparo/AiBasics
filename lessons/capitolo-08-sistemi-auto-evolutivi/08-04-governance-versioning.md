@@ -270,6 +270,51 @@ L'audit trail rivela immediatamente: la modifica `2.1.0 → 2.2.0`, proposta dal
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Patch, minore o maggiore? 🟢 Base
+
+Classifica ogni modifica secondo il semantic versioning (PATCH / MINORE / MAGGIORE): (a) correggi un errore di battitura in un prompt senza cambiarne la logica, (b) l'agente ora supporta un nuovo formato di input oltre ai precedenti, (c) rinomini un campo dello schema di output usato dagli agenti a valle.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) errore di battitura** → **PATCH** (es. 2.1.0 → 2.1.1): nessun cambiamento di comportamento osservabile.
+- **(b) nuovo formato di input, in aggiunta** → **MINORE** (2.1.0 → 2.2.0): aggiunge una capacità senza rompere la compatibilità esistente.
+- **(c) rinomini un campo dello schema di output** → **MAGGIORE** (2.1.0 → 3.0.0): **rompe la compatibilità** — gli agenti a valle che si aspettavano il vecchio nome falliranno.
+
+</details>
+
+### Esercizio 2 — Il valore dell'audit trail 🟡 Intermedio
+
+(a) Perché il campo `fonte_modifica` è importante quanto `autore`? (b) Due settimane dopo una modifica, le escalation aumentano del 15%: come ti aiuta l'audit trail a diagnosticare?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** `autore` dice *chi* ha fatto la modifica (es. "sistema-apo"); `fonte_modifica` dice *attraverso quale processo* è avvenuta: umano, **APO automatico** (Lezione 8.2), o **riassorbimento** (Lezione 8.3). In un sistema che si auto-modifica, sapere quale *processo* ha introdotto un comportamento è cruciale per capire se rivedere quel processo, non solo la singola modifica.
+
+**(b) Diagnosi:** interroghi l'audit trail per l'artefatto sospetto e vedi le modifiche recenti. Se trovi una modifica (es. `2.1.0 → 2.2.0` via APO) che **coincide temporalmente** con l'inizio dell'aumento, hai immediatamente il candidato più probabile da investigare (e da cui fare rollback). Non prova la causalità, ma trasforma ore di analisi manuale dei log in una query diretta.
+
+</details>
+
+### Esercizio 3 — Schema di output e contratto di servizio 🔴 Avanzato
+
+Perché una modifica al formato dello schema di output (Lezione 6.5) dovrebbe sempre essere un incremento **MAGGIORE**? Collega la risposta al concetto di "contratto di servizio" (Lezione 6.3) e spiega come la convenzione aiuta l'automazione.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Lo schema di output è parte dell'**interfaccia pubblica** dichiarata nell'Agent Card — un **contratto di servizio** su cui altri agenti/orchestratori **dipendono**. Cambiarne il formato (rinominare/rimuovere un campo, cambiarne il tipo) **rompe** i consumatori che si aspettavano la struttura precedente → è per definizione un cambiamento **incompatibile**, quindi MAGGIORE (es. 2.x → 3.0.0).
+
+**Come aiuta l'automazione:** un orchestratore con discovery (Lezione 6.3), vedendo che un agente è passato da `2.1.0` a `3.0.0`, può **automaticamente** dedurre "potrebbe servire una verifica di compatibilità" senza leggere il changelog. La convenzione, applicata uniformemente a tutti gli artefatti (prompt, skill, contratti), trasforma il numero di versione in un **segnale di rischio leggibile dalle macchine** — niente sorprese silenziose.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** L'intero Capitolo 6 (artefatti) e Capitolo 8 (i meccanismi di auto-modifica che rendono la governance necessaria, non opzionale) — questa lezione sistematizza principi distribuiti in molte lezioni precedenti.

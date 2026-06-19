@@ -298,6 +298,51 @@ flywheel ha compiuto il proprio primo ciclo completo.
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Memoria episodica ≠ riassorbimento 🟢 Base
+
+Perché registrare gli episodi (memoria episodica), da solo, non è ancora "riassorbimento della conoscenza"? Cosa manca e quale componente lo fornisce?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+La memoria episodica è solo un **archivio di esperienze passate** — un elenco di cosa è successo, caso per caso. Non produce ancora apprendimento.
+
+Manca la **sintesi**: trasformare molti episodi specifici in una **regola generale** (memoria semantica). Il componente che lo fornisce è l'**agente archivista**: analizza periodicamente molti episodi, individua pattern ricorrenti e propone regole applicabili in futuro. È il passaggio da "ricordare i singoli casi" a "aver imparato qualcosa di generale" (la distinzione episodica/semantica della Lezione 4.6).
+
+</details>
+
+### Esercizio 2 — Il flywheel e i suoi limiti 🟡 Intermedio
+
+(a) Descrivi il ciclo del "flywheel cognitivo". (b) Spiega, con un esempio, come un sistema di riassorbimento potrebbe "imparare" e propagare un errore sistematico degli operatori umani.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Flywheel:** più esecuzioni → più episodi → più pattern identificabili dall'archivista → meno escalation (i casi noti sono gestiti da soli) → più casi gestiti autonomamente → (ricomincia, accelerando). Un sistema che, usandosi, diventa progressivamente più capace.
+
+**(b) Propagazione di errori umani (Limite 3):** se gli operatori per mesi hanno classificato erroneamente una certa tipologia di richiesta (es. instradando sempre i reclami "spedizione" all'ufficio sbagliato), l'archivista osserverebbe quel pattern ricorrente e sintetizzerebbe la regola **sbagliata** come se fosse la prassi corretta. Il sistema **assorbe e automatizza l'errore** invece di correggerlo. La qualità del riassorbimento non può superare la qualità delle decisioni umane su cui si fonda.
+
+</details>
+
+### Esercizio 3 — Il ciclo completo e il testing 🔴 Avanzato
+
+Nel ciclo completo (registra → sintetizza → revisiona → integra → rilascia), in quale punto interviene il regression testing (Lezione 7.5) e perché quel passaggio non può essere saltato?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Il regression testing interviene **dopo l'approvazione umana della regola e prima del rilascio in produzione**: la nuova skill/regola viene eseguita sulla **test suite esistente** per verificare che non introduca regressioni.
+
+**Perché non si può saltare:** la regola è stata sintetizzata da N episodi passati e potrebbe essere corretta per quei casi ma **rompere comportamenti che funzionavano** su casi non coperti da quegli episodi (è il rischio di over-optimization della Lezione 8.2, qui a livello di sistema). Senza eseguire la suite prima del rilascio, integreresti una regola "migliorativa" che in realtà degrada casi precedentemente corretti — e te ne accorgeresti solo in produzione, su esecuzioni reali. Il regression testing è la rete che intercetta questo prima del deploy.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 4.6 (Memory) — la distinzione memoria episodica/semantica trova qui la sua implementazione completa. Lezione 8.2 (Prompt Auto-Evolutivi) — il riassorbimento della conoscenza generalizza il principio di auto-miglioramento dal singolo prompt all'intero sistema.

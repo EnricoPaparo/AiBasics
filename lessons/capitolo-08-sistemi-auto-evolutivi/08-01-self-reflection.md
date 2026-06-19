@@ -289,6 +289,56 @@ Ma l'agente, nel produrre l'analisi originale, aveva interpretato erroneamente u
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Self-critique o Critic-Agent? 🟢 Base
+
+Qual è la differenza tra self-critique e Critic-Agent (Lezione 7.3)? Indica un vantaggio e uno svantaggio della self-critique.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Critic-Agent:** un agente **diverso e indipendente** valuta l'output, con un proprio punto di vista.
+- **Self-critique:** lo **stesso agente** valuta il proprio output.
+
+**Vantaggio della self-critique:** più **economica** (nessun secondo agente da mantenere e coordinare); buon primo filtro.
+
+**Svantaggio:** più soggetta a **bias di conferma / echo chamber** — produttore e valutatore condividono lo stesso punto di vista e le stesse lacune, quindi un errore sistematico può sfuggire.
+
+</details>
+
+### Esercizio 2 — Perché l'echo chamber 🟡 Intermedio
+
+L'agente interpreta male una colonna ("vendite nette" vs "vendite lorde"), poi la self-reflection dice "tutto corretto". Perché non rileva l'errore? Cosa l'avrebbe rilevato?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+La self-reflection valuta la **coerenza interna** della propria risposta, **basandosi sulla stessa (errata) interpretazione iniziale**. Poiché produttore e valutatore sono lo stesso modello con la stessa premessa sbagliata, la riflessione "conferma" l'errore invece di rilevarlo — un **echo chamber**: condividono la stessa cecità.
+
+Cosa l'avrebbe rilevato: un **Critic-Agent indipendente con accesso ai dati grezzi originali** (che potrebbe accorgersi della discrepanza tra interpretazione e realtà), o una **revisione umana**. La self-reflection è efficace per errori *locali* (un calcolo, un formato), non per errori *sistematici* di interpretazione condivisi col valutatore.
+
+</details>
+
+### Esercizio 3 — Quale livello scegliere 🔴 Avanzato
+
+(a) Quando preferisci self-reflection e quando un revisore esterno? (b) Come si combinano spesso nei sistemi maturi? (c) Cosa impedisce al ciclo di self-reflection di non convergere mai?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** **Self-reflection** quando il rischio è di errori **locali/specifici**, il compito non è ad alto impatto, e serve un filtro economico. **Critic-Agent indipendente** quando il compito è **ad alto impatto**, si sospettano lacune sistematiche, o serve massima indipendenza di giudizio (accettando il costo).
+
+**(b)** In **strati successivi** a costo/affidabilità crescenti: self-reflection (filtro economico) → Critic-Agent indipendente (casi più critici) → Human-in-the-Loop (casi ambigui). Ogni livello filtra ciò che il precedente non risolve.
+
+**(c)** Un **limite di cicli** (`max_cicli_revisione`), lo stesso principio del `max_iterazioni` (Lezione 5.1). Senza, l'agente potrebbe continuare a "trovare problemi" indefinitamente senza mai considerare l'output abbastanza buono. La soglia garantisce terminazione.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 7.3 (Il Layer di Review) — questa lezione approfondisce la distinzione, lì solo accennata, tra valutazione indipendente e auto-valutazione. Lezione 5.2 (ReAct) — il rischio di ragionamento circolare trova qui una manifestazione specifica e più rischiosa.

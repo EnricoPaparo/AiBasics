@@ -280,6 +280,52 @@ Questo è un caso da manuale di **over-optimization**: il prompt si è specializ
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Output o prompt? 🟢 Base
+
+Qual è la differenza tra correggere un **output** (Lezione 8.1) e correggere un **prompt**? Perché correggere il prompt ha un impatto più ampio?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **Correggere un output:** migliora **una singola risposta**, in una singola esecuzione. L'effetto finisce lì.
+- **Correggere il prompt:** migliora **ciò che genera tutti gli output futuri** di quell'agente.
+
+Impatto più ampio: una modifica al prompt si ripercuote su **ogni esecuzione successiva**, non solo su un caso. Per questo è più potente — e più rischiosa: un peggioramento al prompt degrada *tutte* le risposte future, da cui la necessità di test e versionamento rigorosi.
+
+</details>
+
+### Esercizio 2 — Adozione oggettiva e rete di sicurezza 🟡 Intermedio
+
+(a) Perché la decisione di adottare una variante di prompt si basa sul **confronto numerico** dei test passati e non su un giudizio tipo "sembra migliore"? (b) Perché il versionamento diventa un prerequisito *tecnico* (non solo buona pratica) con l'APO?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a)** Un giudizio qualitativo ("sembra migliore") è soggettivo e ingannabile da una formulazione stilisticamente convincente (plausibilità ≠ qualità reale, Lezione 3.5). Il **confronto numerico** sui test passati (Lezione 7.5) è un criterio **oggettivo e ripetibile**: distingue un miglioramento reale da uno apparente. Senza, l'APO non avrebbe modo affidabile di sapere se sta migliorando o peggiorando.
+
+**(b)** Con l'APO il sistema **si auto-modifica**. Se in produzione emerge un problema non coperto dalla test suite (nessuna suite è esaustiva), serve poter sapere **quale versione** del prompt era attiva e fare **rollback** a una nota funzionante. Senza versionamento rigoroso non potresti né diagnosticare né tornare indietro: l'automazione diventerebbe irresponsabile. Il versionamento è la **rete di sicurezza**.
+
+</details>
+
+### Esercizio 3 — Over-optimization e drift 🔴 Avanzato
+
+(a) In che modo l'over-optimization di un prompt è analoga all'overfitting (Lezione 2.2)? (b) Dopo 12 cicli automatici il prompt è lunghissimo e fallisce su casi nuovi: quale modifica al *processo* di APO l'avrebbe prevenuto?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Analogia con l'overfitting:** nell'overfitting, un modello memorizza i dati di training e non generalizza ai dati nuovi. Nell'over-optimization, il prompt viene ottimizzato eccessivamente sui **casi specifici della test suite attuale** e perde la capacità di **generalizzare** a casi nuovi e diversi. In entrambi: ottime prestazioni sul "visto", scarse sul "mai visto". Il prompt si è "adattato troppo" alla suite, come i pesi si adattano troppo al training set.
+
+**(b) Modifica al processo:** mantenere la **test suite in costante crescita ed evoluzione** (aggiungendo regolarmente casi nuovi scoperti in produzione) e introdurre una **revisione umana periodica** della direzione dell'evoluzione (Lezione 7.4). Una suite diversificata e in crescita impedisce di ottimizzare su un set ristretto e statico; la revisione periodica intercetta la deriva prima che si accumuli per 12 cicli. (Concettualmente: come un test set ampio e rappresentativo previene l'overfitting nel ML.)
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 8.1 (Self-Reflection) — il principio di auto-correzione si estende qui dal singolo output al prompt. Lezione 6.4 (I Prompt come Artefatti) e Lezione 7.5 (Valutazione dei Workflow) — entrambe sono prerequisiti tecnici dichiarati e indispensabili per questa lezione.

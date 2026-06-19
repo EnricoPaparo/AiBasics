@@ -328,6 +328,58 @@ Il sistema che hai progettato in questa lezione finale non è un esercizio isola
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi che mettono alla prova la tua capacità di **sintesi**: collegare tutto il corso. Prova a risolverli prima di aprire la soluzione.
+
+### Esercizio 1 — La mappa dei pattern 🟢 Base
+
+Il sistema finale "non introduce concetti nuovi": compone pattern già visti. Associa ogni componente del progetto al capitolo/lezione che lo ha introdotto: (a) nodi di estrazione paralleli, (b) review layer, (c) checkpoint umano, (d) handoff con contratto, (e) registrazione episodi.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) nodi paralleli** → LangGraph, Lezione 7.2.
+- **(b) review layer (Critic-Agent)** → Lezione 7.3.
+- **(c) checkpoint umano (HITL)** → Lezione 7.4.
+- **(d) handoff con contratto** → Lezioni 6.6 (handoff) + 6.5 (contratti).
+- **(e) registrazione episodi (memoria episodica)** → Lezione 8.3.
+
+Il valore del progetto finale non è inventare nuova sintassi, ma dimostrare che questi pattern **si compongono naturalmente** in un sistema reale.
+
+</details>
+
+### Esercizio 2 — Un solo contratto, condiviso 🟡 Intermedio
+
+Perché lo schema di **output** del Requirement Analyst e lo schema di **input** dell'Architect devono essere **lo stesso contratto condiviso**, e non due definizioni scritte separatamente?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Se fossero due definizioni separate, nulla garantirebbe che restino allineate: l'Analyst potrebbe produrre un campo `valore_vendite` mentre l'Architect ne attende `importo` — riproducendo esattamente il problema di **coerenza terminologica** della Lezione 5.4. È un errore che si scopre tardi, a valle, ed è difficile da diagnosticare.
+
+Condividendo **un unico contratto** (un solo schema, Lezione 6.5), l'output di A e l'input di B sono **per costruzione** lo stesso formato, **verificabile automaticamente**. Una modifica al contratto si propaga a entrambi. È il principio che l'intero Capitolo 6 è stato costruito per garantire: violarlo, anche in un progetto di portfolio, riprodurrebbe l'errore che il corso insegna a prevenire.
+
+</details>
+
+### Esercizio 3 — Onestà sui limiti 🔴 Avanzato
+
+Il progetto si chiude con una "discussione critica dei limiti". Cita due limiti strutturali del sistema e spiega perché riconoscerli è un segno di **maturità ingegneristica**, non una debolezza del progetto.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Due limiti strutturali (tra quelli citati):
+- **Echo chamber del Critic-Agent:** se condivide il modello sottostante col Requirement Analyst, il rischio di bias condiviso è ridotto ma non eliminato (Lezione 8.1).
+- **Dipendenza dalla qualità delle decisioni umane storiche:** il riassorbimento (8.3) migliora il sistema solo se le decisioni umane registrate erano buone — altrimenti propaga gli errori.
+- (Altri: l'estrazione da audio/immagini dipende da modelli esterni; il riassorbimento richiede volume prima di essere affidabile.)
+
+**Perché riconoscerli è maturità:** nessuna tecnologia elimina l'incertezza. Un ingegnere AI competente la **gestisce con consapevolezza** (supervisione, review, versioning, rollback) invece di **pretendere di averla eliminata**. Dichiarare i limiti dimostra di aver capito *dove* mettere i controlli — è la stessa onestà tecnica applicata in ogni lezione del corso. Un progetto che afferma di "non avere limiti" sarebbe il vero segnale d'allarme.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Tutte le 42 lezioni precedenti del corso, senza eccezione.
