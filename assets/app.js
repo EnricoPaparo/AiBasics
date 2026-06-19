@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ── Load manifest ─────────────────────────────────────────────
 async function loadManifest() {
+  if (typeof MANIFEST_DATA !== 'undefined') return MANIFEST_DATA;
   const res = await fetch('lessons/manifest.json');
   if (!res.ok) throw new Error('manifest.json non trovato');
   return res.json();
