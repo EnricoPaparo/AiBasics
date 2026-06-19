@@ -230,6 +230,56 @@ Questo tipo di stima — moltiplicare il consumo medio per il numero di esecuzio
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Anatomia della chiamata 🟢 Base
+
+Nella chiamata `client.messages.create(...)`, spiega a cosa serve ciascun parametro: `model`, `max_tokens`, `system`, `messages`.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **`model`**: quale modello deve elaborare la richiesta (es. `claude-sonnet-4-6`); i provider offrono modelli con compromessi diversi tra costo/velocità/capacità.
+- **`max_tokens`**: il numero massimo di token che il modello può **generare in questa risposta** (controllo di lunghezza e costo). Diverso dal context window totale.
+- **`system`**: le istruzioni di comportamento stabile per tutta la conversazione (Lezione 3.3/3.4).
+- **`messages`**: la cronologia della conversazione con i ruoli `user`/`assistant`.
+
+</details>
+
+### Esercizio 2 — Streaming e backoff 🟡 Intermedio
+
+Rispondi: (a) lo streaming riduce il *tempo totale* di generazione? Perché migliora comunque l'esperienza? (b) Ricevi ripetuti `429 Too Many Requests`: ritentare subito è una buona idea? Cosa fai invece?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**(a) Streaming:** **no**, non riduce il tempo totale di generazione — il modello impiega lo stesso tempo a produrre tutti i token. Migliora la **reattività percepita**: il primo token appare quasi subito invece di far attendere l'intera risposta. Per risposte lunghe, la differenza nell'esperienza è enorme.
+
+**(b) 429:** ritentare **subito** è controproducente — aggraveresti il sovraccarico e verresti rifiutato di nuovo. Usa l'**exponential backoff**: aspetta tempi crescenti (1s, 2s, 4s…) tra un tentativo e l'altro. Dà al sistema il tempo di "respirare" e rispetta il rate limit.
+
+</details>
+
+### Esercizio 3 — Stima il costo di un batch 🔴 Avanzato
+
+Devi riassumere 500 documenti. Ogni documento è ~3.000 token, le istruzioni ~200 token, la risposta attesa ~250 token. Calcola i token totali. Poi: cosa cambia se l'agente fa 3 chiamate API per documento invece di 1?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Una chiamata per documento:**
+- Per documento: `3.000 + 200 + 250 = 3.450 token`.
+- Per 500 documenti: `3.450 × 500 = 1.725.000 token` (~1,7 milioni).
+
+**Con 3 chiamate per documento:** il consumo cresce all'incirca **× 3** (più precisamente dipende da quanto contesto si rispedisce a ogni chiamata: se ogni chiamata reinvia il documento, può crescere anche di più). Stima grossolana: ~5,2 milioni di token.
+
+Lezione pratica: gli agenti reali fanno **più chiamate per task** (cerca → elabora → genera). Il costo va stimato moltiplicando consumo medio × numero di chiamate × numero di task — non sul singolo prompt. È un calcolo che farai costantemente progettando sistemi.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 1.5 (Le API) e Lezione 3.5 (Limiti degli LLM) — qui rendiamo operativa, con codice reale, la struttura di chiamata API teorizzata in precedenza.

@@ -245,6 +245,70 @@ Questo tipo di valutazione — quando un compito richiede l'intervento di uno st
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Serve uno strumento? 🟢 Base
+
+Per ciascuna richiesta indica se serve uno **strumento esterno** o basta la conoscenza del modello: (a) "Quanto fa 8347 × 219?", (b) "Spiega cos'è la gravità", (c) "Che tempo fa adesso a Tokyo?", (d) "Riassumi questo testo che ti ho incollato".
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) 8347 × 219** → **strumento** (calcolatrice): un calcolo preciso elimina il rischio di errore aritmetico nella generazione token-per-token.
+- **(b) gravità** → **nessuno strumento**: conoscenza stabile e ben rappresentata.
+- **(c) meteo a Tokyo adesso** → **strumento**: dato in tempo reale, oltre il knowledge cutoff.
+- **(d) riassumi questo testo** → **nessuno strumento**: il testo è già nel contesto fornito dall'utente.
+
+Criterio: serve uno strumento per **dati in tempo reale, calcoli esatti, o azioni nel mondo**; non serve per conoscenza stabile o testo già fornito.
+
+</details>
+
+### Esercizio 2 — Definisci uno strumento 🟡 Intermedio
+
+Scrivi (in forma di dizionario) la definizione di uno strumento `invia_email` con parametri `destinatario` e `oggetto` e `corpo`. Perché il campo `description` è così importante?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+```python
+strumento_email = {
+    "name": "invia_email",
+    "description": "Invia un'email a un destinatario. Usa questo "
+                   "strumento SOLO quando l'utente chiede "
+                   "esplicitamente di inviare un'email.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "destinatario": {"type": "string", "description": "Indirizzo email del destinatario"},
+            "oggetto": {"type": "string", "description": "Oggetto dell'email"},
+            "corpo": {"type": "string", "description": "Testo del messaggio"}
+        },
+        "required": ["destinatario", "oggetto", "corpo"]
+    }
+}
+```
+
+**Perché `description` è cruciale:** è il testo che il modello **legge per decidere se e quando** usare lo strumento. Una descrizione vaga porta a usi sbagliati o mancati. Notare il "SOLO quando l'utente lo chiede esplicitamente": scrivere bene la descrizione è prompt engineering applicato — qui serve anche a *evitare* invii indesiderati.
+
+</details>
+
+### Esercizio 3 — Sicurezza: chi esegue cosa 🔴 Avanzato
+
+Spiega perché è importante che il modello "richieda" uno strumento invece di eseguirlo direttamente. Poi: un agente ha nel suo tool manifest solo uno strumento di *lettura* del database, non di *scrittura*. Che garanzia di sicurezza offre questa scelta?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Perché richiesta e non esecuzione:** il modello non esegue mai nulla da solo — **richiede** in formato strutturato che una funzione venga chiamata. È il **tuo programma** a decidere se e come eseguirla. Questa separazione è ciò che rende il sistema sicuro e controllabile: ogni azione passa per codice scritto e controllato da te. Il modello non può, da solo, compiere azioni dannose o non autorizzate.
+
+**Tool manifest solo-lettura:** se l'agente ha accesso *solo* a uno strumento di lettura, allora **non può modificare i dati**, qualsiasi cosa il modello "voglia" (in senso figurato) generare. La garanzia non dipende dal comportamento del modello, ma dal fatto che lo strumento di scrittura **non esiste** nel suo manifest. È sicurezza per *costruzione*, non per *fiducia* — il principio del privilegio minimo applicato agli agenti (anticipa la cartella `tools/` della Lezione 6.2).
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 3.5 (Limiti degli LLM) — il Function Calling risolve direttamente il limite "mancanza di azione" descritto lì. Lezione 4.2 (Output Strutturati) — la richiesta di uno strumento da parte del modello è, essa stessa, un output strutturato secondo uno schema preciso.

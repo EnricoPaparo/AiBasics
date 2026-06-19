@@ -240,6 +240,61 @@ Questo esercizio di progettazione — distinguere chiaramente cosa salvare, a qu
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — I quattro tipi di memoria 🟢 Base
+
+Associa ogni descrizione al tipo di memoria (**in-context**, **esterna**, **episodica**, **semantica**): (a) "il 3 maggio l'utente ha chiesto aiuto sulle derivate", (b) la cronologia della sessione attuale rinviata a ogni chiamata, (c) "l'utente preferisce risposte brevi", (d) dati salvati in un database che sopravvivono alla sessione.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a)** → **episodica**: ricordo di un *evento specifico* situato nel tempo.
+- **(b)** → **in-context**: la cronologia della sessione attiva, limitata dal context window.
+- **(c)** → **semantica**: conoscenza *generale* distillata da molte interazioni, non un singolo evento.
+- **(d)** → **esterna**: persistenza oltre la singola sessione (l'infrastruttura su cui poggiano episodica e semantica a lungo termine).
+
+Nota: episodica = "cosa è successo"; semantica = "cosa ho imparato in generale".
+
+</details>
+
+### Esercizio 2 — Scegli la strategia 🟡 Intermedio
+
+Una conversazione supera il context window. Tra **sliding window**, **summarization progressiva** e **memoria esterna con recupero**, quale sceglieresti se è importante non perdere mai dettagli citati all'inizio? Cosa rischia invece di perdere la summarization?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Se è cruciale non perdere dettagli iniziali, la scelta migliore è la **memoria esterna con recupero selettivo**: l'intera cronologia resta salvata e si recuperano (per similarità semantica, come in RAG) proprio le porzioni rilevanti per la domanda attuale — anche se sono all'inizio.
+
+- **Sliding window** scarterebbe i messaggi vecchi → perderebbe quei dettagli.
+- **Summarization** li comprime → rischia di perdere **dettagli specifici** (numeri esatti, nomi, eccezioni) che il riassunto non conserva. Problematico quando una risposta futura dipende proprio da un dettaglio minore detto all'inizio.
+
+</details>
+
+### Esercizio 3 — Memoria che contraddice la richiesta 🔴 Avanzato
+
+Mesi fa il sistema ha salvato "l'utente è vegetariano". Ora l'utente chiede una ricetta di pollo. Cosa dovrebbe fare un sistema ben progettato? Collega la risposta ai rischi della memoria persistente.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Un sistema ben progettato **non dovrebbe rifiutare né ignorare la richiesta attuale** basandosi su una memoria potenzialmente obsoleta. La richiesta esplicita e attuale dell'utente ha la **priorità** su una preferenza salvata in passato. Comportamenti ragionevoli:
+- Fornire la ricetta richiesta.
+- Eventualmente segnalare con tatto la nota in memoria ("Avevo memorizzato una preferenza vegetariana — la aggiorno?"), dando all'utente il controllo.
+
+**Collegamento ai rischi:**
+- **Coerenza:** la memoria può diventare **obsoleta** (la persona è cambiata). Trattarla come verità assoluta produce comportamenti inappropriati.
+- **Privacy/controllo:** l'utente dovrebbe poter vedere, correggere e cancellare ciò che è stato salvato.
+
+Lezione: la memoria è un *suggerimento di contesto*, non un vincolo rigido. "Più memoria" non è sempre meglio — va gestita con priorità chiare e possibilità di aggiornamento.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 3.3 (context window) e Lezione 3.5 (statelessness del modello) — questa lezione fornisce le soluzioni tecniche concrete ai problemi lì identificati. Lezione 4.3 (RAG) — il principio di recupero selettivo per similarità si applica qui alla cronologia conversazionale stessa.

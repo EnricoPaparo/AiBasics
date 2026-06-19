@@ -255,6 +255,64 @@ Questo esempio, per quanto semplice, contiene già tutti gli ingredienti di un c
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Perché non basta il testo libero 🟢 Base
+
+Un sistema deve instradare automaticamente migliaia di recensioni a team diversi. Perché chiedere al modello "dimmi la categoria" in testo libero è rischioso? Cosa serve invece?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+In testo libero il modello risponde ogni volta in un **formato diverso** ("È assistenza", "Categoria: assistenza", "Direi che riguarda l'assistenza clienti…"). Il programma dovrebbe interpretare infinite varianti — fragile e inaffidabile su migliaia di casi.
+
+Serve un **output strutturato** in formato fisso, es. `{"categoria": "assistenza", "urgenza": "alta"}`, parsabile in modo deterministico. Così il codice estrae sempre `risultato["categoria"]` senza indovinare.
+
+</details>
+
+### Esercizio 2 — Scrivi lo schema 🟡 Intermedio
+
+Definisci uno schema Pydantic per estrarre da un testo: `titolo` (stringa), `anno` (intero), `disponibile` (booleano). Poi: se il modello restituisce `"anno": "millenovecento"`, in quale fase viene rilevato l'errore?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+```python
+from pydantic import BaseModel
+
+class Libro(BaseModel):
+    titolo: str
+    anno: int
+    disponibile: bool
+```
+
+Se il modello restituisce `"anno": "millenovecento"` (una stringa non convertibile a intero), l'errore viene rilevato nella **fase di validazione**, quando l'output parser fa `Libro(**dati)`: Pydantic solleva un `ValidationError` perché il valore non rispetta il tipo `int`.
+
+Il vantaggio: l'errore emerge **subito ed esplicitamente**, invece di propagarsi silenziosamente come dato corrotto nel resto del sistema.
+
+</details>
+
+### Esercizio 3 — Strategia anti-errore 🔴 Avanzato
+
+Il modello a volte restituisce JSON malformato o circondato da testo. Progetta una strategia di gestione robusta in più livelli. Quale principio della Lezione 5.5 anticipa?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+Strategia a livelli (dal tentativo ottimista al fallimento controllato):
+1. **Tenta il parsing** della risposta come JSON + validazione con lo schema.
+2. Se fallisce → **ri-chiama l'API con istruzione rafforzata** ("Il formato non era valido, rispondi SOLO con JSON valido").
+3. Se fallisce ancora → **parsing permissivo di fallback**: estrai solo la porzione che sembra JSON, ignorando il testo circostante.
+4. Se anche questo fallisce → **fallisci in modo esplicito**, segnalando l'errore al resto del sistema invece di propagare dati inventati/corrotti.
+
+Anticipa il principio di **graceful degradation** (Lezione 5.5): un sistema robusto degrada in modo controllato e, quando proprio non può, fallisce in modo visibile e gestibile — mai silenziosamente con dati sbagliati.
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 4.1 — qui aggiungiamo, alla chiamata API di base, il livello di precisione necessario per ottenere dati utilizzabili da un programma, non solo testo per un umano.

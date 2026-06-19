@@ -193,6 +193,58 @@ Prova a valutare questi due scenari, distinguendo quando un'integrazione custom 
 
 ---
 
+## Esercizi Pratici
+
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+
+### Esercizio 1 — Cosa aggiunge MCP 🟢 Base
+
+MCP non sostituisce il principio del Function Calling. Cosa aggiunge, esattamente, rispetto a un'integrazione custom scritta a mano (Lezione 4.4)?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+MCP aggiunge uno **strato di standardizzazione**. Il principio di fondo resta identico (il modello richiede → qualcosa esegue → il risultato torna al modello), ma:
+
+- lo **schema dello strumento** è esposto automaticamente dal server MCP in un formato standard, invece di essere scritto a mano nel tuo codice;
+- l'**esecuzione** è gestita dal server MCP, scritto una volta e riutilizzabile;
+- l'integrazione diventa **riutilizzabile da qualsiasi host compatibile** con MCP, non solo dal tuo singolo progetto.
+
+In breve: MCP è un **modo standard di esporre e descrivere** gli strumenti, così da non doverli ricostruire da zero per ogni progetto o modello.
+
+</details>
+
+### Esercizio 2 — Custom o MCP? 🟡 Intermedio
+
+Per ciascuno scegli se basta un'integrazione custom o conviene MCP: (a) uno script personale che ogni mattina controlla il meteo; (b) un sistema aziendale dove più agenti, su modelli diversi, devono accedere a Google Drive, calendario e ticketing, anche per altri team in futuro.
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+- **(a) script meteo personale** → **custom basta**: un solo strumento, un solo progetto, mantenuto solo da te. La complessità extra di MCP non sarebbe ripagata.
+- **(b) sistema aziendale multi-agente** → **MCP conviene**: serve riutilizzo tra agenti/modelli diversi, integrazione con strumenti potenzialmente di terzi, e interoperabilità futura tra team. Esattamente lo scenario per cui MCP esiste.
+
+Criterio: MCP brilla quando c'è **riutilizzo, terze parti, o interoperabilità a lungo termine**; per casi isolati e semplici l'integrazione diretta è più rapida.
+
+</details>
+
+### Esercizio 3 — Il costo del "fiocco di neve" 🔴 Avanzato
+
+Senza uno standard, ogni combinazione di progetto × risorsa richiede un'integrazione dedicata. Quante integrazioni servono con 10 progetti e 10 risorse esterne? Come cambia con MCP? E che principio di separazione delle responsabilità introduce l'architettura Host/Client/Server?
+
+<details>
+<summary>💡 Mostra soluzione</summary>
+
+**Senza standard:** nel caso peggiore servono fino a **10 × 10 = 100 integrazioni** custom (ogni progetto reimplementa la connessione a ogni risorsa). E ogni nuova risorsa o progetto moltiplica il lavoro.
+
+**Con MCP:** ogni risorsa espone **un solo server MCP** (10 server), e ogni progetto ha un MCP client che li usa tutti → l'ordine di grandezza scende da ~N×M a ~N+M. Niente reimplementazioni duplicate.
+
+**Separazione delle responsabilità:** Host/Client/Server separa nettamente *chi usa* uno strumento (l'host, per un compito specifico) da *chi mantiene la connessione* alla risorsa (il server MCP, scritto una volta). È lo stesso principio frontend/backend (Lezione 1.4) e di "non duplicare ciò che può essere centralizzato" che ritroveremo nelle skill library (Lezione 6.7).
+
+</details>
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 4.4 (Tool Use e Function Calling) — MCP standardizza esattamente il meccanismo costruito a mano in quella lezione, senza cambiarne il principio di fondo.
