@@ -540,6 +540,8 @@ body {
   height: calc(100vh - var(--header-h));
 }
 
+.sidebar-overlay { display: none; }
+
 .sidebar-header {
   padding: 1.25rem 1.25rem .75rem;
   border-bottom: 1px solid var(--border);
@@ -684,6 +686,8 @@ body {
   overflow-y: auto;
   height: calc(100vh - var(--header-h));
   background: var(--bg);
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .content-inner {
