@@ -20,16 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     state.manifest = await loadManifest();
     buildSidebar();
     setupMobileToggle();
-    const hash = location.hash.slice(1);
-    if (hash === 'roadmap') {
-      showRoadmap();
-    } else if (hash) {
-      const [chId, lesId] = hash.split('/');
-      if (chId && lesId) openLesson(chId, lesId, false);
-      else showWelcome();
-    } else {
-      showWelcome();
-    }
+    routeFromHash(location.hash.slice(1));
   } catch (e) {
     console.error('Init error:', e);
     showError('Errore durante il caricamento del corso.');
@@ -304,12 +295,27 @@ function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Handle browser back/forward
-window.addEventListener('popstate', () => {
-  const hash = location.hash.slice(1);
-  if (hash === 'roadmap') showRoadmap();
-  else if (hash) {
+// ── Routing ───────────────────────────────────────────────────
+function routeFromHash(hash) {
+  if (hash === 'roadmap') { showRoadmap(); return; }
+  if (hash) {
     const [chId, lesId] = hash.split('/');
-    if (chId && lesId) openLesson(chId, lesId, false);
-  } else showWelcome();
-});
+    if (chId && lesId) { openLesson(chId, lesId, false); return; }
+    if (chId) { openFirstLessonOfChapter(chId); return; }  // hash = solo capitolo
+  }
+  showWelcome();
+}
+
+// Apre la prima lezione di un capitolo (usato dalle card della landing,
+// che linkano a #<chapterId> senza specificare una lezione)
+function openFirstLessonOfChapter(chapterId) {
+  const chapter = state.manifest?.roadmap.find(c => c.id === chapterId);
+  if (chapter && chapter.lezioni.length) {
+    openLesson(chapterId, chapter.lezioni[0].id, false);
+  } else {
+    showWelcome();
+  }
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', () => routeFromHash(location.hash.slice(1)));

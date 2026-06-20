@@ -1044,6 +1044,18 @@ body {
   .sidebar-overlay.show { display: block; }
 
   .sidebar-toggle { display: block; }
-  .content-area { height: calc(100vh - var(--header-h)); }
+  /* On mobile the grid is a single column and the sidebar is
+     position:fixed (out of flow): content must occupy column 1,
+     otherwise the desktop "grid-column: 2" rule hides it. */
+  .content-area {
+    grid-column: 1;
+    grid-row: 2;
+    height: calc(100vh - var(--header-h));
+  }
   .content-inner { padding: 2rem 1.25rem 5rem; }
+
+  /* A long lesson title must not break the header on mobile:
+     the breadcrumb is redundant (title is shown in the content). */
+  .site-header { padding: 0 1rem; gap: .75rem; }
+  .header-breadcrumb { display: none; }
 }

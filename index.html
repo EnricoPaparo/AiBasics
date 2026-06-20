@@ -298,7 +298,7 @@
   MANIFEST_DATA.roadmap.forEach(ch => {
     const card = document.createElement('a');
     card.className = 'roadmap-card';
-    card.href = `corso.html#${ch.id}/${ch.lezioni[0]?.id || ''}`;
+    card.href = `corso.html#${ch.id}`;
     card.style.setProperty('--cap-color', ch.colore);
 
     const lessonsHtml = ch.lezioni.slice(0, 4).map(l =>
