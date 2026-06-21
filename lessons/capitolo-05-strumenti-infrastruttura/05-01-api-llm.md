@@ -27,6 +27,22 @@ versione: "1.0"
 
 In questo capitolo il corso cambia marcia: passiamo dalla comprensione alla costruzione. Imparerai a usare un modello linguistico da un programma reale, a strutturare dati per farlo ragionare in modo affidabile, e ad aggiungergli strumenti e memoria — i mattoni con cui si costruisce qualsiasi sistema AI professionale.
 
+## Da limitazioni a soluzioni
+
+Nel Capitolo 4 abbiamo capito cosa è un LLM e come funziona — ma anche, con precisione, cosa non sa fare. Tre limiti in particolare definiscono i confini di un modello linguistico grezzo:
+
+1. **Conoscenza ferma alla data di training.** Un LLM sa solo ciò che era presente nei suoi dati di addestramento: non conosce eventi recenti, non può accedere a database aggiornati, non sa cosa è successo ieri. Per ogni domanda che richiede informazioni attuali o specifiche, il modello grezzo è cieco.
+
+2. **Context window limitata.** Il modello elabora solo ciò che entra nella finestra di contesto di una singola chiamata. Non ha memoria tra sessioni diverse, non può "ricordare" conversazioni passate, non gestisce documenti molto lunghi senza strategie apposite.
+
+3. **Non può agire sul mondo.** Un LLM produce testo. Non può aprire file, fare ricerche su Internet, chiamare API esterne, eseguire codice, o modificare database — a meno che qualcuno non gli fornisca questi strumenti in modo esplicito.
+
+Il Capitolo 5 è la risposta sistematica a questi tre limiti. RAG (Retrieval-Augmented Generation) risolve il primo: porta al modello la conoscenza esterna di cui ha bisogno, al momento giusto. Gli strumenti e il function calling risolvono il terzo: danno al modello la capacità di agire. Le tecniche di gestione del contesto e l'orchestrazione risolvono il secondo: gestiscono cosa entra nella finestra, quando, e in quale forma.
+
+Ogni lezione di questo capitolo aggiunge un pezzo. Alla fine avrai gli ingredienti per costruire un agente completo.
+
+---
+
 ## Introduzione
 
 Con questa lezione il corso cambia marcia, esattamente come annunciato in chiusura del Capitolo 3. Fino a ora abbiamo costruito comprensione: cosa è un'API (Lezione 1.5), cosa è un LLM (Lezione 3.1), come è strutturata una conversazione con ruoli system/user/assistant (Lezione 3.3). Questa lezione fonde questi tre pezzi di conoscenza in un'unica competenza pratica: scrivere il codice che chiama un modello linguistico via API, esattamente come fa qualsiasi prodotto AI professionale.

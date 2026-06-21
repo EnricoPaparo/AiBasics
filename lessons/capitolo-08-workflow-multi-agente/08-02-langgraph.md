@@ -332,3 +332,9 @@ Criterio: si può parallelizzare solo ciò che è **indipendente nei dati**. Se 
 **Porta a:** Lezione 7.3 (Il Layer di Review) — vedremo come implementare un nodo di revisione come parte specifica e formalizzata del grafo LangGraph.
 
 **Ritroverai questi concetti in:** Lezione 7.4 (Human-in-the-Loop) — il checkpointing qui introdotto è il meccanismo tecnico esatto che rende possibile l'interruzione del workflow per attesa di feedback umano. Lezione 8.3 (Riassorbimento della Conoscenza) — la persistenza dello stato tra esecuzioni, qui vista per un singolo workflow, anticipa il problema più ampio di come un sistema accumula esperienza nel tempo.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+La documentazione ufficiale di LangGraph, con guide introduttive, tutorial passo-passo e riferimento completo all'API per costruire workflow agentivi come grafi orientati con stato → **Documentazione ufficiale LangGraph** su langchain-ai.github.io/langgraph (tipo: documentazione)

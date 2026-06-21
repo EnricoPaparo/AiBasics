@@ -259,3 +259,9 @@ Mappatura:
 **Porta a:** Lezione 3.3 (Anatomia di un prodotto AI) — vedremo come un modello istruito come quello descritto qui viene integrato in un prodotto completo come Claude.ai.
 
 **Ritroverai questi concetti in:** Lezione 2.2 (Machine Learning) — RLHF è un'applicazione diretta e concreta dell'apprendimento per rinforzo descritto lì in astratto. Lezione 8.1 (Self-Reflection) — il principio di usare un modello "giudice" per valutare risposte, centrale nel reward model di RLHF, ritornerà in una forma adattata quando un agente valuterà i propri stessi output.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+Il paper di OpenAI che ha definito lo standard industriale dell'allineamento tramite feedback umano, introducendo il termine e il metodo RLHF così come sono usati oggi → **"Training language models to follow instructions with human feedback"** (InstructGPT — Ouyang et al., OpenAI, 2022) (tipo: paper)

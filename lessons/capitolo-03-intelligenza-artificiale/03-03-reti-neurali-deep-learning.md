@@ -298,3 +298,11 @@ Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispond
 **Porta a:** Lezione 2.4 (NLP) — vedremo come si può "dare in pasto" il testo, che non è fatto di numeri, a una rete neurale che lavora solo con numeri.
 
 **Ritroverai questi concetti in:** Lezione 2.5 (Transformer) — l'architettura che useremo per gli LLM è una particolare evoluzione, molto sofisticata, dei principi di strati e pesi visti qui. Lezione 3.1 (Cos'è un LLM) — i "miliardi di parametri" di cui si parla sempre, riferendosi ai modelli linguistici, sono esattamente i pesi descritti in questa lezione, su scala enormemente più grande.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+Il paper che nel 2017 ha ridefinito l'architettura di tutta l'intelligenza artificiale moderna, introducendo il meccanismo di attention che trovi alla base di ogni LLM → **"Attention is All You Need"** (Vaswani et al., 2017) (tipo: paper)
+
+Se preferisci un percorso pratico e visivo, costruendo reti neurali da zero in Python, il canale di Andrej Karpathy offre una delle spiegazioni più apprezzate dalla comunità tecnica mondiale → **"Neural Networks: Zero to Hero"** di Andrej Karpathy (tipo: video, YouTube)

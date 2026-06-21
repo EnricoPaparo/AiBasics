@@ -27,6 +27,12 @@ versione: "1.0"
 
 # Cos'è un LLM: previsione del token successivo come intelligenza emergente
 
+> **Quick Recap — da dove arriviamo**
+>
+> Nei capitoli precedenti abbiamo costruito la comprensione pezzo per pezzo: le reti neurali come sistemi che apprendono dai dati (Cap. 2), il deep learning come architettura a strati che estrae rappresentazioni via via più astratte, la backpropagation come meccanismo di apprendimento che aggiusta i pesi sulla base degli errori. Abbiamo visto come il Transformer ha risolto il problema di rappresentare il linguaggio in modo efficiente e scalabile — aprendo la strada a modelli addestrati su quantità di testo senza precedenti. Il linguaggio, in tutto questo percorso, è emerso come il dominio ideale su cui applicare questa architettura: ricco, strutturato, e disponibile in quantità enorme su Internet.
+>
+> **Una distinzione fondamentale prima di procedere:** il modello che stai per conoscere è il modello BASE — quello che prevede il token successivo, addestrato su grandi quantità di testo grezzo. Quello che usi in Claude.ai o ChatGPT è già stato ulteriormente addestrato tramite RLHF (Reinforcement Learning from Human Feedback — lo vedremo in 04-02) per diventare un assistente utile, sicuro, e allineato alle preferenze umane. Sono cose diverse, e confonderle porta a incomprensioni importanti su come funzionano davvero questi sistemi.
+
 In questo capitolo arriveremo finalmente al cuore della materia: capire cosa sono davvero i modelli linguistici di grandi dimensioni, come funzionano internamente e perché producono output così sorprendenti. È il punto di convergenza di tutto ciò che abbiamo studiato finora, e la base tecnica imprescindibile per costruire sistemi AI competenti.
 
 ## Introduzione

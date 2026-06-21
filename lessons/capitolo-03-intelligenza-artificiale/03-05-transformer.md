@@ -237,3 +237,9 @@ Un decoder, durante la generazione, può guardare (via attention) solo le parole
 **Porta a:** Capitolo 3 (I Modelli Linguistici di Grandi Dimensioni) — il Transformer, in particolare l'architettura solo-decoder, è il fondamento tecnico esatto su cui sono costruiti Claude, GPT, e tutti gli LLM moderni. La Lezione 3.1 inizierà esattamente da dove questa lezione finisce.
 
 **Ritroverai questi concetti in:** Lezione 5.2 (ReAct e Pattern di Ragionamento) — il meccanismo di attention sul contesto pregresso è ciò che permette a un agente di "ricordare" i passi precedenti del proprio ragionamento all'interno di una stessa sessione. Lezione 4.6 (Memory) — i limiti del context window, che affronteremo lì, sono diretta conseguenza di come l'attention deve calcolare relazioni tra tutte le coppie di token nella sequenza.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+La spiegazione visiva più celebre e condivisa dell'architettura Transformer: illustrazioni dettagliate del meccanismo di attention, degli encoder e decoder, del positional encoding — tutto senza equazioni → **"The Illustrated Transformer"** di Jay Alammar (tipo: articolo)

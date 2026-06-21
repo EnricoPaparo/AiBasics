@@ -318,3 +318,9 @@ Per ciascun caso scegli temperature **bassa** o **alta** e motiva: (a) un agente
 **Porta a:** Lezione 3.5 (Limiti e allucinazioni) — vedremo che, per quanto ben formulato, un prompt non può eliminare completamente alcuni limiti strutturali del modello.
 
 **Ritroverai questi concetti in:** Lezione 5.2 (ReAct e Chain-of-Thought) — la tecnica chain-of-thought vista qui in forma semplice si estenderà a un intero pattern architetturale per gli agenti. Lezione 6.4 (I Prompt come Artefatti) — system prompt e task prompt, qui distinti a livello di utilizzo, diventeranno artefatti professionali versionati e strutturati.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+La reference gratuita più completa e aggiornata sulle tecniche di prompting: zero-shot, few-shot, chain-of-thought, ReAct e molto altro, con esempi concreti per ogni tecnica → **"Prompt Engineering Guide"** su promptingguide.ai (tipo: documentazione)
