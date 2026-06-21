@@ -3,7 +3,7 @@ const MANIFEST_DATA = {
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "2.0",
   "anno": "2026",
-  "totale_lezioni": 64,
+  "totale_lezioni": 66,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -149,6 +149,10 @@ const MANIFEST_DATA = {
           "titolo": "Output Strutturati e Parser"
         },
         {
+          "id": "05-08-embeddings-vector-db",
+          "titolo": "Embeddings e Vector Database"
+        },
+        {
           "id": "05-03-rag",
           "titolo": "RAG: Memoria Esterna"
         },
@@ -169,10 +173,6 @@ const MANIFEST_DATA = {
           "titolo": "Vibe Coding"
         },
         {
-          "id": "05-08-embeddings-vector-db",
-          "titolo": "Embeddings e Vector Database"
-        },
-        {
           "id": "05-09-struttura-progetto-python",
           "titolo": "Struttura di un Progetto Python Reale"
         },
@@ -183,6 +183,10 @@ const MANIFEST_DATA = {
         {
           "id": "05-11-debugging-osservabilita",
           "titolo": "Debugging e Osservabilità degli Agenti"
+        },
+        {
+          "id": "05-12-come-testare-un-agente",
+          "titolo": "Come Testare un Agente"
         }
       ]
     },
@@ -339,6 +343,10 @@ const MANIFEST_DATA = {
         {
           "id": "09-07-pubblicare-monetizzare",
           "titolo": "Pubblicare e Monetizzare un Progetto AI"
+        },
+        {
+          "id": "09-08-ai-e-diritto-in-italia",
+          "titolo": "AI e Diritto in Italia"
         }
       ]
     }
