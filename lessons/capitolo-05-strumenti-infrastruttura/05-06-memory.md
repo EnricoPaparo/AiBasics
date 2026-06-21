@@ -98,6 +98,8 @@ Sliding window di 10 messaggi:
 
 Questa strategia è semplice da implementare, ma ha un limite evidente: se l'utente fa riferimento a qualcosa detto molto all'inizio della conversazione (oltre la finestra), il modello non avrà più alcuna informazione su quel contenuto, e potrebbe rispondere in modo incoerente o chiedere nuovamente informazioni già fornite.
 
+> **Limite critico della sliding window**: se l'utente fa riferimento a qualcosa fuori dalla finestra ("come quello che ti ho detto la settimana scorsa" o "ricordi quando abbiamo discusso del progetto X?"), il sistema semplicemente non lo trova e risponde in modo incoerente — spesso senza nemmeno segnalare all'utente che le informazioni non sono disponibili. Soluzione: mantieni un **indice delle entità chiave** menzionate dall'utente (nomi, preferenze espresse, decisioni prese, vincoli dichiarati) in una struttura separata dalla cronologia cronologica. Questo indice cresce nel tempo ma rimane compatto (solo entità, non l'intera conversazione), e le informazioni importanti non vengono perse anche se la conversazione è molto lunga. Quando l'utente fa riferimento a un'entità, la si recupera dall'indice indipendentemente da quando è stata menzionata.
+
 ### Strategia 2: Summarization progressiva (riassunto progressivo)
 
 Una strategia più sofisticata consiste nell'usare il modello stesso (con una chiamata API dedicata, come visto nella Lezione 4.1) per **riassumere periodicamente** la parte più vecchia della conversazione, mantenendo nel contesto un riassunto compatto invece della cronologia integrale.

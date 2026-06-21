@@ -125,6 +125,8 @@ Non tutti gli esempi di training hanno lo stesso valore. Prima di caricare un da
 | Generazione in stile specifico | 500-1000 | 2000-5000 |
 | Compiti complessi multi-step | 1000+ | 5000+ |
 
+> **Nota sui minimi:** i valori nella colonna "Esempi minimi" derivano dall'esperienza pratica consolidata della comunità di ricercatori e sviluppatori; con meno esempi il modello non generalizza — impara a memoria i casi visti invece di apprendere il pattern sottostante. Considera questi numeri come punto di partenza, non come garanzia: la qualità degli esempi conta quanto la quantità, e domini più complessi o ambigui richiedono più dati per raggiungere la stessa affidabilità.
+
 ## Segnali che il Fine-Tuning Sta Andando Male
 
 Il fine-tuning non è una garanzia di miglioramento. Ci sono sintomi precisi che indicano che qualcosa è andato storto, e per ciascuno esiste un'azione correttiva.
