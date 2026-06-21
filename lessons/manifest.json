@@ -3,7 +3,7 @@
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "2.0",
   "anno": "2026",
-  "totale_lezioni": 56,
+  "totale_lezioni": 59,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -76,7 +76,10 @@
         { "id": "05-04-tool-use-function-calling",  "titolo": "Tool Use / Function Calling" },
         { "id": "05-05-mcp-model-context-protocol", "titolo": "MCP: Model Context Protocol" },
         { "id": "05-06-memory",                     "titolo": "Memory nei Sistemi AI" },
-        { "id": "05-07-vibe-coding",                "titolo": "Vibe Coding" }
+        { "id": "05-07-vibe-coding",                "titolo": "Vibe Coding" },
+        { "id": "05-08-embeddings-vector-db",       "titolo": "Embeddings e Vector Database" },
+        { "id": "05-09-struttura-progetto-python",  "titolo": "Struttura di un Progetto Python Reale" },
+        { "id": "05-10-streaming-ux-realtime",      "titolo": "Streaming e UX Real-Time" }
       ]
     },
     {
