@@ -23,6 +23,9 @@ versione: "1.0"
 ---
 # Progetto Finale: Costruzione di un Workflow Agentivo Supervisionato e Auto-Evolutivo
 
+> 📌 **In breve** · ⏱ ~60 min · 🎯 Metterai insieme tutto in un unico progetto reale.
+> Non servono concetti nuovi: comporrai i pattern già visti in un sistema agentivo completo. È la prova che sai costruire, non solo capire.
+
 ## Introduzione
 
 Questa è l'ultima lezione del corso. Non introduce concetti nuovi: il suo compito è diverso e, in un certo senso, più importante — chiederti di **mettere insieme** tutto ciò che hai imparato in quarantatré lezioni, in un singolo sistema coerente, progettato e — per quanto possibile nel formato di questo materiale — implementato con la stessa cura che abbiamo dedicato a ogni singolo componente lungo il percorso.

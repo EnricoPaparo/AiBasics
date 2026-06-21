@@ -26,6 +26,9 @@ versione: "1.0"
 ---
 # Intelligenza Artificiale: storia, definizioni e rami principali
 
+> 📌 **In breve** · ⏱ ~50 min · 🎯 Saprai dire cos’è (e cosa NON è) l’intelligenza artificiale.
+> Una mappa onesta del territorio: niente magia né coscienza. Distingui AI, machine learning e deep learning, e capisci dove siamo davvero.
+
 In questo capitolo costruiremo una mappa del territorio dell'intelligenza artificiale: sobria, onesta, e resistente alle esagerazioni che si leggono ogni giorno. Prima di usare questi sistemi con competenza reale, è necessario capire cosa sono davvero — e cosa non sono.
 
 ## Introduzione

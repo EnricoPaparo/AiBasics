@@ -26,6 +26,9 @@ versione: "1.0"
 ---
 # Cos'è un LLM: previsione del token successivo come intelligenza emergente
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Capirai cosa fa *davvero* un modello come ChatGPT o Claude.
+> Prevede la parola successiva, una alla volta. Da questa idea semplice nasce tutto: token, parametri, e la differenza tra “modello” e “prodotto”.
+
 > **Quick Recap — da dove arriviamo**
 >
 > Nei capitoli precedenti abbiamo costruito la comprensione pezzo per pezzo: le reti neurali come sistemi che apprendono dai dati (Cap. 3), il deep learning come architettura a strati che estrae rappresentazioni via via più astratte, la backpropagation come meccanismo di apprendimento che aggiusta i pesi sulla base degli errori. Abbiamo visto come il Transformer ha risolto il problema di rappresentare il linguaggio in modo efficiente e scalabile — aprendo la strada a modelli addestrati su quantità di testo senza precedenti. Il linguaggio, in tutto questo percorso, è emerso come il dominio ideale su cui applicare questa architettura: ricco, strutturato, e disponibile in quantità enorme su Internet.

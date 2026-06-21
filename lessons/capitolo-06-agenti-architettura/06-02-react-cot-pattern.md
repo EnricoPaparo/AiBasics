@@ -25,6 +25,9 @@ versione: "1.0"
 ---
 # ReAct, Chain-of-Thought e Pattern di Ragionamento Agentivo
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Vedrai come far “ragionare ad alta voce” un agente.
+> ReAct significa ragionare e agire a turni: rende le decisioni dell’agente più affidabili e, soprattutto, visibili e correggibili.
+
 ## Introduzione
 
 Nella lezione precedente abbiamo costruito un loop agentivo funzionante: il modello riceve un obiettivo, decide se usare uno strumento, osserva il risultato, e ripete. Funziona — ma c'è un problema che il codice della Lezione 6.1 lascia silenziosamente irrisolto: **non vediamo perché il modello ha deciso di fare ciò che ha fatto**. Se l'agente sceglie uno strumento sbagliato, o si blocca in un comportamento ripetitivo, non abbiamo alcuna visibilità sul processo decisionale che ha portato a quella scelta.

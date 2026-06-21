@@ -29,6 +29,9 @@ versione: "1.0"
 ---
 # Machine Learning: come una macchina impara dai dati
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Capirai come una macchina “impara” dagli esempi invece che da regole scritte a mano.
+> Il cuore dell’AI moderna: dati → pattern → previsione. È il principio su cui si reggono tutti i modelli che useremo.
+
 ## Introduzione
 
 Nella lezione precedente abbiamo introdotto il Machine Learning come l'approccio che "impara dai dati invece di seguire regole scritte a mano", usando l'analogia del riconoscere un frutto maturo. È un'ottima intuizione di partenza, ma resta vaga: cosa significa esattamente "imparare", quando il soggetto che imparare non ha un cervello biologico ma solo numeri e operazioni matematiche?

@@ -27,6 +27,9 @@ versione: "1.0"
 ---
 # Reti Neurali e Deep Learning: il cervello artificiale spiegato bene
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Avrai un’idea intuitiva di come funziona una rete neurale.
+> Neuroni artificiali, strati, apprendimento: perché dal 2012 il deep learning ha rivoluzionato tutto. Senza formule complicate.
+
 ## Introduzione
 
 Nella lezione precedente abbiamo definito un modello come "una funzione matematica con parametri regolabili, aggiustati durante l'addestramento". È una definizione corretta ma astratta. Questa lezione la rende concreta, mostrando esattamente che *forma* ha questa funzione quando parliamo di Deep Learning: la rete neurale artificiale.

@@ -24,6 +24,9 @@ versione: "1.0"
 ---
 # Tool Use e Function Calling: dare al modello la capacità di agire
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Darai all’AI degli strumenti per *fare* cose, non solo dirle.
+> Il modello decide quando chiamare una tua funzione (cercare, calcolare, scrivere) e ne usa il risultato. È il mattone che trasforma un chatbot in un agente.
+
 ## Introduzione
 
 Questa lezione segna un punto di svolta concettuale in tutto il corso. Nella Lezione 4.5 avevamo elencato, con la tabella delle cose che un LLM "grezzo" può e non può fare, un limite fondamentale: il modello **produce solo testo**, non può agire nel mondo reale. RAG, visto nella lezione precedente, estende ciò che il modello *sa*, fornendogli accesso a informazioni esterne — ma non gli dà ancora la capacità di *fare* qualcosa.

@@ -24,6 +24,9 @@ versione: "1.0"
 ---
 # Cos'è un Agente AI: definizione, componenti e loop agentivo
 
+> 📌 **In breve** · ⏱ ~50 min · 🎯 Capirai cos’è un agente AI e perché è il traguardo del corso.
+> Non è un LLM più potente: è un sistema con un ciclo osserva → pensa → agisci. Qui si assembla tutto ciò che hai costruito finora.
+
 > **⚡ Setup richiesto**: il Capitolo 6 usa le stesse librerie del Capitolo 5. Se non le hai ancora installate:
 > ```bash
 > pip install anthropic python-dotenv pydantic

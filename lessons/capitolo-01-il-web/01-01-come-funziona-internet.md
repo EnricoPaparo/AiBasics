@@ -30,6 +30,9 @@ versione: "1.0"
 ---
 # Come funziona Internet: client, server e il viaggio di una richiesta
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Saprai spiegare cosa succede quando “chiedi qualcosa” alla rete.
+> Il viaggio di una richiesta — client, server, DNS, HTTP — perché è lo stesso meccanismo con cui, più avanti, il tuo programma “chiamerà” un’AI.
+
 In questo capitolo costruiremo le fondamenta su cui poggia tutto il resto del corso: come funziona la rete, come comunicano i programmi tra loro, e cosa succede davvero quando un'applicazione chiama un servizio esterno. Capire questi meccanismi non è un prerequisito burocratico — è il vocabolario tecnico che ti permetterà di ragionare con precisione su ogni sistema AI che costruiremo.
 
 ## Introduzione

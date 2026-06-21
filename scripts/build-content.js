@@ -32,10 +32,13 @@ function buildLezioni() {
 function main() {
   const lezioni = buildLezioni();
   const roadmap = fs.readFileSync(path.join(LESSONS_DIR, 'ROADMAP.md'), 'utf8');
+  const glossarioPath = path.join(LESSONS_DIR, 'GLOSSARIO.md');
+  const glossario = fs.existsSync(glossarioPath) ? fs.readFileSync(glossarioPath, 'utf8') : '';
 
   const content =
     'const LEZIONI_CONTENT = ' + JSON.stringify(lezioni) + ';\n' +
-    'const ROADMAP_CONTENT = ' + JSON.stringify(roadmap) + ';\n';
+    'const ROADMAP_CONTENT = ' + JSON.stringify(roadmap) + ';\n' +
+    'const GLOSSARIO_CONTENT = ' + JSON.stringify(glossario) + ';\n';
 
   fs.writeFileSync(OUT_FILE, content);
 
