@@ -230,6 +230,12 @@ Questa è la risposta professionale: non un rifiuto secco, ma un'analisi complet
 
 ---
 
+## 🌐 Per Approfondire in Inglese
+
+Il testo legislativo ufficiale dell'Unione Europea che regolamenta i sistemi di intelligenza artificiale per categorie di rischio, con obblighi concreti per sviluppatori e deployer — la normativa di riferimento per chiunque operi nel mercato europeo → **"EU AI Act"** testo ufficiale su eur-lex.europa.eu (tipo: documento legislativo)
+
+---
+
 ## Connessioni
 
 - **Capitolo 6**: [Sicurezza e Prompt Injection](../capitolo-06-agenti-architettura/06-07-sicurezza-prompt-injection) — sicurezza tecnica e sicurezza etica sono complementari
