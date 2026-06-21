@@ -6,6 +6,15 @@
   <title>MACHINA — Corso</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="assets/style.css">
+  <script>
+    // Applica il tema salvato prima del render per evitare il flash
+    (function () {
+      try {
+        var t = localStorage.getItem('machina-theme');
+        if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -28,6 +37,7 @@
       <span>Seleziona una lezione</span>
     </div>
 
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambia tema chiaro/scuro" title="Cambia tema">☀</button>
     <a href="index.html" class="header-home-btn">← Home</a>
   </header>
 
@@ -58,6 +68,8 @@
 
 <!-- marked.js for markdown rendering -->
 <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+<!-- highlight.js per la colorazione della sintassi del codice -->
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/highlight.min.js"></script>
 <script>
   // Configure marked
   if (typeof marked !== 'undefined') {

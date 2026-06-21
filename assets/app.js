@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     state.manifest = await loadManifest();
     buildSidebar();
     setupMobileToggle();
+    setupThemeToggle();
     routeFromHash(location.hash.slice(1));
   } catch (e) {
     console.error('Init error:', e);
@@ -266,6 +267,41 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
     </div>
   `;
   area.scrollTop = 0;
+  enhanceCodeBlocks(area);
+}
+
+// ── Code blocks: syntax highlighting + bottone "Copia" ────────
+function enhanceCodeBlocks(root) {
+  root.querySelectorAll('pre > code').forEach(code => {
+    const pre = code.parentElement;
+    // Evidenzia solo i blocchi con linguaggio esplicito (non i diagrammi ASCII)
+    if (typeof hljs !== 'undefined' && /\blanguage-\w/.test(code.className)) {
+      try { hljs.highlightElement(code); } catch (e) {}
+    }
+    if (pre.querySelector('.copy-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.type = 'button';
+    btn.textContent = 'Copia';
+    btn.addEventListener('click', () => {
+      const text = code.innerText;
+      const done = () => {
+        btn.textContent = 'Copiato!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copia'; btn.classList.remove('copied'); }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(() => { btn.textContent = 'Errore'; });
+      } else {
+        // fallback per contesti senza Clipboard API
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'Errore'; }
+        document.body.removeChild(ta);
+      }
+    });
+    pre.appendChild(btn);
+  });
 }
 
 // ── Roadmap ───────────────────────────────────────────────────
@@ -325,6 +361,22 @@ function showWelcome() {
   `;
 }
 
+
+// ── Tema chiaro/scuro ─────────────────────────────────────────
+function setupThemeToggle() {
+  const btn = $('theme-toggle');
+  if (!btn) return;
+  const root = document.documentElement;
+  const sync = () => { btn.textContent = root.getAttribute('data-theme') === 'light' ? '☾' : '☀'; };
+  sync();
+  btn.addEventListener('click', () => {
+    const isLight = root.getAttribute('data-theme') === 'light';
+    if (isLight) root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', 'light');
+    try { localStorage.setItem('machina-theme', isLight ? 'dark' : 'light'); } catch (e) {}
+    sync();
+  });
+}
 
 // ── Mobile sidebar ────────────────────────────────────────────
 function setupMobileToggle() {
