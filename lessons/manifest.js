@@ -3,7 +3,7 @@ const MANIFEST_DATA = {
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "2.0",
   "anno": "2026",
-  "totale_lezioni": 56,
+  "totale_lezioni": 64,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -126,6 +126,10 @@ const MANIFEST_DATA = {
         {
           "id": "04-08-token-economics",
           "titolo": "Token Economics e Costi"
+        },
+        {
+          "id": "04-09-fine-tuning",
+          "titolo": "Fine-Tuning: Quando e Come"
         }
       ]
     },
@@ -163,6 +167,22 @@ const MANIFEST_DATA = {
         {
           "id": "05-07-vibe-coding",
           "titolo": "Vibe Coding"
+        },
+        {
+          "id": "05-08-embeddings-vector-db",
+          "titolo": "Embeddings e Vector Database"
+        },
+        {
+          "id": "05-09-struttura-progetto-python",
+          "titolo": "Struttura di un Progetto Python Reale"
+        },
+        {
+          "id": "05-10-streaming-ux-realtime",
+          "titolo": "Streaming e UX Real-Time"
+        },
+        {
+          "id": "05-11-debugging-osservabilita",
+          "titolo": "Debugging e Osservabilità degli Agenti"
         }
       ]
     },
@@ -200,6 +220,10 @@ const MANIFEST_DATA = {
         {
           "id": "06-07-sicurezza-prompt-injection",
           "titolo": "Sicurezza e Prompt Injection"
+        },
+        {
+          "id": "06-08-async-concorrenza",
+          "titolo": "Async e Concorrenza negli Agenti"
         }
       ]
     },
@@ -237,6 +261,10 @@ const MANIFEST_DATA = {
         {
           "id": "07-07-skills-skill-library",
           "titolo": "Skills e Skill Library"
+        },
+        {
+          "id": "07-08-prompt-versioning",
+          "titolo": "Prompt Versioning Pratico"
         }
       ]
     },
@@ -307,6 +335,10 @@ const MANIFEST_DATA = {
         {
           "id": "09-06-etica-responsabilita",
           "titolo": "Etica e Responsabilità nell'AI"
+        },
+        {
+          "id": "09-07-pubblicare-monetizzare",
+          "titolo": "Pubblicare e Monetizzare un Progetto AI"
         }
       ]
     }
