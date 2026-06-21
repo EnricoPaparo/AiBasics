@@ -241,6 +241,17 @@ Se un LLM "prevede solo il token successivo", come fa a restare coerente su un i
 
 ---
 
+## 🧪 Visualizza un LLM in Azione
+
+**Tokenizer interattivo**: vai su platform.openai.com/tokenizer (o cerca "tokenizer visualizer" online). Incolla questa frase:
+> "Intelligenza artificiale applicata alla scuola italiana"
+
+Osserva: quanti token sono? Corrispondono alle parole? Perché "artificiale" potrebbe essere spezzato in più token?
+
+**Perché è utile**: capire il tokenizer ti fa capire COME un LLM "vede" il tuo testo — e perché certi prompt costano di più di altri.
+
+---
+
 ## Connessioni
 
 **Viene da:** Lezione 2.5 — il Transformer descritto lì è esattamente l'architettura che, addestrata su scala enorme, costituisce un LLM.

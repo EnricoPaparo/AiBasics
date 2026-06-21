@@ -197,6 +197,24 @@ Tieni a mente questi limiti: non significano che il prompting sia "insufficiente
 
 ---
 
+## 🧪 Laboratorio Prompting — Sperimenta Subito
+
+Apri qualsiasi LLM gratuito (Claude.ai, ChatGPT, Gemini) e prova questi 3 esperimenti in ordine:
+
+**Esperimento 1 — Zero-shot vs Few-shot**
+Chiedi: "Classifica questo testo come positivo o negativo: 'Il film era così lungo che mi sono addormentato'"
+Poi ri-chiedi ma fornendo prima 2 esempi di classificazione. Nota la differenza nella risposta.
+
+**Esperimento 2 — Chain of Thought**
+Chiedi un problema di ragionamento (es. un puzzle logico semplice) con e senza la frase "Ragiona passo dopo passo". Confronta.
+
+**Esperimento 3 — System prompt vs User prompt**
+Testa lo stesso messaggio utente con due system prompt diversi: uno formale, uno colloquiale. Osserva come cambia il tono.
+
+Annota le differenze: *quando il prompting ha fatto la differenza più grande?*
+
+---
+
 ## Esempio Pratico: Trasformare un Prompt Vago in un Prompt Efficace
 
 Prendi questo prompt vago: *"Scrivimi qualcosa sul cambiamento climatico."*

@@ -197,6 +197,38 @@ Nota una scelta deliberata: la API key non è scritta direttamente nel codice (`
 
 ---
 
+## 🧪 Il Tuo Primo Messaggio via API
+
+**Obiettivo**: inviare un messaggio a un LLM tramite codice (non tramite interfaccia grafica) per la prima volta.
+
+**Passo 0 — Ottieni una chiave API gratuita**
+- Anthropic offre crediti gratuiti per sviluppatori (docs.anthropic.com)
+- In alternativa, Google Gemini ha un tier gratuito generoso
+- OpenAI ha crediti iniziali per i nuovi account
+
+**Passo 1 — Installa la libreria**
+```bash
+pip install anthropic  # oppure: pip install openai
+```
+
+**Passo 2 — 5 righe di codice**
+```python
+import anthropic
+client = anthropic.Anthropic(api_key="LA_TUA_CHIAVE")
+risposta = client.messages.create(
+    model="claude-haiku-4-5-20251001",
+    max_tokens=200,
+    messages=[{"role": "user", "content": "Ciao! Spiegami cos'è un LLM in 2 frasi."}]
+)
+print(risposta.content[0].text)
+```
+
+**Cosa osservare**: il testo arriva come oggetto strutturato, non come stringa grezza. Perché? Perché l'API è progettata per sistemi, non per esseri umani.
+
+*Cambia il messaggio, cambia il modello, osserva come cambia la risposta.*
+
+---
+
 ## Esempio Pratico: Stimare Costo e Tempo di una Chiamata
 
 Immagina di voler costruire un sistema che riassume automaticamente 100 documenti, ciascuno di circa 2.000 token, con un prompt di istruzioni di circa 200 token, e una risposta attesa di circa 300 token per documento.

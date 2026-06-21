@@ -184,6 +184,18 @@ Questa combinazione di fattori — dati, calcolo, algoritmi — è esattamente l
 
 ---
 
+## 🧪 Prova Tu — Reti Più Profonde
+
+Su **TensorFlow Playground** (playground.tensorflow.org):
+1. Seleziona il dataset "Spiral" (il più complesso)
+2. Prova con 1 solo layer nascosto: riesce la rete ad imparare?
+3. Ora aggiungi 3-4 layer: cosa cambia?
+4. Osserva le "feature visualizations" nei neuroni intermedi
+
+Rifletti: *perché con dati più complessi servono più layer?*
+
+---
+
 ## Esempio Pratico: Visualizzare una Rete Neurale Minuscola
 
 Costruiamo, solo concettualmente, una rete minuscola per un problema giocattolo: decidere se portare l'ombrello, basandosi su due input: probabilità di pioggia (da 0 a 1) e quanto sei disposto a rischiare di bagnarti (da 0 a 1, dove 0 = odi bagnarti, 1 = non ti importa).
