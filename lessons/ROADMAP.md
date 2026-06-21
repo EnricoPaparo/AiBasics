@@ -1,7 +1,7 @@
 # ROADMAP — Piano Completo del Corso
 
 **Corso:** Intelligenza Artificiale Applicata — Dalla Teoria alla Costruzione di Agenti Professionali
-**Struttura:** 10 Capitoli · 67 Lezioni
+**Struttura:** 10 Capitoli · 68 Lezioni
 
 ---
 
@@ -255,7 +255,7 @@ PyPI, Streamlit/Gradio, API as a Service, plugin/extension. Freemium, pay-per-us
 
 | Cap. | Titolo | Lez. | Nuclei Tematici |
 |------|--------|------|-----------------|
-| 0 | Prima di Iniziare | 1 | Ambiente di sviluppo, Python, chiave API, primo "Hello, Claude" |
+| 0 | Prima di Iniziare | 2 | Benvenuto e aggancio, ambiente di sviluppo, Python, chiave API, "Hello, Claude" |
 | 1 | Il Web come lo Conosciamo | 5 | HTTP, client/server, web app, API, JSON/YAML |
 | 2 | Git e GitHub | 4 | Version control, branch, GitHub, CI/CD |
 | 3 | L'Intelligenza Artificiale | 5 | ML, DL, NLP, Transformer, Attention |
@@ -265,7 +265,7 @@ PyPI, Streamlit/Gradio, API as a Service, plugin/extension. Freemium, pay-per-us
 | 7 | L'Agent Package | 8 | YAML, package, agent card, prompt artefatti, contratti, handoff, skills, versioning |
 | 8 | Workflow Multi-Agente | 7 | Grafo, LangGraph, review layer, HITL, valutazione, testing, deployment |
 | 9 | Sistemi Auto-Evolutivi | 8 | Self-reflection, prompt evolutivi, knowledge, governance, progetto finale, etica, monetizzazione, diritto |
-| **Totale** | | **67 lezioni** | **Fondamenti → Strumenti → Agenti → Produzione → Auto-miglioramento** |
+| **Totale** | | **68 lezioni** | **Fondamenti → Strumenti → Agenti → Produzione → Auto-miglioramento** |
 
 ---
 

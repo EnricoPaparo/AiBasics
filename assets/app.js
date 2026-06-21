@@ -41,35 +41,43 @@ function buildSidebar() {
   if (!sidebarEl) return;
   sidebarEl.innerHTML = '';
 
-  // Search bar
+  // Search bar + filtro "Solo percorso Core"
   const searchWrap = document.createElement('div');
   searchWrap.className = 'sidebar-search';
-  searchWrap.innerHTML = `<input type="text" id="lesson-search" placeholder="🔍 Cerca lezione..." autocomplete="off">`;
+  searchWrap.innerHTML = `
+    <input type="text" id="lesson-search" placeholder="🔍 Cerca lezione..." autocomplete="off">
+    <label class="core-filter" title="Mostra solo il percorso essenziale per le superiori">
+      <input type="checkbox" id="core-toggle"> Solo percorso Core <span class="core-star">★</span>
+    </label>`;
   sidebarEl.appendChild(searchWrap);
 
   const searchInput = searchWrap.querySelector('#lesson-search');
-  searchInput.addEventListener('input', () => {
+  const coreToggle = searchWrap.querySelector('#core-toggle');
+
+  function applyFilters() {
     const q = searchInput.value.toLowerCase().trim();
+    const coreOnly = coreToggle.checked;
     $$('.chapter-item').forEach(chItem => {
       let anyVisible = false;
       chItem.querySelectorAll('.lesson-link').forEach(link => {
-        const match = !q || link.textContent.toLowerCase().includes(q);
-        link.style.display = match ? '' : 'none';
-        if (match) anyVisible = true;
+        const matchQ = !q || link.textContent.toLowerCase().includes(q);
+        const matchCore = !coreOnly || link.classList.contains('is-core');
+        const show = matchQ && matchCore;
+        link.style.display = show ? '' : 'none';
+        if (show) anyVisible = true;
       });
       chItem.style.display = anyVisible ? '' : 'none';
-      if (q && anyVisible) chItem.classList.add('open');
-      else if (!q) chItem.classList.remove('open');
+      if ((q || coreOnly) && anyVisible) chItem.classList.add('open');
+      else if (!q && !coreOnly) chItem.classList.remove('open');
     });
-    // Keep active chapter open
-    if (!q) {
+    // Keep active chapter open quando non c'è alcun filtro
+    if (!q && !coreOnly) {
       const activeLessonLink = document.querySelector('.lesson-link.active');
-      if (activeLessonLink) {
-        const activeChap = activeLessonLink.closest('.chapter-item');
-        if (activeChap) activeChap.classList.add('open');
-      }
+      if (activeLessonLink) activeLessonLink.closest('.chapter-item')?.classList.add('open');
     }
-  });
+  }
+  searchInput.addEventListener('input', applyFilters);
+  coreToggle.addEventListener('change', applyFilters);
 
   // Roadmap button
   const roadmapBtn = document.createElement('div');
@@ -103,12 +111,13 @@ function buildSidebar() {
 
     chapter.lezioni.forEach((lesson, li) => {
       const link = document.createElement('a');
-      link.className = 'lesson-link';
+      link.className = 'lesson-link' + (lesson.core ? ' is-core' : '');
       link.id = `lesson-${chapter.id}-${lesson.id}`;
       link.style.setProperty('--chap-color', chapter.colore);
       link.innerHTML = `
         <span class="lesson-dot"></span>
         <span>${lesson.titolo}</span>
+        ${lesson.core ? '<span class="lesson-core-badge" title="Percorso Core per le superiori">★</span>' : ''}
       `;
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -238,6 +247,7 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
     <div class="content-inner" id="content-inner">
       <div class="lesson-meta">
         <span class="meta-tag chapter">CAP. ${String(chapter.numero).padStart(2,'0')} — ${chapter.titolo}</span>
+        ${lesson.core ? '<span class="meta-tag core" title="Lezione del percorso essenziale per le superiori">★ CORE SUPERIORI</span>' : ''}
         ${meta.difficolta ? `<span class="meta-tag difficulty">▲ ${meta.difficolta}</span>` : ''}
         <span class="meta-tag progress">LEZIONE ${lessonNum} DI ${totalLessons}</span>
       </div>

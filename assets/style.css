@@ -666,6 +666,32 @@ body {
 .sidebar-search input::placeholder { color: var(--text-dim); }
 .sidebar-search input:focus { border-color: var(--cyan); }
 
+/* ── Filtro / badge "Percorso Core" ───────────────────────────── */
+.core-filter {
+  display: flex; align-items: center; gap: .4rem;
+  margin-top: .55rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+.core-filter input { accent-color: var(--gold); cursor: pointer; }
+.core-filter .core-star { color: var(--gold); }
+.lesson-core-badge {
+  margin-left: auto;
+  color: var(--gold);
+  font-size: .8rem;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+.meta-tag.core {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(255,215,0,.06);
+  letter-spacing: .06em;
+}
+
 /* ── Roadmap Button ────────────────────────────────────────── */
 .sidebar-roadmap-btn {
   display: flex; align-items: center; gap: .75rem;

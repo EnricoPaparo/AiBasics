@@ -3,7 +3,7 @@ const MANIFEST_DATA = {
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "2.0",
   "anno": "2026",
-  "totale_lezioni": 67,
+  "totale_lezioni": 68,
   "roadmap": [
     {
       "id": "capitolo-00-setup",
@@ -13,8 +13,14 @@ const MANIFEST_DATA = {
       "colore": "#00ff41",
       "lezioni": [
         {
+          "id": "00-00-benvenuto",
+          "titolo": "Benvenuto: cosa costruirai",
+          "core": true
+        },
+        {
           "id": "00-01-ambiente-sviluppo",
-          "titolo": "Ambiente di Sviluppo"
+          "titolo": "Ambiente di Sviluppo",
+          "core": true
         }
       ]
     },
@@ -27,7 +33,8 @@ const MANIFEST_DATA = {
       "lezioni": [
         {
           "id": "01-01-come-funziona-internet",
-          "titolo": "Come funziona Internet"
+          "titolo": "Come funziona Internet",
+          "core": true
         },
         {
           "id": "01-02-siti-web-statici",
@@ -43,7 +50,8 @@ const MANIFEST_DATA = {
         },
         {
           "id": "01-05-le-api",
-          "titolo": "Le API"
+          "titolo": "Le API",
+          "core": true
         }
       ]
     },
@@ -81,15 +89,18 @@ const MANIFEST_DATA = {
       "lezioni": [
         {
           "id": "03-01-ai-storia-definizioni",
-          "titolo": "AI: Storia e Definizioni"
+          "titolo": "AI: Storia e Definizioni",
+          "core": true
         },
         {
           "id": "03-02-machine-learning",
-          "titolo": "Machine Learning"
+          "titolo": "Machine Learning",
+          "core": true
         },
         {
           "id": "03-03-reti-neurali-deep-learning",
-          "titolo": "Reti Neurali e Deep Learning"
+          "titolo": "Reti Neurali e Deep Learning",
+          "core": true
         },
         {
           "id": "03-04-nlp-problema-linguaggio",
@@ -110,7 +121,8 @@ const MANIFEST_DATA = {
       "lezioni": [
         {
           "id": "04-01-cose-un-llm",
-          "titolo": "Cos'è un LLM"
+          "titolo": "Cos'è un LLM",
+          "core": true
         },
         {
           "id": "04-02-training-finetuning-rlhf",
@@ -122,11 +134,13 @@ const MANIFEST_DATA = {
         },
         {
           "id": "04-04-prompting",
-          "titolo": "Il Prompting"
+          "titolo": "Il Prompting",
+          "core": true
         },
         {
           "id": "04-05-limiti-allucinazioni",
-          "titolo": "Limiti e Allucinazioni"
+          "titolo": "Limiti e Allucinazioni",
+          "core": true
         },
         {
           "id": "04-06-context-window",
@@ -155,7 +169,8 @@ const MANIFEST_DATA = {
       "lezioni": [
         {
           "id": "05-01-api-llm",
-          "titolo": "L'API degli LLM"
+          "titolo": "L'API degli LLM",
+          "core": true
         },
         {
           "id": "05-02-output-strutturati-parser",
@@ -167,11 +182,13 @@ const MANIFEST_DATA = {
         },
         {
           "id": "05-03-rag",
-          "titolo": "RAG: Memoria Esterna"
+          "titolo": "RAG: Memoria Esterna",
+          "core": true
         },
         {
           "id": "05-04-tool-use-function-calling",
-          "titolo": "Tool Use / Function Calling"
+          "titolo": "Tool Use / Function Calling",
+          "core": true
         },
         {
           "id": "05-05-mcp-model-context-protocol",
@@ -212,11 +229,13 @@ const MANIFEST_DATA = {
       "lezioni": [
         {
           "id": "06-01-cose-un-agente",
-          "titolo": "Cos'è un Agente AI"
+          "titolo": "Cos'è un Agente AI",
+          "core": true
         },
         {
           "id": "06-02-react-cot-pattern",
-          "titolo": "ReAct e Chain-of-Thought"
+          "titolo": "ReAct e Chain-of-Thought",
+          "core": true
         },
         {
           "id": "06-03-orchestratore",
@@ -347,11 +366,13 @@ const MANIFEST_DATA = {
         },
         {
           "id": "09-05-progetto-finale",
-          "titolo": "Progetto Finale"
+          "titolo": "Progetto Finale",
+          "core": true
         },
         {
           "id": "09-06-etica-responsabilita",
-          "titolo": "Etica e Responsabilità nell'AI"
+          "titolo": "Etica e Responsabilità nell'AI",
+          "core": true
         },
         {
           "id": "09-07-pubblicare-monetizzare",
