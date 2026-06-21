@@ -3,8 +3,21 @@ const MANIFEST_DATA = {
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "2.0",
   "anno": "2026",
-  "totale_lezioni": 66,
+  "totale_lezioni": 67,
   "roadmap": [
+    {
+      "id": "capitolo-00-setup",
+      "numero": 0,
+      "titolo": "Prima di Iniziare",
+      "icona": "⚡",
+      "colore": "#00ff41",
+      "lezioni": [
+        {
+          "id": "00-01-ambiente-sviluppo",
+          "titolo": "Ambiente di Sviluppo"
+        }
+      ]
+    },
     {
       "id": "capitolo-01-il-web",
       "numero": 1,

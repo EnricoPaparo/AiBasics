@@ -25,6 +25,12 @@ versione: "1.0"
 
 # Cos'è un Agente AI: definizione, componenti e loop agentivo
 
+> **⚡ Setup richiesto**: il Capitolo 6 usa le stesse librerie del Capitolo 5. Se non le hai ancora installate:
+> ```bash
+> pip install anthropic python-dotenv pydantic
+> ```
+> Per le lezioni con LangGraph (Cap. 6.3 in poi): `pip install langgraph`
+
 In questo capitolo assembliamo tutto ciò che abbiamo costruito in un'unica architettura funzionante: l'agente AI. Vedremo come strutturare un sistema che percepisce, ragiona e agisce in modo autonomo — e impareremo a farlo con rigore ingegneristico, non come esperimento, ma come sistema progettato per durare.
 
 ## Introduzione
