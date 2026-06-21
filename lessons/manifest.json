@@ -3,7 +3,7 @@
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "1.0",
   "anno": "2026",
-  "totale_lezioni": 43,
+  "totale_lezioni": 46,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -44,7 +44,9 @@
         { "id": "03-02-training-finetuning-rlhf","titolo": "Training, Fine-tuning e RLHF" },
         { "id": "03-03-anatomia-prodotto-ai",    "titolo": "Anatomia di un Prodotto AI" },
         { "id": "03-04-prompting",               "titolo": "Il Prompting" },
-        { "id": "03-05-limiti-allucinazioni",    "titolo": "Limiti e Allucinazioni" }
+        { "id": "03-05-limiti-allucinazioni",    "titolo": "Limiti e Allucinazioni" },
+        { "id": "03-06-context-window",          "titolo": "Il Context Window" },
+        { "id": "03-07-gestire-il-contesto",     "titolo": "Gestire il Contesto" }
       ]
     },
     {
@@ -73,7 +75,8 @@
         { "id": "05-02-react-cot-pattern",           "titolo": "ReAct e Chain-of-Thought" },
         { "id": "05-03-orchestratore",               "titolo": "L'Orchestratore" },
         { "id": "05-04-single-vs-multi-agent",       "titolo": "Single vs Multi-Agent" },
-        { "id": "05-05-errori-robustezza-osservabilita", "titolo": "Errori, Robustezza, Osservabilità" }
+        { "id": "05-05-errori-robustezza-osservabilita", "titolo": "Errori, Robustezza, Osservabilità" },
+        { "id": "05-06-harness",                     "titolo": "L'Harness" }
       ]
     },
     {
