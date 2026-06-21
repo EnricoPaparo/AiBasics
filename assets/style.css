@@ -459,6 +459,7 @@ body {
   letter-spacing: .1em;
 }
 .site-footer .logo-text { color: var(--cyan); font-family: 'Orbitron', monospace; }
+.footer-logo-img { height: 36px; width: auto; display: block; }
 
 
 /* ╔══════════════════════════════════════════════════════════╗
@@ -495,7 +496,10 @@ body {
   text-decoration: none;
   letter-spacing: .05em;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
+.header-logo-img { height: 32px; width: auto; }
 
 .header-logo span { color: var(--text-dim); font-weight: 400; }
 
