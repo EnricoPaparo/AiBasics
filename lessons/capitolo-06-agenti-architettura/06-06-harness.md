@@ -12,26 +12,7 @@ Hai scritto un ottimo system prompt. Hai definito i tool. Hai testato il ragiona
 
 Un **harness** (letteralmente "imbracatura") è l'infrastruttura che avvolge un agente AI e ne gestisce l'esecuzione. È lo strato software che si interpone tra il tuo codice, il modello LLM, e il mondo esterno.
 
-L'harness non ragiona, non decide, non genera testo. **Esegue**: chiama l'API, elabora la risposta, dispatcha i tool, raccoglie i risultati, costruisce il messaggio successivo, e ricomincia — finché il task non è completato.
-
-```
-┌─────────────────────────────────────────┐
-│               HARNESS                   │
-│                                         │
-│  ┌──────────┐    ┌──────────────────┐   │
-│  │  Agente  │◄──►│  Loop di        │   │
-│  │  (LLM)   │    │  Esecuzione     │   │
-│  └──────────┘    └────────┬─────────┘   │
-│                           │             │
-│  ┌────────────────────────▼──────────┐  │
-│  │  Tool Dispatcher                  │  │
-│  │  Context Manager                  │  │
-│  │  Error Handler                    │  │
-│  │  Logger / Monitor                 │  │
-│  └───────────────────────────────────┘  │
-│                                         │
-└─────────────────────────────────────────┘
-```
+L'harness non ragiona, non decide, non genera testo. **Esegue**: chiama l'API, elabora la risposta, dispatcha i tool, raccoglie i risultati, costruisce il messaggio successivo, e ricomincia.
 
 ## Cosa fa Concretamente
 
@@ -56,96 +37,22 @@ def run_agent(harness, user_input):
             # il loop continua: l'agente elabora i risultati
 ```
 
-Questo loop può andare avanti per decine di iterazioni su task complessi. L'harness lo gestisce senza che tu debba scriverlo ogni volta da zero.
+Questo loop può andare avanti per decine di iterazioni su task complessi.
 
-### Tool Dispatch
+### Componenti Principali
 
-Quando il modello decide di usare un tool, l'harness intercetta la richiesta, trova la funzione corrispondente, la esegue, e riporta il risultato.
-
-```python
-# Il modello dice: "voglio usare il tool search_web con query='prezzi componenti'"
-# L'harness fa:
-tool_registry = {
-    "search_web": search_web_function,
-    "read_file": read_file_function,
-    "write_file": write_file_function,
-}
-
-result = tool_registry[tool_call.name](**tool_call.arguments)
-```
-
-L'harness gestisce anche i casi d'errore: tool non trovato, eccezione durante l'esecuzione, timeout, risultato troppo lungo per il context.
-
-### Context Management
-
-L'harness mantiene la conversazione in memoria e gestisce il context window. Decide quali messaggi includere, quando comprimere, quando usare il caching.
-
-```python
-class ContextManager:
-    def add_message(self, role, content):
-        self.messages.append({"role": role, "content": content})
-        if self.count_tokens() > self.max_tokens * 0.9:
-            self.compress()  # summarization o sliding window
-
-    def compress(self):
-        # Mantieni system prompt + ultimi N messaggi
-        self.messages = [self.messages[0]] + self.messages[-10:]
-```
-
-### Error Handling e Retry
-
-Le API falliscono. I tool lanciano eccezioni. Il modello genera output malformati. L'harness gestisce tutto questo con retry automatici, backoff esponenziale, e strategie di fallback.
-
-```python
-def call_llm_with_retry(self, max_retries=3):
-    for attempt in range(max_retries):
-        try:
-            return self.client.messages.create(...)
-        except RateLimitError:
-            time.sleep(2 ** attempt)  # backoff esponenziale
-        except ContextLengthError:
-            self.context.compress()   # riprova con context ridotto
-    raise MaxRetriesExceeded()
-```
-
-### Logging e Osservabilità
-
-Un harness professionale registra ogni evento: ogni chiamata LLM con i token usati, ogni tool call con input e output, ogni errore, ogni decisione di compressione del context. Questo è essenziale per il debugging e per capire cosa l'agente sta effettivamente facendo.
+- **Tool Dispatch**: intercetta le richieste di tool, trova la funzione corrispondente in un registro, la esegue, e riporta il risultato (inclusa la gestione degli errori)
+- **Context Management**: mantiene la conversazione in memoria, decide quali messaggi includere, quando comprimere, quando usare il caching
+- **Error Handling e Retry**: gestisce rate limit con backoff esponenziale, contesto troppo lungo, output malformati
+- **Logging e Osservabilità**: registra ogni chiamata LLM, ogni tool call, ogni errore — essenziale per il debugging
 
 ## Esempi Reali di Harness
 
-### Claude Code (Questo Strumento)
-
-Claude Code è un agente AI, e l'harness che lo fa girare gestisce: il loop di esecuzione sui task, il dispatch verso i tool (Read, Edit, Bash, Glob...), il context della sessione corrente, il salvataggio dei file modificati, e l'interfaccia con l'utente.
-
-Quando chiedi a Claude Code di "analizzare il repository e trovare tutti i bug", l'harness traduce questa richiesta in decine di chiamate API, centinaia di tool call, e alla fine ti presenta il risultato.
-
-### LangGraph
-
-LangGraph modella l'harness come un grafo orientato: ogni nodo è uno step, ogni arco è una transizione condizionale. L'harness esegue il grafo, mantiene lo stato tra i nodi, e gestisce i cicli (quando l'agente deve tornare indietro).
-
-```python
-# Con LangGraph, l'harness è il grafo stesso
-workflow = StateGraph(AgentState)
-workflow.add_node("agent", call_model)
-workflow.add_node("tools", execute_tools)
-workflow.add_conditional_edges("agent", should_continue, {
-    "continue": "tools",
-    "end": END
-})
-```
-
-### AutoGen
-
-In AutoGen, l'harness gestisce la comunicazione tra più agenti in una "conversation". Ogni agente ha il suo loop, e l'harness coordina i messaggi tra di loro, decide chi parla quando, e quando la conversazione è terminata.
-
-### Harness Custom
-
-Per molti casi d'uso professionali, si scrive un harness custom. È più lavoro ma offre controllo totale: puoi implementare esattamente le strategie di context management che vuoi, il logging che ti serve, le policy di retry specifiche per il tuo sistema.
+- **Claude Code**: gestisce loop di esecuzione, dispatch verso tool (Read, Edit, Bash...), context della sessione, interfaccia con l'utente
+- **LangGraph**: modella l'harness come un grafo orientato — ogni nodo è uno step, ogni arco è una transizione condizionale
+- **AutoGen**: gestisce la comunicazione tra più agenti in una "conversation", coordina messaggi e decisioni su chi parla quando
 
 ## Harness vs Framework vs SDK
-
-La distinzione può confondere:
 
 | | Cos'è | Esempi |
 |--|-------|--------|
@@ -153,23 +60,7 @@ La distinzione può confondere:
 | **Framework** | Abstraction layer con componenti prebuilt | LangChain, LlamaIndex |
 | **Harness** | Il runtime che esegue l'agente | Claude Code, AutoGen, LangGraph, harness custom |
 
-Un harness spesso usa un SDK, e può appoggiarsi a un framework — ma è il livello che effettivamente esegue il loop agente.
-
-## Perché lo Sviluppatore Deve Capirlo
-
-Capire l'harness ti permette di:
-
-**Debuggare efficacemente** — quando un agente si comporta in modo strano, il problema è spesso nell'harness (context mal gestito, tool risultato non passato correttamente, retry che ha cambiato lo stato) più che nel modello.
-
-**Scegliere lo strumento giusto** — LangGraph, AutoGen, o harness custom? La risposta dipende dalla complessità del tuo loop, dal tipo di tool dispatch, e da quanto controllo ti serve.
-
-**Ottimizzare le prestazioni** — caching, batching dei tool call, parallelizzazione — tutte ottimizzazioni che vivono nell'harness, non nel modello.
-
-**Stimare i costi** — l'harness determina quante chiamate API vengono fatte e con quali dimensioni di context. Senza capirlo, non puoi stimare i costi di produzione.
-
 ## Un Harness Minimale
-
-Per capire il concetto alla radice, ecco un harness funzionante scritto da zero in ~50 righe:
 
 ```python
 import anthropic
@@ -187,13 +78,10 @@ class MinimalHarness:
 
         for _ in range(max_iterations):
             response = self.client.messages.create(
-                model="claude-opus-4-8",
-                max_tokens=4096,
-                system=system_prompt,
-                tools=self.tool_schemas,
+                model="claude-opus-4-8", max_tokens=4096,
+                system=system_prompt, tools=self.tool_schemas,
                 messages=self.messages
             )
-
             self.messages.append({"role": "assistant", "content": response.content})
 
             if response.stop_reason == "end_turn":
@@ -208,7 +96,6 @@ class MinimalHarness:
                         "tool_use_id": block.id,
                         "content": str(result)
                     })
-
             self.messages.append({"role": "user", "content": tool_results})
 
         return "Max iterations reached"
@@ -220,28 +107,24 @@ Questo è il nucleo di ogni harness. Tutto il resto — context management, retr
 
 ## Esercizi Pratici
 
-> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire il suggerimento.
 
 ### Esercizio 1 — Anatomia di un Harness 🟢 Base
 
 Guarda il codice del `MinimalHarness` sopra. Identifica: (a) dove avviene il loop di esecuzione, (b) dove viene gestito il tool dispatch, (c) qual è la condizione di terminazione, (d) cosa manca rispetto a un harness di produzione.
 
 <details>
-<summary>💡 Mostra soluzione</summary>
+<summary>💡 Mostra suggerimento</summary>
 
-**(a) Loop di esecuzione**: il `for _ in range(max_iterations)` — ogni iterazione è un turno del loop agente.
+Leggi il codice riga per riga e cerca:
 
-**(b) Tool dispatch**: il blocco `for block in response.content` — quando trova un `tool_use`, chiama `self.tools[block.name](**block.input)`.
+**(a) Loop:** cerca il `for _ in range(...)` — ogni iterazione è un turno del loop agente.
 
-**(c) Condizione di terminazione**: `if response.stop_reason == "end_turn"` — il modello dichiara di aver finito, o si raggiunge `max_iterations`.
+**(b) Tool dispatch:** cerca dove viene gestito il `block.type == "tool_use"` — è lì che si chiama la funzione corrispondente.
 
-**(d) Cosa manca in produzione**:
-- Error handling (e retry) sulle chiamate API
-- Context management (nessuna gestione del limite di token)
-- Logging (nessuna traccia degli eventi)
-- Gestione degli errori nei tool (se un tool lancia un'eccezione, il sistema crasha)
-- Timeout per i tool lenti
-- Parallelizzazione dei tool call quando possibile
+**(c) Terminazione:** cerca la condizione che fa uscire dal loop prematuramente (non per esaurimento delle iterazioni).
+
+**(d) Cosa manca:** pensa a cosa succede se: la chiamata API lancia un'eccezione? Un tool lancia un'eccezione? Il contesto supera il limite di token? Nessun evento viene loggato?
 
 </details>
 
@@ -252,59 +135,30 @@ Guarda il codice del `MinimalHarness` sopra. Identifica: (a) dove avviene il loo
 Modifica il `MinimalHarness.run()` per gestire due casi: (1) se un tool lancia un'eccezione, restituisci l'errore come tool_result invece di crashare, così il modello può reagire; (2) se la chiamata API fallisce con un errore di rate limit, aspetta 5 secondi e riprova (max 3 volte).
 
 <details>
-<summary>💡 Mostra soluzione</summary>
+<summary>💡 Mostra suggerimento</summary>
 
+**Retry per rate limit:**
 ```python
-import time
-import anthropic
-
-def run(self, system_prompt, user_input, max_iterations=10):
-    self.messages = [{"role": "user", "content": user_input}]
-
-    for _ in range(max_iterations):
-        # Retry per rate limit
-        for attempt in range(3):
-            try:
-                response = self.client.messages.create(
-                    model="claude-opus-4-8",
-                    max_tokens=4096,
-                    system=system_prompt,
-                    tools=self.tool_schemas,
-                    messages=self.messages
-                )
-                break
-            except anthropic.RateLimitError:
-                if attempt == 2:
-                    raise
-                time.sleep(5)
-
-        self.messages.append({"role": "assistant", "content": response.content})
-
-        if response.stop_reason == "end_turn":
-            return next(b.text for b in response.content if hasattr(b, 'text'))
-
-        tool_results = []
-        for block in response.content:
-            if block.type == "tool_use":
-                # Error handling per i tool
-                try:
-                    result = self.tools[block.name](**block.input)
-                    content = str(result)
-                except Exception as e:
-                    content = f"ERRORE nel tool {block.name}: {str(e)}"
-
-                tool_results.append({
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": content
-                })
-
-        self.messages.append({"role": "user", "content": tool_results})
-
-    return "Max iterations reached"
+for attempt in range(3):
+    try:
+        response = self.client.messages.create(...)
+        break  # successo: esci dal loop
+    except anthropic.RateLimitError:
+        if attempt == 2: raise  # ultimo tentativo: propaga l'errore
+        time.sleep(5)
 ```
 
-Il punto chiave: restituire l'errore come `tool_result` invece di crashare permette al modello di recuperare autonomamente — magari ritentando con parametri diversi o scegliendo un'altra strategia.
+**Error handling per i tool:**
+```python
+try:
+    result = self.tools[block.name](**block.input)
+    content = str(result)
+except Exception as e:
+    content = f"ERRORE nel tool {block.name}: {str(e)}"
+    # Non crashare: il modello riceve l'errore e può reagire
+```
+
+Il punto chiave del secondo: restituire l'errore come `tool_result` permette al modello di recuperare autonomamente.
 
 </details>
 
@@ -315,46 +169,88 @@ Il punto chiave: restituire l'errore come `tool_result` invece di crashare perme
 Devi costruire un harness per un agente di code review. L'agente deve: (1) ricevere una lista di file modificati, (2) leggere ogni file, (3) produrre commenti strutturati per ogni file, (4) sintetizzare una review finale. Il context window è 100k token e i file possono essere molti. Progetta l'architettura dell'harness: quali componenti, come gestisce il contesto, come struttura il loop.
 
 <details>
-<summary>💡 Mostra soluzione</summary>
+<summary>💡 Mostra suggerimento</summary>
 
-**Architettura**: harness multi-fase con context budget per fase.
+**Problema principale:** non puoi mettere tutti i file in un unico context — supereresti il limite.
 
-```
-┌─────────────────────────────────────────────┐
-│         CodeReviewHarness                   │
-│                                             │
-│  Fase 1: Analisi per batch di file          │
-│  ┌───────────────────────────────────────┐  │
-│  │ Per ogni batch (10 file max):          │  │
-│  │  - Loop agente con tool read_file      │  │
-│  │  - Context budget: 40k token           │  │
-│  │  - Output: commenti strutturati JSON   │  │
-│  └───────────────────────────────────────┘  │
-│                                             │
-│  Fase 2: Sintesi finale                     │
-│  ┌───────────────────────────────────────┐  │
-│  │ Input: tutti i commenti JSON (compressi)│  │
-│  │ Loop agente senza tool                  │  │
-│  │ Context budget: 20k token               │  │
-│  │ Output: review finale in markdown       │  │
-│  └───────────────────────────────────────┘  │
-└─────────────────────────────────────────────┘
-```
+**Approccio multi-fase:**
+- **Fase 1 (per batch di file):** harness con context budget 40k token, loop agente con tool `read_file`, output: commenti JSON per file
+- **Fase 2 (sintesi finale):** singola chiamata (no loop) con tutti i commenti JSON compressi, output: review finale in markdown
 
-**Componenti chiave**:
-
+**Struttura dell'harness:**
 ```python
 class CodeReviewHarness:
     def review(self, changed_files):
-        # Fase 1: batch da 10 file
         all_comments = []
         for batch in self.chunk(changed_files, 10):
-            comments = self.review_batch(batch)  # loop agente isolato
+            # Fase 1: harness isolato per ogni batch
+            comments = self.review_batch(batch)
             all_comments.extend(comments)
-
-        # Fase 2: sintesi
+        # Fase 2: sintesi finale
         return self.synthesize(all_comments)
+```
 
+**Perché questa struttura:** ogni fase ha un context pulito (no overflow), il batch separa analisi dalla sintesi (retry su singoli batch), i commenti JSON sono compressi rispetto al codice originale.
+
+</details>
+
+---
+
+<details>
+<summary>⚙️ Approfondimento Avanzato</summary>
+
+### Componenti interni del loop
+
+```python
+# Tool dispatch
+tool_registry = {
+    "search_web": search_web_function,
+    "read_file":  read_file_function,
+    "write_file": write_file_function,
+}
+result = tool_registry[tool_call.name](**tool_call.arguments)
+
+# Context management
+class ContextManager:
+    def add_message(self, role, content):
+        self.messages.append({"role": role, "content": content})
+        if self.count_tokens() > self.max_tokens * 0.9:
+            self.compress()  # summarization o sliding window
+
+    def compress(self):
+        # Mantieni system prompt + ultimi N messaggi
+        self.messages = [self.messages[0]] + self.messages[-10:]
+
+# Retry con backoff esponenziale
+def call_llm_with_retry(self, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            return self.client.messages.create(...)
+        except RateLimitError:
+            time.sleep(2 ** attempt)
+        except ContextLengthError:
+            self.context.compress()
+    raise MaxRetriesExceeded()
+```
+
+### LangGraph (harness come grafo)
+
+```python
+from langgraph.graph import StateGraph, END
+
+workflow = StateGraph(AgentState)
+workflow.add_node("agent", call_model)
+workflow.add_node("tools", execute_tools)
+workflow.add_conditional_edges("agent", should_continue, {
+    "continue": "tools",
+    "end": END
+})
+```
+
+### Soluzione Esercizio 3 completa
+
+```python
+class CodeReviewHarness:
     def review_batch(self, files):
         # Harness con context budget 40k
         # Tool: solo read_file
@@ -365,12 +261,11 @@ class CodeReviewHarness:
         # Singola chiamata (no loop) con tutti i commenti
         # Output: review finale in markdown
         ...
-```
 
-**Perché questa struttura funziona**:
-- Ogni fase ha un context pulito → nessun overflow
-- Il batch separa l'analisi dei file dalla sintesi → più facile fare retry su singoli batch
-- L'output JSON dei commenti è compresso rispetto al codice originale → la sintesi riceve molte meno informazioni ma quelle chiave
+    def chunk(self, files, size):
+        for i in range(0, len(files), size):
+            yield files[i:i+size]
+```
 
 </details>
 

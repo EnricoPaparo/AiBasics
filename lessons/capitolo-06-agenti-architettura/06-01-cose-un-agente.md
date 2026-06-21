@@ -25,6 +25,8 @@ versione: "1.0"
 
 # Cos'è un Agente AI: definizione, componenti e loop agentivo
 
+In questo capitolo assembliamo tutto ciò che abbiamo costruito in un'unica architettura funzionante: l'agente AI. Vedremo come strutturare un sistema che percepisce, ragiona e agisce in modo autonomo — e impareremo a farlo con rigore ingegneristico, non come esperimento, ma come sistema progettato per durare.
+
 ## Introduzione
 
 Siamo arrivati al momento per cui tutto il corso si è preparato. Nel Capitolo 4 abbiamo costruito, uno per uno, ogni componente necessario: la chiamata a un modello (4.1), output che il programma può usare con fiducia (4.2), accesso a informazioni esterne (4.3), capacità di eseguire azioni reali (4.4), standardizzazione delle connessioni (4.5), e gestione della memoria (4.6). Questa lezione li assembla, per la prima volta, in un **agente**.

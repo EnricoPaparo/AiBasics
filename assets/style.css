@@ -693,6 +693,7 @@ body {
 .meta-tag.difficulty { color: var(--gold); border-color: var(--gold)44; }
 .meta-tag.duration { color: var(--cyan); border-color: var(--cyan)44; }
 .meta-tag.chapter { color: var(--green); border-color: var(--green)44; }
+.meta-tag.progress { color: var(--text-dim); border-color: var(--border); margin-left: auto; }
 
 /* ── Markdown Content ──────────────────────────────────────── */
 .md-content h1 {
@@ -1039,7 +1040,7 @@ body {
   .sidebar {
     position: fixed; left: 0; top: var(--header-h);
     height: calc(100vh - var(--header-h));
-    width: var(--sidebar-w);
+    width: 100vw;
     transform: translateX(-100%);
     transition: transform .3s ease;
     z-index: 90;

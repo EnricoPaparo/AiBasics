@@ -25,6 +25,8 @@ versione: "1.0"
 
 # L'API degli LLM: come si usa un modello da un programma
 
+In questo capitolo il corso cambia marcia: passiamo dalla comprensione alla costruzione. Imparerai a usare un modello linguistico da un programma reale, a strutturare dati per farlo ragionare in modo affidabile, e ad aggiungergli strumenti e memoria — i mattoni con cui si costruisce qualsiasi sistema AI professionale.
+
 ## Introduzione
 
 Con questa lezione il corso cambia marcia, esattamente come annunciato in chiusura del Capitolo 3. Fino a ora abbiamo costruito comprensione: cosa è un'API (Lezione 1.5), cosa è un LLM (Lezione 3.1), come è strutturata una conversazione con ruoli system/user/assistant (Lezione 3.3). Questa lezione fonde questi tre pezzi di conoscenza in un'unica competenza pratica: scrivere il codice che chiama un modello linguistico via API, esattamente come fa qualsiasi prodotto AI professionale.

@@ -33,32 +33,7 @@ Non hai bisogno di capire la matematica vettoriale — quello che conta è l'int
 
 ## Come si Generano gli Embeddings
 
-Usi un modello specifico per gli embeddings (diverso dal modello di generazione testo):
-
-```python
-from anthropic import Anthropic
-
-# Anthropic non offre embeddings propri — si usa tipicamente:
-# - OpenAI text-embedding-3-small / text-embedding-3-large
-# - Voyage AI (raccomandato da Anthropic per uso con Claude)
-# - Cohere embed-v3
-# - Sentence Transformers (open source, locale)
-
-import voyageai
-
-client = voyageai.Client(api_key="...")
-
-# Genera embedding per un testo
-result = client.embed(
-    ["Il cane abbaiò nel giardino"],
-    model="voyage-3",
-    input_type="document"  # o "query" per le domande
-)
-vettore = result.embeddings[0]  # lista di 1024 numeri
-print(len(vettore))  # 1024
-```
-
-### Modelli di Embedding Principali
+Usi un modello specifico per gli embeddings (diverso dal modello di generazione testo). Anthropic non offre embeddings propri — si usano tipicamente Voyage AI (raccomandato), OpenAI text-embedding, Cohere, o Sentence Transformers (open source).
 
 | Modello | Dimensioni | Costo | Ideale per |
 |---------|-----------|-------|-----------|
@@ -85,9 +60,8 @@ FASE DI QUERY (ad ogni richiesta)
 Domanda utente → Embedding → Ricerca top-K → Contesto → LLM → Risposta
 ```
 
-### I Principali Vector Database
-
 **Chroma** — ideale per iniziare, tutto locale:
+
 ```python
 import chromadb
 
@@ -108,42 +82,6 @@ risultati = collection.query(
 print(risultati["documents"])
 ```
 
-**Pinecone** — servizio cloud managed, scala in produzione:
-```python
-from pinecone import Pinecone
-
-pc = Pinecone(api_key="...")
-index = pc.Index("mio-indice")
-
-# Upsert (inserisci o aggiorna)
-index.upsert(vectors=[
-    {"id": "doc1", "values": [0.1, 0.2, ...], "metadata": {"fonte": "manuale.pdf"}},
-])
-
-# Ricerca
-risultati = index.query(vector=[0.1, 0.15, ...], top_k=5, include_metadata=True)
-```
-
-**pgvector** — se hai già PostgreSQL, aggiungi ricerca vettoriale:
-```sql
--- Estensione vettoriale per Postgres
-CREATE EXTENSION vector;
-
-CREATE TABLE documenti (
-    id SERIAL PRIMARY KEY,
-    contenuto TEXT,
-    embedding vector(1536)
-);
-
--- Ricerca per similarità coseno
-SELECT contenuto, 1 - (embedding <=> '[0.1, 0.2, ...]'::vector) AS similarita
-FROM documenti
-ORDER BY embedding <=> '[0.1, 0.2, ...]'::vector
-LIMIT 5;
-```
-
-**Weaviate** — open source con funzionalità avanzate (hybrid search, multi-tenancy).
-
 ### Scegliere il Vector DB Giusto
 
 ```
@@ -162,38 +100,7 @@ Devo rispettare GDPR / tenere i dati in locale?
 
 ## Il Chunking: Come Dividere i Documenti
 
-Gli LLM hanno un context window limitato (vedi Cap 4), quindi non puoi passare documenti interi. Devi dividerli in **chunk** (pezzi).
-
-Il chunking è spesso il componente che più impatta la qualità del RAG:
-
-```python
-# Chunking semplice per lunghezza (non ideale)
-def chunk_semplice(testo, dimensione=500):
-    return [testo[i:i+dimensione] for i in range(0, len(testo), dimensione)]
-
-# Chunking con overlap (meglio: mantiene contesto ai bordi)
-def chunk_con_overlap(testo, dimensione=500, overlap=100):
-    chunks = []
-    inizio = 0
-    while inizio < len(testo):
-        fine = inizio + dimensione
-        chunks.append(testo[inizio:fine])
-        inizio += dimensione - overlap
-    return chunks
-```
-
-**Strategie più sofisticate:**
-
-```python
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000,
-    chunk_overlap=200,
-    separators=["\n\n", "\n", ". ", " ", ""]  # rispetta paragrafi e frasi
-)
-chunks = splitter.split_text(documento)
-```
+Gli LLM hanno un context window limitato, quindi non puoi passare documenti interi. Devi dividerli in **chunk** (pezzi). Il chunking è spesso il componente che più impatta la qualità del RAG.
 
 **Regole pratiche per il chunking**:
 - **Rispetta i confini semantici** (paragrafi > frasi > parole)
@@ -203,70 +110,33 @@ chunks = splitter.split_text(documento)
 
 ## Ricerca Ibrida: Semantica + Keyword
 
-La ricerca solo vettoriale non è sempre la migliore. Un approccio **hybrid** combina:
-
-- **Dense retrieval** (vettori): cattura il significato semantico
-- **Sparse retrieval** (BM25/TF-IDF): cattura match esatti di keyword
-
-```python
-# Esempio con Weaviate (hybrid search integrato)
-risultati = client.query.get("Documento", ["contenuto"]) \
-    .with_hybrid(query="API REST autenticazione JWT", alpha=0.5) \
-    .with_limit(5) \
-    .do()
-# alpha=0 → solo keyword, alpha=1 → solo semantica, 0.5 → bilanciato
-```
-
-La ricerca ibrida è particolarmente utile quando i documenti contengono codice, nomi propri, o terminologia tecnica specifica.
+La ricerca solo vettoriale non è sempre la migliore. Un approccio **hybrid** combina ricerca semantica (dense retrieval) con match esatti di keyword (BM25/TF-IDF). È particolarmente utile quando i documenti contengono codice, nomi propri, o terminologia tecnica specifica.
 
 ---
 
 ## Esercizi Pratici
 
-> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire la soluzione.
+> Tre esercizi a difficoltà crescente. Prova a risolverli da solo prima di aprire il suggerimento.
 
 ### Esercizio 1 — Il Tuo Primo Indice Vettoriale 🟢 Base
 
 Installa Chroma e crea un indice con 5 frasi di argomenti diversi (es. cucina, sport, tecnologia). Poi fai 3 query semantiche e verifica che i risultati siano sensati. Usa gli embedding automatici di Chroma (senza configurare un modello esterno).
 
 <details>
-<summary>💡 Mostra soluzione</summary>
+<summary>💡 Mostra suggerimento</summary>
 
-```bash
-pip install chromadb
+**Struttura da seguire:**
+1. `pip install chromadb` e crea un `Client()` con una collection
+2. Aggiungi 5 documenti su argomenti diversi con id univoci (`"d1"`, `"d2"`, ecc.)
+3. Usa `collection.query(query_texts=[...], n_results=2)` con query semanticamente simili agli argomenti
+4. Verifica che la cucina trovi documenti sulla cucina, la tecnologia trovi quelli tech, ecc.
+
+**Pseudocodice:**
 ```
-
-```python
-import chromadb
-
-client = chromadb.Client()
-collection = client.create_collection(
-    "test",
-    # Chroma usa un modello di embedding locale di default
-)
-
-collection.add(
-    documents=[
-        "La pasta al pomodoro è un piatto tipico italiano",
-        "Il calcio è lo sport più popolare al mondo",
-        "Python è il linguaggio preferito per il machine learning",
-        "La pizza napoletana ha la certificazione UNESCO",
-        "Le reti neurali si ispirano al cervello umano"
-    ],
-    ids=["d1", "d2", "d3", "d4", "d5"]
-)
-
-# Query 1: dovrebbe trovare d1 e d4
-r1 = collection.query(query_texts=["ricette della cucina italiana"], n_results=2)
-print("Cucina:", r1["documents"])
-
-# Query 2: dovrebbe trovare d3 e d5
-r2 = collection.query(query_texts=["intelligenza artificiale e programmazione"], n_results=2)
-print("Tech:", r2["documents"])
-
-# Query 3: dovrebbe trovare d2
-r3 = collection.query(query_texts=["partita di football"], n_results=1)
-print("Sport:", r3["documents"])
+collection = crea_collection("test")
+collection.add(documenti=[...5 frasi...], ids=[...5 id...])
+r = collection.query(query_texts=["ricette cucina italiana"], n_results=2)
+stampa i risultati e verifica la coerenza
 ```
 
 </details>
@@ -278,62 +148,20 @@ print("Sport:", r3["documents"])
 Costruisci un sistema RAG completo: indicizza 10 paragrafi di testo su un argomento a scelta, poi implementa una funzione `rispondi(domanda)` che recupera i 3 chunk più rilevanti e li passa a Claude per generare una risposta contestualizzata. La risposta deve citare da quale chunk viene l'informazione.
 
 <details>
-<summary>💡 Mostra soluzione</summary>
+<summary>💡 Mostra suggerimento</summary>
 
-```python
-import chromadb
-import anthropic
+**Struttura della funzione `rispondi(domanda)`:**
+1. Chiama `collection.query(query_texts=[domanda], n_results=3)` per recuperare i chunk
+2. Costruisci una stringa `contesto` unendo i 3 chunk con i loro id (es. `[doc0]: testo...`)
+3. Chiama Claude con un prompt che include il contesto e chiede di citare i riferimenti nel formato `[docX]`
+4. Restituisci la risposta
 
-# Setup
-chroma = chromadb.Client()
-collection = chroma.create_collection("knowledge_base")
-claude = anthropic.Anthropic()
-
-# Indicizzazione
-documenti = [
-    "Il fotovoltaico converte la luce solare in elettricità tramite celle solari.",
-    "Un pannello solare standard ha un'efficienza tra il 15% e il 22%.",
-    "L'energia eolica sfrutta la forza del vento attraverso turbine.",
-    "Le batterie al litio sono attualmente la tecnologia dominante per lo stoccaggio.",
-    "La rete elettrica deve bilanciare produzione e consumo in tempo reale.",
-    "Le comunità energetiche permettono la condivisione di energia rinnovabile.",
-    "Il costo del fotovoltaico è sceso del 90% negli ultimi 10 anni.",
-    "L'idrogeno verde viene prodotto tramite elettrolisi con energia rinnovabile.",
-    "Gli smart meter misurano i consumi in tempo reale e comunicano con la rete.",
-    "Il capacity factor eolico offshore è circa il 40-45%.",
-]
-
-collection.add(
-    documents=documenti,
-    ids=[f"doc{i}" for i in range(len(documenti))]
-)
-
-def rispondi(domanda: str) -> str:
-    # Recupera i chunk più rilevanti
-    risultati = collection.query(query_texts=[domanda], n_results=3)
-    chunks = risultati["documents"][0]
-    ids = risultati["ids"][0]
-    
-    # Costruisci il contesto con riferimenti
-    contesto = "\n".join([f"[{id}]: {chunk}" for id, chunk in zip(ids, chunks)])
-    
-    risposta = claude.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=500,
-        messages=[{
-            "role": "user",
-            "content": f"""Rispondi alla domanda usando SOLO le informazioni fornite. 
+**Prompt suggerito per Claude:**
+```
+Rispondi alla domanda usando SOLO le informazioni fornite.
 Cita i riferimenti nel formato [docX].
-
-Contesto:
-{contesto}
-
-Domanda: {domanda}"""
-        }]
-    )
-    return risposta.content[0].text
-
-print(rispondi("Come si immagazzina l'energia rinnovabile?"))
+Contesto: {contesto}
+Domanda: {domanda}
 ```
 
 </details>
@@ -345,79 +173,101 @@ print(rispondi("Come si immagazzina l'energia rinnovabile?"))
 Prendi un testo lungo (es. un articolo Wikipedia) e indicizzalo in tre modi diversi: (a) chunk fissi da 200 caratteri senza overlap, (b) chunk da 500 con 100 di overlap, (c) chunk per paragrafo. Per ciascuno, fai le stesse 5 domande e confronta la qualità dei risultati recuperati. Scrivi le conclusioni su quando ogni strategia è appropriata.
 
 <details>
-<summary>💡 Mostra soluzione</summary>
+<summary>💡 Mostra suggerimento</summary>
+
+**Tre funzioni di chunking da implementare:**
+- Strategia A: `[testo[i:i+200] for i in range(0, len(testo), 200)]`
+- Strategia B: loop con avanzamento di `dimensione - overlap` ad ogni step
+- Strategia C: `[p.strip() for p in testo.split("\n\n") if p.strip()]`
+
+**Per ogni strategia:**
+1. Crea una collection Chroma separata con un nome diverso
+2. Indicizza i chunk risultanti
+3. Esegui le stesse 5 domande su tutte e 3 le collection
+4. Confronta quale chunk viene recuperato e quanto è rilevante
+
+**Conclusione attesa:** la strategia per paragrafo è spesso la migliore su testi ben strutturati; l'overlap aiuta ai bordi; i chunk fissi piccoli perdono contesto.
+
+</details>
+
+---
+
+<details>
+<summary>⚙️ Approfondimento Avanzato</summary>
+
+### Generare Embeddings con Voyage AI
 
 ```python
-import chromadb
-import requests
+import voyageai
 
-# Scarica un articolo (esempio semplificato con testo hardcoded)
-testo = """
-L'intelligenza artificiale (IA) è un campo dell'informatica che si occupa 
-di creare sistemi in grado di eseguire compiti che richiedono intelligenza umana.
+client = voyageai.Client(api_key="...")
 
-La storia dell'IA inizia negli anni '50 con Alan Turing, che propose il famoso 
-"Test di Turing" per valutare se una macchina possa esibire un comportamento 
-intelligente indistinguibile da quello umano.
+# Genera embedding per un testo
+result = client.embed(
+    ["Il cane abbaiò nel giardino"],
+    model="voyage-3",
+    input_type="document"  # o "query" per le domande
+)
+vettore = result.embeddings[0]  # lista di 1024 numeri
+print(len(vettore))  # 1024
+```
 
-Il machine learning è una branca dell'IA che permette ai sistemi di apprendere 
-automaticamente dall'esperienza senza essere esplicitamente programmati.
+### Altri Vector Database
 
-Le reti neurali profonde (deep learning) hanno rivoluzionato il campo dal 2012, 
-raggiungendo performance sovrumane in molti compiti come il riconoscimento delle immagini.
+**Pinecone** — servizio cloud managed, scala in produzione:
+```python
+from pinecone import Pinecone
 
-I Large Language Model come GPT e Claude sono addestrati su enormi quantità di testo 
-e possono generare, riassumere e ragionare sul linguaggio naturale.
-"""
+pc = Pinecone(api_key="...")
+index = pc.Index("mio-indice")
 
-domande = [
-    "Chi ha inventato il test di Turing?",
-    "Cos'è il machine learning?",
-    "Quando è iniziato il deep learning?",
-    "Cosa sono i Large Language Model?",
-    "Qual è la differenza tra IA e machine learning?"
-]
+# Upsert (inserisci o aggiorna)
+index.upsert(vectors=[
+    {"id": "doc1", "values": [0.1, 0.2, ...], "metadata": {"fonte": "manuale.pdf"}},
+])
 
-def valuta_chunking(nome, chunks):
-    client = chromadb.Client()
-    try:
-        client.delete_collection(nome)
-    except:
-        pass
-    col = client.create_collection(nome)
-    col.add(documents=chunks, ids=[f"c{i}" for i in range(len(chunks))])
-    
-    print(f"\n=== {nome} ({len(chunks)} chunks) ===")
-    for q in domande:
-        r = col.query(query_texts=[q], n_results=1)
-        chunk_trovato = r["documents"][0][0][:80] + "..."
-        print(f"Q: {q[:50]}")
-        print(f"A: {chunk_trovato}\n")
+# Ricerca
+risultati = index.query(vector=[0.1, 0.15, ...], top_k=5, include_metadata=True)
+```
 
-# Strategia A: chunk fissi
-chunks_a = [testo[i:i+200] for i in range(0, len(testo), 200)]
+**pgvector** — se hai già PostgreSQL, aggiungi ricerca vettoriale:
+```sql
+CREATE EXTENSION vector;
 
-# Strategia B: chunk con overlap
-chunks_b = []
-i = 0
-while i < len(testo):
-    chunks_b.append(testo[i:i+500])
-    i += 400  # 100 di overlap
+CREATE TABLE documenti (
+    id SERIAL PRIMARY KEY,
+    contenuto TEXT,
+    embedding vector(1536)
+);
 
-# Strategia C: per paragrafo
-chunks_c = [p.strip() for p in testo.split("\n\n") if p.strip()]
+SELECT contenuto, 1 - (embedding <=> '[0.1, 0.2, ...]'::vector) AS similarita
+FROM documenti
+ORDER BY embedding <=> '[0.1, 0.2, ...]'::vector
+LIMIT 5;
+```
 
-valuta_chunking("fissi_200", chunks_a)
-valuta_chunking("overlap_500_100", chunks_b)
-valuta_chunking("per_paragrafo", chunks_c)
+### Chunking con Overlap (Codice)
 
-print("""
-CONCLUSIONI:
-- Chunk fissi piccoli: veloci ma perdono contesto, sbagliano spesso domande che richiedono più frasi
-- Chunk con overlap: buon bilanciamento, l'overlap aiuta a recuperare informazioni ai confini
-- Per paragrafo: spesso il migliore se il testo è ben strutturato, perché ogni chunk è un'unità semantica
-- Regola d'oro: la granularità del chunk deve corrispondere alla granularità delle domande attese
-""")
+```python
+def chunk_con_overlap(testo, dimensione=500, overlap=100):
+    chunks = []
+    inizio = 0
+    while inizio < len(testo):
+        fine = inizio + dimensione
+        chunks.append(testo[inizio:fine])
+        inizio += dimensione - overlap
+    return chunks
+```
+
+### Ricerca Ibrida con Weaviate
+
+```python
+# Esempio con Weaviate (hybrid search integrato)
+risultati = client.query.get("Documento", ["contenuto"]) \
+    .with_hybrid(query="API REST autenticazione JWT", alpha=0.5) \
+    .with_limit(5) \
+    .do()
+# alpha=0 → solo keyword, alpha=1 → solo semantica, 0.5 → bilanciato
 ```
 
 </details>

@@ -26,6 +26,8 @@ versione: "1.0"
 
 # Progettare un Workflow Agentivo: dal problema al grafo
 
+In questo capitolo portiamo i singoli agenti al livello successivo: sistemi multi-agente coordinati, supervisionati e pronti per la produzione. Imparerai a pensare in termini di workflow prima ancora di scrivere codice — perché un'architettura ben progettata su carta è la differenza tra un sistema robusto e uno che crolla al primo caso limite.
+
 ## Introduzione
 
 Con il Capitolo 6 abbiamo costruito tutti i mattoni: agent package completi (6.2), Agent Card per la discovery (6.3), prompt versionati (6.4), contratti che garantiscono coerenza (6.5), handoff che trasferiscono responsabilità (6.6), skill condivise (6.7). Questo capitolo li assembla in **workflow completi** — sistemi multi-agente reali, supervisionati, pronti per la produzione.

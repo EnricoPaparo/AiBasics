@@ -27,6 +27,8 @@ versione: "1.0"
 
 # Intelligenza Artificiale: storia, definizioni e rami principali
 
+In questo capitolo costruiremo una mappa del territorio dell'intelligenza artificiale: sobria, onesta, e resistente alle esagerazioni che si leggono ogni giorno. Prima di usare questi sistemi con competenza reale, è necessario capire cosa sono davvero — e cosa non sono.
+
 ## Introduzione
 
 Chiudiamo il Capitolo 1 avendo capito come due programmi si parlano attraverso un'API. Ora dobbiamo iniziare a capire cosa c'è, esattamente, dall'altra parte di una chiamata API a un servizio come Claude o ChatGPT. La risposta a questa domanda richiede di partire da molto lontano, perché la parola "intelligenza artificiale" viene usata oggi per descrivere cose profondamente diverse tra loro — e questa confusione produce aspettative sbagliate, paure ingiustificate, ed errori di progettazione quando si costruiscono sistemi reali.

@@ -125,6 +125,12 @@ async function openLesson(chapterId, lessonId, pushHistory = true) {
   const chapEl = $(`chap-${chapterId}`);
   if (chapEl) toggleChapter(chapEl, true);
 
+  // Scroll sidebar to active lesson
+  setTimeout(() => {
+    const activeEl = $(`lesson-${chapterId}-${lessonId}`);
+    if (activeEl) activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, 50);
+
   // Update roadmap btn
   $('roadmap-btn')?.classList.remove('active');
 
@@ -178,11 +184,15 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
 
   const html = typeof marked !== 'undefined' ? marked.parse(body) : `<pre>${escHtml(body)}</pre>`;
 
+  const totalLessons = allLessons.length;
+  const lessonNum = idx + 1;
+
   area.innerHTML = `
     <div class="content-inner" id="content-inner">
       <div class="lesson-meta">
         <span class="meta-tag chapter">CAP. ${String(chapter.numero).padStart(2,'0')} — ${chapter.titolo}</span>
         ${meta.difficolta ? `<span class="meta-tag difficulty">▲ ${meta.difficolta}</span>` : ''}
+        <span class="meta-tag progress">LEZIONE ${lessonNum} DI ${totalLessons}</span>
       </div>
       <div class="md-content">${html}</div>
       <div class="lesson-nav">
