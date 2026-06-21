@@ -47,6 +47,8 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Il problema: linguaggio naturale vs dati strutturati
 
+> **📌 Ricordi?** In [Lezione 01-02] abbiamo visto che HTML e CSS separano il *contenuto* (cosa è un titolo, cosa è un paragrafo) dalla sua *presentazione* (come appare, con quale colore e font). Quella separazione non era un dettaglio estetico: permetteva di modificare l'aspetto in un solo posto senza toccare la struttura. Ora vediamo lo stesso principio applicato all'AI: come in HTML/CSS separiamo struttura da presentazione, qui separiamo il contenuto grezzo dell'LLM — testo libero, variabile, imprevedibile — dalla sua struttura dati. L'output parser è il CSS del mondo AI: un livello intermedio che dà forma prevedibile a un contenuto altrimenti caotico.
+
 Ricorda dalla Lezione 3.1 che un LLM, alla sua base, genera testo prevedendo il token successivo più plausibile. Per impostazione predefinita, questo significa che le risposte sono in **linguaggio naturale**: prosa discorsiva, con tutta la variabilità, ambiguità e flessibilità che il linguaggio umano comporta.
 
 ```

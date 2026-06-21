@@ -6,6 +6,8 @@ difficolta: "Intermedio"
 
 # Embeddings e Vector Database
 
+> **📌 Ricordi?** In [Lezione 03-04] abbiamo visto che le parole possono essere rappresentate come vettori nello spazio matematico: "gatto" e "cane" sono punti vicini, "gatto" e "automobile" sono lontani. Quella intuizione — la distanza geometrica come misura del significato condiviso — era l'intuizione fondamentale degli embedding. Questa lezione costruisce direttamente su quella premessa: ora vediamo come quegli stessi vettori si generano in pratica, dove si archiviano, e come si usano per trovare documenti rilevanti senza confrontare nemmeno una parola alla volta.
+
 Il RAG (che hai visto nella lezione precedente) usa la ricerca semantica per trovare i documenti giusti. Ma come funziona questa ricerca? Non confronta testi parola per parola — usa gli **embeddings** e i **vector database**. Capire questi strumenti ti permette di costruire RAG che funzionano davvero.
 
 ## Cosa Sono gli Embeddings

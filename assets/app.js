@@ -41,6 +41,36 @@ function buildSidebar() {
   if (!sidebarEl) return;
   sidebarEl.innerHTML = '';
 
+  // Search bar
+  const searchWrap = document.createElement('div');
+  searchWrap.className = 'sidebar-search';
+  searchWrap.innerHTML = `<input type="text" id="lesson-search" placeholder="🔍 Cerca lezione..." autocomplete="off">`;
+  sidebarEl.appendChild(searchWrap);
+
+  const searchInput = searchWrap.querySelector('#lesson-search');
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    $$('.chapter-item').forEach(chItem => {
+      let anyVisible = false;
+      chItem.querySelectorAll('.lesson-link').forEach(link => {
+        const match = !q || link.textContent.toLowerCase().includes(q);
+        link.style.display = match ? '' : 'none';
+        if (match) anyVisible = true;
+      });
+      chItem.style.display = anyVisible ? '' : 'none';
+      if (q && anyVisible) chItem.classList.add('open');
+      else if (!q) chItem.classList.remove('open');
+    });
+    // Keep active chapter open
+    if (!q) {
+      const activeLessonLink = document.querySelector('.lesson-link.active');
+      if (activeLessonLink) {
+        const activeChap = activeLessonLink.closest('.chapter-item');
+        if (activeChap) activeChap.classList.add('open');
+      }
+    }
+  });
+
   // Roadmap button
   const roadmapBtn = document.createElement('div');
   roadmapBtn.className = 'sidebar-roadmap-btn';
@@ -165,7 +195,13 @@ function parseFrontmatter(raw) {
   const meta = {};
   match[1].split('\n').forEach(line => {
     const [key, ...vals] = line.split(':');
-    if (key && vals.length) meta[key.trim()] = vals.join(':').trim().replace(/^"(.*)"$/, '$1');
+    if (!key || !vals.length) return;
+    const val = vals.join(':').trim().replace(/^"(.*)"$/, '$1');
+    // Parse JSON arrays (e.g. prerequisiti: ["03-05", "01-05"])
+    if (val.startsWith('[')) {
+      try { meta[key.trim()] = JSON.parse(val.replace(/'/g, '"')); return; } catch(e) {}
+    }
+    meta[key.trim()] = val;
   });
   return { meta, body: match[2] };
 }
@@ -187,6 +223,17 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
   const totalLessons = allLessons.length;
   const lessonNum = idx + 1;
 
+  // Resolve prerequisiti to clickable links
+  let prereqHtml = '';
+  if (Array.isArray(meta.prerequisiti) && meta.prerequisiti.length) {
+    const prereqLinks = meta.prerequisiti.map(preId => {
+      const found = allLessons.find(x => x.l.id.startsWith(preId));
+      if (!found) return null;
+      return `<a class="meta-tag prereq" onclick="openLesson('${found.chId}','${found.l.id}')" title="Vai al prerequisito">⤴ ${found.l.titolo}</a>`;
+    }).filter(Boolean).join('');
+    if (prereqLinks) prereqHtml = `<div class="meta-prereqs"><span class="prereq-label">Prerequisiti:</span>${prereqLinks}</div>`;
+  }
+
   area.innerHTML = `
     <div class="content-inner" id="content-inner">
       <div class="lesson-meta">
@@ -194,6 +241,7 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
         ${meta.difficolta ? `<span class="meta-tag difficulty">▲ ${meta.difficolta}</span>` : ''}
         <span class="meta-tag progress">LEZIONE ${lessonNum} DI ${totalLessons}</span>
       </div>
+      ${prereqHtml}
       <div class="md-content">${html}</div>
       <div class="lesson-nav">
         ${prev ? `<a class="nav-btn" onclick="openLesson('${prev.chId}','${prev.l.id}')">
@@ -254,7 +302,10 @@ function showWelcome() {
       </div>
       <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center">
         <button class="btn btn-primary" onclick="openLesson('${m.roadmap[0].id}','${m.roadmap[0].lezioni[0].id}')">
-          Inizia dal Cap. 1
+          ⚡ Setup Ambiente
+        </button>
+        <button class="btn btn-outline" onclick="openLesson('${m.roadmap[1]?.id || m.roadmap[0].id}','${m.roadmap[1]?.lezioni[0].id || m.roadmap[0].lezioni[0].id}')">
+          ▶ Inizia dal Cap. 1
         </button>
         <button class="btn btn-outline" onclick="showRoadmap()">
           🗺 Vedi Roadmap

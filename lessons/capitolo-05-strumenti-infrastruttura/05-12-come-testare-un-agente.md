@@ -41,7 +41,7 @@ Prima di scrivere una singola riga di logica per il tuo agente, apri un foglio d
 
 Questo esercizio ha un valore che va oltre il testing tecnico: ti costringe a precisare esattamente cosa vuoi che il tuo agente faccia, e ti aiuta a scoprire ambiguità nel requisito prima che diventino bug nel codice.
 
-**Quanti casi?** Cinque è il minimo per avere una copertura ragionevole dei casi tipici. Otto è un buon punto di partenza per includere anche casi limite (input vuoto, richiesta ambigua, caso estremo). Non servono cento casi per cominciare — quelli si aggiungono man mano che scopri problemi reali.
+**Quanti casi?** Cinque è il minimo per avere una copertura ragionevole dei casi tipici. Cinque casi coprono i percorsi principali (happy path, input vuoto, input ambiguo, errore atteso, edge case); sotto i cinque rischi di non trovare bug ovvi. Aumenta in proporzione alla complessità del dominio. Otto è un buon punto di partenza per includere anche casi limite (input vuoto, richiesta ambigua, caso estremo). Non servono cento casi per cominciare — quelli si aggiungono man mano che scopri problemi reali.
 
 ### Struttura di un caso di test
 
@@ -112,6 +112,18 @@ casi = [
 
 # run_tests(casi, il_mio_agente)
 ```
+
+> ✅ **Output atteso**: se il codice gira correttamente con l'esempio sopra (supponendo che `il_mio_agente` sia un agente geografico funzionante), vedrai qualcosa simile a:
+> ```
+> ✅ PASS | Risponde correttamente sulla capitale della Francia
+> ✅ PASS | Non crasha su input vuoto
+> ❌ FAIL | Rifiuta richieste fuori scope
+>        Input:    'Dimmi una barzelletta'
+>        Output:   'Eccone una! Perché i programmatori confondono Halloween con Natale?...'
+>
+> Risultato: 2/3 test superati
+> ```
+> Se vedi un errore come `TypeError: 'NoneType' object is not callable`, controlla che `agent_fn` sia effettivamente una funzione e non `None` — l'agente va passato come argomento a `run_tests`, non chiamato: scrivi `run_tests(casi, il_mio_agente)` e non `run_tests(casi, il_mio_agente())`.
 
 Questa implementazione è deliberatamente minimale. Non ha dipendenze esterne, non richiede framework di testing, non produce report HTML. Fa una cosa sola, bene: esegue i casi e dice cosa ha fallito.
 

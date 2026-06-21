@@ -35,6 +35,41 @@ Prima di valutare il fine-tuning, chiediti se hai già provato le alternative:
                 VALUTA FINE-TUNING
 ```
 
+### Albero Decisionale: Hai Davvero Bisogno del Fine-Tuning?
+
+Prima di avviare un processo costoso e lungo, rispondi a queste domande in sequenza:
+
+```
+1. Hai già provato il prompting con few-shot examples?
+   │
+   ├─ NO → Prova prima. Molti casi si risolvono qui. Torna a questa domanda solo dopo.
+   │
+   └─ SÌ, e non basta → vai alla domanda 2
+
+2. Il problema riguarda conoscenza di dominio che cambia nel tempo
+   (documenti aggiornati, normative, dati aziendali)?
+   │
+   ├─ SÌ → Usa RAG, non fine-tuning. La conoscenza va recuperata, non baked nel modello.
+   │
+   └─ NO → vai alla domanda 3
+
+3. Hai almeno 500 esempi di alta qualità, verificati da esperti,
+   con etichette coerenti e bilanciamento ragionevole delle classi?
+   │
+   ├─ NO → Non fare fine-tuning adesso. Costruisci prima il dataset.
+   │         Considera il prompting avanzato come soluzione provvisoria.
+   │
+   └─ SÌ → vai alla domanda 4
+
+4. Il problema riguarda formato/stile di output molto specifico,
+   oppure consistenza su migliaia di richieste simili,
+   oppure latenza (modello più piccolo e veloce)?
+   │
+   ├─ SÌ → Il fine-tuning ha senso. Procedi con attenzione.
+   │
+   └─ NO → Rivaluta il problema. Forse prompting + RAG coprono il caso.
+```
+
 ### Quando il Fine-Tuning Ha Senso
 
 1. **Il formato dell'output è molto specifico** e difficile da ottenere con il prompting
@@ -61,7 +96,43 @@ Il formato standard è JSONL (JSON Lines): ogni riga è un esempio di training.
 {"messages": [{"role": "user", "content": "Classifica: 'Aggiungete il supporto per il tema scuro'"}, {"role": "assistant", "content": "BASSA_PRIORITA"}]}
 ```
 
+> ✅ **Output atteso**: un file JSONL valido ha esattamente una riga per esempio, senza righe vuote intermedie. Se lo apri con un editor di testo, ogni riga deve essere JSON valido su una singola riga. Per verificare da terminale:
+> ```bash
+> python -c "
+> import json
+> with open('training_data.jsonl') as f:
+>     for i, riga in enumerate(f, 1):
+>         obj = json.loads(riga)
+>         role_out = obj['messages'][-1]['role']
+>         content_out = obj['messages'][-1]['content']
+>         print(f'Riga {i}: OK | output={role_out!r} → {content_out!r}')
+> "
+> # Output atteso (per il file di esempio):
+> # Riga 1: OK | output='assistant' → 'URGENTE'
+> # Riga 2: OK | output='assistant' → 'NORMALE'
+> # Riga 3: OK | output='assistant' → 'BASSA_PRIORITA'
+> ```
+> Se vedi `json.decoder.JSONDecodeError` su una riga, quella riga contiene JSON malformato (virgolette non chiuse, caratteri speciali non escapati, newline interno). Correggi quella riga prima di caricare il file sulla piattaforma di fine-tuning.
+
 **Qualità vs Quantità**: 500 esempi perfetti valgono più di 5000 esempi mediocri.
+
+### Rubrica per Valutare la Qualità degli Esempi
+
+Non tutti gli esempi di training hanno lo stesso valore. Prima di caricare un dataset, valuta ciascun esempio con questa checklist:
+
+**✅ Un esempio di alta qualità:**
+
+1. **Consistenza tono/stile** — il testo dell'assistente mantiene esattamente il registro linguistico che vuoi nel modello finale. Se vuoi risposte formali, ogni esempio deve essere formale. Una singola risposta colloquiale "inquina" il segnale.
+
+2. **Copertura dei casi limite** — il dataset include non solo i casi tipici, ma anche gli input ambigui, incompleti o inusuali che il sistema incontrerà in produzione. Un dataset con soli casi facili produce un modello che fallisce sui casi difficili.
+
+3. **Assenza di contraddizioni** — due esempi non devono insegnare comportamenti opposti per input simili. Esempio da evitare: un esempio classifica "server down" come URGENTE e un altro classifica "server non risponde" come NORMALE. Il modello non può imparare una regola coerente da segnali contraddittori.
+
+4. **Bilanciamento delle classi** — in un compito di classificazione, le categorie devono essere rappresentate in modo proporzionale (o intenzionalmente sbilanciato, se rispecchia la realtà). Un dataset con 900 esempi "NORMALE" e 10 esempi "URGENTE" produce un modello che ignora quasi sempre la classe minoritaria.
+
+5. **Verificabilità** — ogni etichetta è stata assegnata da una persona con competenza nel dominio, non inferita automaticamente o generata da un altro LLM senza revisione umana. Il fine-tuning amplifica i bias del dataset: spazzatura in entrata, spazzatura in uscita.
+
+6. **Rappresentatività della distribuzione reale** — gli esempi coprono la variabilità che esiste nel mondo reale (varianti linguistiche, errori di battitura, sinonimi, formulazioni diverse dello stesso concetto). Un dataset costruito in laboratorio con phrasing perfetto non prepara il modello agli input grezzi degli utenti reali.
 
 ### Quantità Minima di Esempi
 
@@ -71,6 +142,30 @@ Il formato standard è JSONL (JSON Lines): ogni riga è un esempio di training.
 | Estrazione strutturata | 200-500 | 1000-2000 |
 | Generazione in stile specifico | 500-1000 | 2000-5000 |
 | Compiti complessi multi-step | 1000+ | 5000+ |
+
+> **Nota sui minimi:** i valori nella colonna "Esempi minimi" derivano dall'esperienza pratica consolidata della comunità di ricercatori e sviluppatori; con meno esempi il modello non generalizza — impara a memoria i casi visti invece di apprendere il pattern sottostante. Considera questi numeri come punto di partenza, non come garanzia: la qualità degli esempi conta quanto la quantità, e domini più complessi o ambigui richiedono più dati per raggiungere la stessa affidabilità.
+
+## Segnali che il Fine-Tuning Sta Andando Male
+
+Il fine-tuning non è una garanzia di miglioramento. Ci sono sintomi precisi che indicano che qualcosa è andato storto, e per ciascuno esiste un'azione correttiva.
+
+**1. Overfitting sul training set**
+Il modello ottiene accuracy perfetta sugli esempi di training ma crolla sull'eval set (differenza superiore a 15-20 punti percentuali). Significa che ha memorizzato le risposte invece di generalizzare il pattern.
+*Cosa fare*: aggiungi dati di training diversificati, riduci il numero di epoche di addestramento, applica early stopping basato sulla loss dell'eval set.
+
+**2. Catastrophic forgetting del comportamento base**
+Il modello fine-tunato eccelle sul compito specifico ma ha perso capacità generali del modello originale — per esempio, risponde in modo sgrammaticato, non riesce più a seguire istruzioni semplici, o si "dimentica" di lingua e contesto. Questo accade quando il dataset di fine-tuning è troppo piccolo e omogeneo rispetto all'enorme variabilità dei dati di pre-training.
+*Cosa fare*: riduci il learning rate, diminuisci il numero di epoche, valuta tecniche come LoRA che modificano solo una porzione dei pesi (invece di tutti).
+
+**3. Degradazione su prompt semplici**
+Il modello fine-tunato risponde peggio del modello base a domande semplici che non riguardano il dominio di specializzazione. Sintomo tipico: ogni risposta assomiglia agli esempi di training anche quando non dovrebbe, come se il modello avesse "bloccato" la propria modalità di output.
+*Cosa fare*: controlla che il dataset non contenga un bias stilistico così forte da sopraffare il comportamento generale. Mescola nel training set alcuni esempi di risposta generica (non specializzata) per mantenere la flessibilità del modello base.
+
+**4. Collasso delle risposte**
+Il modello risponde sempre con lo stesso output (o un insieme molto ristretto di varianti), indipendentemente dall'input. Spesso causato da dataset troppo sbilanciati o da un training rate troppo alto.
+*Cosa fare*: verifica il bilanciamento delle classi nel dataset, abbassa il learning rate, controlla che non ci siano esempi duplicati o quasi-duplicati che dominano la distribuzione.
+
+---
 
 ## Valutare il Fine-Tuning
 

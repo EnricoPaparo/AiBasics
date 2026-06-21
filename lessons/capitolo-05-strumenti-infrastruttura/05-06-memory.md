@@ -77,6 +77,8 @@ Il termine "memoria", applicato ai sistemi AI, copre in realtà concetti tecnica
 
 > **Un parallelo utile con la memoria umana:** la memoria episodica umana è quella che ti permette di ricordare "ieri ho cenato in quel ristorante e il servizio è stato lento" — un evento specifico. La memoria semantica è quella che ti fa sapere, in generale, "i ristoranti affollati il sabato sera tendono ad avere servizio più lento" — una conoscenza generale, distillata da molte esperienze, senza che tu debba ricordare ogni singola cena che ha contribuito a formarla. I sistemi AI distinguono questi stessi due tipi di "ricordo" per ragioni progettuali molto simili a quelle umane.
 
+> **Attenzione a una distinzione sottile — l'esempio del vegetariano:** se un sistema salva "l'utente è vegetariano" perché l'utente lo ha detto esplicitamente in una conversazione precisa ("martedì scorso ho menzionato che sono vegetariano"), quel fatto è inizialmente **episodico**: ha un'origine temporale specifica e un contesto dichiarato. Diventa **semantico** solo se il sistema lo distilla come fatto generale, senza più traccia dell'evento originale ("preferenza alimentare: vegetariano", senza data né contesto). La distinzione conta per la progettazione: la memoria episodica consente di sapere "quando e come ho saputo questa cosa" — informazione utile per decidere quanto fidarsi di un'informazione potenzialmente obsoleta. La memoria semantica comprime e perde quel contesto. Un sistema ben progettato sa da dove viene ogni dato che conserva. Fatti generali senza origine temporale specifica ("Parigi è la capitale della Francia") sono semantici per natura: non hai un episodio personale che li ha generati. Fatti su un utente specifico, raccolti in un'interazione precisa, partono come episodici.
+
 ---
 
 ## 2. Il problema del context window, ripreso e risolto in pratica
@@ -97,6 +99,8 @@ Sliding window di 10 messaggi:
 ```
 
 Questa strategia è semplice da implementare, ma ha un limite evidente: se l'utente fa riferimento a qualcosa detto molto all'inizio della conversazione (oltre la finestra), il modello non avrà più alcuna informazione su quel contenuto, e potrebbe rispondere in modo incoerente o chiedere nuovamente informazioni già fornite.
+
+> **Limite critico della sliding window**: se l'utente fa riferimento a qualcosa fuori dalla finestra ("come quello che ti ho detto la settimana scorsa" o "ricordi quando abbiamo discusso del progetto X?"), il sistema semplicemente non lo trova e risponde in modo incoerente — spesso senza nemmeno segnalare all'utente che le informazioni non sono disponibili. Soluzione: mantieni un **indice delle entità chiave** menzionate dall'utente (nomi, preferenze espresse, decisioni prese, vincoli dichiarati) in una struttura separata dalla cronologia cronologica. Questo indice cresce nel tempo ma rimane compatto (solo entità, non l'intera conversazione), e le informazioni importanti non vengono perse anche se la conversazione è molto lunga. Quando l'utente fa riferimento a un'entità, la si recupera dall'indice indipendentemente da quando è stata menzionata.
 
 ### Strategia 2: Summarization progressiva (riassunto progressivo)
 
@@ -210,6 +214,22 @@ def carica_conversazione(session_id: str) -> list[dict]:
 ```
 
 Se preferisci evitare SQLite, un file JSON è l'alternativa più semplice: `json.dump(messaggi, open(f"{session_id}.json", "w"))` per salvare, `json.load(open(...))` per ricaricare. È meno robusto (niente transazioni, niente query), ma sufficiente per prototipare.
+
+> ✅ **Output atteso**: se esegui `salva_conversazione` e poi `carica_conversazione` con lo stesso `session_id`, il round-trip deve restituire la lista originale invariata. Un test minimo:
+> ```python
+> messaggi_test = [
+>     {"role": "user", "content": "Ciao, sono Marco"},
+>     {"role": "assistant", "content": "Ciao Marco, come posso aiutarti?"}
+> ]
+> salva_conversazione("sessione_001", messaggi_test)
+> recuperati = carica_conversazione("sessione_001")
+> print(recuperati)
+> # Output atteso:
+> # [{'role': 'user', 'content': 'Ciao, sono Marco'},
+> #  {'role': 'assistant', 'content': 'Ciao Marco, come posso aiutarti?'}]
+> print(recuperati == messaggi_test)  # True
+> ```
+> Nella stessa directory troverai il file `memoria.db` creato da SQLite. Se vedi `json.decoder.JSONDecodeError`, il campo `messaggi` nel database è corrotto — cancella `memoria.db` e ricomincia. Se `carica_conversazione` restituisce `[]` invece dei messaggi salvati, controlla che il `session_id` passato alle due funzioni sia identico (maiuscole/minuscole incluse).
 
 ### Limitazione pratica importante: non puoi rimandare tutta la cronologia
 
