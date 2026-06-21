@@ -173,6 +173,89 @@ Questo meccanismo — qui descritto in modo semplificato — è precisamente il 
 
 ---
 
+## Memoria Persistente tra Sessioni
+
+### Il problema: il contesto svanisce alla chiusura della sessione
+
+La sezione precedente ha descritto il flusso concettuale della memoria tra sessioni. Ma c'è un problema pratico immediato che chiunque costruisce un sistema reale si trova ad affrontare: se l'utente torna domani, il contesto è completamente perso. Il modello, stateless per costruzione (Lezione 3.5), non ricorda nulla di ciò che è stato detto nella sessione precedente — a meno che quella cronologia non venga salvata da qualche parte e ricaricata esplicitamente all'avvio della nuova sessione.
+
+### Soluzione concreta: salvare e ricaricare la cronologia con SQLite
+
+La soluzione più diretta è salvare la lista dei messaggi in un database locale al termine di ogni sessione, e ricaricarla all'inizio della successiva. SQLite è la scelta naturale per applicazioni monoutente o prototipi: è un file unico, non richiede un server, e Python lo include nella libreria standard.
+
+```python
+import sqlite3
+import json
+
+def salva_conversazione(session_id: str, messaggi: list[dict]) -> None:
+    """Salva la cronologia della conversazione su SQLite."""
+    with sqlite3.connect("memoria.db") as conn:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS sessioni "
+            "(session_id TEXT PRIMARY KEY, messaggi TEXT)"
+        )
+        conn.execute(
+            "INSERT OR REPLACE INTO sessioni VALUES (?, ?)",
+            (session_id, json.dumps(messaggi, ensure_ascii=False))
+        )
+
+def carica_conversazione(session_id: str) -> list[dict]:
+    """Ricarica la cronologia di una sessione precedente."""
+    with sqlite3.connect("memoria.db") as conn:
+        row = conn.execute(
+            "SELECT messaggi FROM sessioni WHERE session_id = ?",
+            (session_id,)
+        ).fetchone()
+    return json.loads(row[0]) if row else []
+```
+
+Se preferisci evitare SQLite, un file JSON è l'alternativa più semplice: `json.dump(messaggi, open(f"{session_id}.json", "w"))` per salvare, `json.load(open(...))` per ricaricare. È meno robusto (niente transazioni, niente query), ma sufficiente per prototipare.
+
+### Limitazione pratica importante: non puoi rimandare tutta la cronologia
+
+Ricaricare e rispedire all'intero la cronologia di sessioni passate è quasi sempre un errore: dopo poche sessioni accumuli migliaia di token, si esaurisce rapidamente la finestra di contesto (Lezione 04-06), e i costi API aumentano a ogni chiamata. La soluzione corretta è non spedire tutta la cronologia, ma un **riassunto** di essa.
+
+Il pattern standard combina due elementi:
+
+1. **Ultime N interazioni** dalla sessione corrente, in forma integrale — perché il contesto immediato è prezioso per dettaglio e coerenza.
+2. **Riassunto delle sessioni precedenti**, prodotto dal modello stesso con una chiamata dedicata — comprime centinaia di turni in pochi paragrafi.
+
+```python
+def prepara_contesto_con_riassunto(
+    session_id: str,
+    messaggi_correnti: list[dict],
+    n_recenti: int = 10
+) -> list[dict]:
+    """
+    Combina un riassunto delle sessioni passate con
+    le ultime N interazioni della sessione corrente.
+    """
+    cronologia_passata = carica_conversazione(session_id)
+
+    contesto = []
+
+    if cronologia_passata:
+        # Chiediamo al modello di riassumere le sessioni passate
+        testo_da_riassumere = "\n".join(
+            f"{m['role']}: {m['content']}" for m in cronologia_passata
+        )
+        # Questa chiamata API produce il riassunto
+        # (qui semplificata; nella pratica usa il tuo client LLM)
+        riassunto = chiedi_riassunto_al_modello(testo_da_riassumere)
+        contesto.append({
+            "role": "system",
+            "content": f"Riassunto delle sessioni precedenti:\n{riassunto}"
+        })
+
+    # Aggiunge le ultime N interazioni in forma integrale
+    contesto.extend(messaggi_correnti[-n_recenti:])
+    return contesto
+```
+
+Questo pattern — riassunto delle sessioni precedenti più ultime interazioni integrali — è la base di quasi tutti i sistemi di memoria persistente in produzione. Ritroverai questa struttura formalizzata quando, nel Capitolo 8, parleremo di agenti che accumulano esperienza nel tempo.
+
+---
+
 ## 4. Quando la memoria è utile, e quando diventa un problema
 
 Seguendo lo spirito di valutazione equilibrata di questo corso, è importante riconoscere che la memoria persistente non è automaticamente un beneficio in ogni circostanza.
