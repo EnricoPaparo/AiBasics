@@ -152,7 +152,7 @@ Questo pattern — **RAG + summarization + context budget** — è la soluzione 
 
 ## Connessioni
 
-- **Lezione precedente**: [Limiti e Allucinazioni](03-05-limiti-allucinazioni) — il context window è un limite diverso dalle allucinazioni, ma altrettanto importante
-- **Lezione successiva**: [Gestire il Contesto](03-07-gestire-il-contesto) — le strategie concrete per non restare senza spazio
-- **Capitolo 4**: [RAG: Memoria Esterna](../capitolo-04-strumenti-infrastruttura/04-03-rag) — RAG è la principale strategia per superare i limiti del context
-- **Capitolo 4**: [Memory nei Sistemi AI](../capitolo-04-strumenti-infrastruttura/04-06-memory) — come i sistemi AI gestiscono memoria a breve e lungo termine
+- **Lezione precedente**: [Limiti e Allucinazioni](04-05-limiti-allucinazioni) — il context window è un limite diverso dalle allucinazioni, ma altrettanto importante
+- **Lezione successiva**: [Gestire il Contesto](04-07-gestire-il-contesto) — le strategie concrete per non restare senza spazio
+- **Capitolo 5**: [RAG: Memoria Esterna](../capitolo-05-strumenti-infrastruttura/05-03-rag) — RAG è la principale strategia per superare i limiti del context
+- **Capitolo 5**: [Memory nei Sistemi AI](../capitolo-05-strumenti-infrastruttura/05-06-memory) — come i sistemi AI gestiscono memoria a breve e lungo termine

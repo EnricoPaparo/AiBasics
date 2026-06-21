@@ -339,7 +339,7 @@ class SecureEmailAgent:
 
 ## Connessioni
 
-- **Lezione precedente**: [L'Harness](05-06-harness) — l'harness è il posto giusto dove implementare le difese
-- **Capitolo 4**: [Vibe Coding](../capitolo-04-strumenti-infrastruttura/04-07-vibe-coding) — il vibe coding può introdurre vulnerabilità invisibili
-- **Capitolo 7**: [Human-in-the-Loop](../capitolo-07-workflow-multi-agente/07-04-human-in-the-loop) — la principale difesa contro azioni distruttive
-- **Capitolo 8**: [Etica e Responsabilità](../capitolo-08-sistemi-auto-evolutivi/08-06-etica-responsabilita) — il contesto etico e legale della sicurezza AI
+- **Lezione precedente**: [L'Harness](06-06-harness) — l'harness è il posto giusto dove implementare le difese
+- **Capitolo 5**: [Vibe Coding](../capitolo-05-strumenti-infrastruttura/05-07-vibe-coding) — il vibe coding può introdurre vulnerabilità invisibili
+- **Capitolo 8**: [Human-in-the-Loop](../capitolo-08-workflow-multi-agente/08-04-human-in-the-loop) — la principale difesa contro azioni distruttive
+- **Capitolo 9**: [Etica e Responsabilità](../capitolo-09-sistemi-auto-evolutivi/09-06-etica-responsabilita) — il contesto etico e legale della sicurezza AI

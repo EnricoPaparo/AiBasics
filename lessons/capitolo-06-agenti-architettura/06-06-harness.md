@@ -378,8 +378,8 @@ class CodeReviewHarness:
 
 ## Connessioni
 
-- **Lezione precedente**: [Errori, Robustezza, Osservabilità](05-05-errori-robustezza-osservabilita) — molte delle strategie di robustezza vivono nell'harness
-- **Capitolo 3**: [Gestire il Contesto](../capitolo-03-llm/03-07-gestire-il-contesto) — le strategie di context management che l'harness implementa
-- **Capitolo 4**: [Tool Use / Function Calling](../capitolo-04-strumenti-infrastruttura/04-04-tool-use-function-calling) — i tool che l'harness dispatcha
-- **Capitolo 6**: [L'Agent Package](../capitolo-06-agent-package/06-02-agent-package) — come si pacchettizza un agente per essere eseguito da un harness
-- **Capitolo 7**: [LangGraph](../capitolo-07-workflow-multi-agente/07-02-langgraph) — un framework che fornisce un harness per workflow multi-agente
+- **Lezione precedente**: [Errori, Robustezza, Osservabilità](06-05-errori-robustezza-osservabilita) — molte delle strategie di robustezza vivono nell'harness
+- **Capitolo 4**: [Gestire il Contesto](../capitolo-04-llm/04-07-gestire-il-contesto) — le strategie di context management che l'harness implementa
+- **Capitolo 5**: [Tool Use / Function Calling](../capitolo-05-strumenti-infrastruttura/05-04-tool-use-function-calling) — i tool che l'harness dispatcha
+- **Capitolo 7**: [L'Agent Package](../capitolo-07-agent-package/07-02-agent-package) — come si pacchettizza un agente per essere eseguito da un harness
+- **Capitolo 8**: [LangGraph](../capitolo-08-workflow-multi-agente/08-02-langgraph) — un framework che fornisce un harness per workflow multi-agente

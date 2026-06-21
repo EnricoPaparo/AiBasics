@@ -232,7 +232,7 @@ Questa è la risposta professionale: non un rifiuto secco, ma un'analisi complet
 
 ## Connessioni
 
-- **Capitolo 5**: [Sicurezza e Prompt Injection](../capitolo-05-agenti-architettura/05-07-sicurezza-prompt-injection) — sicurezza tecnica e sicurezza etica sono complementari
-- **Capitolo 7**: [Human-in-the-Loop](../capitolo-07-workflow-multi-agente/07-04-human-in-the-loop) — la supervisione umana come risposta pratica ai rischi etici
-- **Capitolo 8**: [Governance e Versioning](08-04-governance-versioning) — come le organizzazioni gestiscono la governance dei sistemi AI
-- **Lezione successiva**: [Progetto Finale](08-05-progetto-finale) — applica i principi etici al tuo progetto capstone
+- **Capitolo 6**: [Sicurezza e Prompt Injection](../capitolo-06-agenti-architettura/06-07-sicurezza-prompt-injection) — sicurezza tecnica e sicurezza etica sono complementari
+- **Capitolo 8**: [Human-in-the-Loop](../capitolo-08-workflow-multi-agente/08-04-human-in-the-loop) — la supervisione umana come risposta pratica ai rischi etici
+- **Capitolo 9**: [Governance e Versioning](09-04-governance-versioning) — come le organizzazioni gestiscono la governance dei sistemi AI
+- **Lezione successiva**: [Progetto Finale](09-05-progetto-finale) — applica i principi etici al tuo progetto capstone

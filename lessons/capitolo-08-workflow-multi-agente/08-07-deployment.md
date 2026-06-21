@@ -427,7 +427,7 @@ fi
 
 ## Connessioni
 
-- **Lezione precedente**: [Testing e Valutazione](07-06-testing-evals) — il testing precede il deployment
-- **Capitolo 3**: [Token Economics](../capitolo-03-llm/03-08-token-economics) — i cost monitor visti lì vivono nell'infrastruttura di deployment
-- **Capitolo 5**: [Sicurezza e Prompt Injection](../capitolo-05-agenti-architettura/05-07-sicurezza-prompt-injection) — la checklist di sicurezza pre-deploy
-- **Capitolo 8**: [Governance e Versioning](../capitolo-08-sistemi-auto-evolutivi/08-04-governance-versioning) — deployment come parte del ciclo di vita di un sistema AI
+- **Lezione precedente**: [Testing e Valutazione](08-06-testing-evals) — il testing precede il deployment
+- **Capitolo 4**: [Token Economics](../capitolo-04-llm/04-08-token-economics) — i cost monitor visti lì vivono nell'infrastruttura di deployment
+- **Capitolo 6**: [Sicurezza e Prompt Injection](../capitolo-06-agenti-architettura/06-07-sicurezza-prompt-injection) — la checklist di sicurezza pre-deploy
+- **Capitolo 9**: [Governance e Versioning](../capitolo-09-sistemi-auto-evolutivi/09-04-governance-versioning) — deployment come parte del ciclo di vita di un sistema AI

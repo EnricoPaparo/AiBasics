@@ -399,7 +399,7 @@ def deploy_gate(results):
 
 ## Connessioni
 
-- **Lezione precedente**: [Valutazione dei Workflow](07-05-valutazione-workflow) — valutare il workflow vs valutare il modello
-- **Capitolo 5**: [Sicurezza e Prompt Injection](../capitolo-05-agenti-architettura/05-07-sicurezza-prompt-injection) — il red teaming testa le vulnerabilità
-- **Lezione successiva**: [Deployment e Ambienti](07-07-deployment) — gli evals fanno parte della pipeline di deployment
-- **Capitolo 3**: [Token Economics](../capitolo-03-llm/03-08-token-economics) — il costo degli eval set va considerato nel budget
+- **Lezione precedente**: [Valutazione dei Workflow](08-05-valutazione-workflow) — valutare il workflow vs valutare il modello
+- **Capitolo 6**: [Sicurezza e Prompt Injection](../capitolo-06-agenti-architettura/06-07-sicurezza-prompt-injection) — il red teaming testa le vulnerabilità
+- **Lezione successiva**: [Deployment e Ambienti](08-07-deployment) — gli evals fanno parte della pipeline di deployment
+- **Capitolo 4**: [Token Economics](../capitolo-04-llm/04-08-token-economics) — il costo degli eval set va considerato nel budget

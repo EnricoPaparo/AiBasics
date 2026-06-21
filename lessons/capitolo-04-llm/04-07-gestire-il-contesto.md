@@ -257,7 +257,7 @@ Un agente di code review funziona perfettamente sui PR piccoli, ma sui PR grandi
 
 ## Connessioni
 
-- **Lezione precedente**: [Il Context Window](03-06-context-window) — le basi teoriche di questa lezione
-- **Capitolo 4**: [RAG: Memoria Esterna](../capitolo-04-strumenti-infrastruttura/04-03-rag) — RAG approfondito come tecnica autonoma
-- **Capitolo 4**: [Memory nei Sistemi AI](../capitolo-04-strumenti-infrastruttura/04-06-memory) — come i sistemi AI implementano memoria persistente
-- **Capitolo 5**: [L'Harness](../capitolo-05-agenti-architettura/05-06-harness) — l'harness gestisce il context window automaticamente negli agenti
+- **Lezione precedente**: [Il Context Window](04-06-context-window) — le basi teoriche di questa lezione
+- **Capitolo 5**: [RAG: Memoria Esterna](../capitolo-05-strumenti-infrastruttura/05-03-rag) — RAG approfondito come tecnica autonoma
+- **Capitolo 5**: [Memory nei Sistemi AI](../capitolo-05-strumenti-infrastruttura/05-06-memory) — come i sistemi AI implementano memoria persistente
+- **Capitolo 6**: [L'Harness](../capitolo-06-agenti-architettura/06-06-harness) — l'harness gestisce il context window automaticamente negli agenti

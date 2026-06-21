@@ -604,7 +604,7 @@ body {
 }
 
 .lesson-link {
-  display: flex; align-items: center; gap: .6rem;
+  display: flex; align-items: flex-start; gap: .6rem;
   padding: .55rem 1.25rem .55rem 2.8rem;
   font-size: .78rem;
   color: var(--text-dim);
@@ -637,6 +637,7 @@ body {
   border-radius: 50%;
   background: var(--border);
   flex-shrink: 0;
+  margin-top: 4px;
   transition: background .15s;
 }
 .lesson-link:hover .lesson-dot  { background: var(--chap-color, var(--cyan)); }
@@ -1015,11 +1016,18 @@ body {
 .sidebar-toggle {
   display: none;
   background: none; border: 1px solid var(--border);
-  color: var(--text); padding: .4rem .7rem; cursor: pointer;
-  font-size: 1.1rem; border-radius: 2px;
-  transition: all .2s;
+  color: var(--text); padding: .45rem .6rem; cursor: pointer;
+  border-radius: 2px; flex-shrink: 0;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; width: 36px; height: 36px;
+  transition: border-color .2s, color .2s;
 }
 .sidebar-toggle:hover { border-color: var(--green); color: var(--green); }
+.sidebar-toggle span {
+  display: block; width: 18px; height: 2px;
+  background: currentColor; border-radius: 1px;
+  transition: background .2s;
+}
 
 @media (max-width: 768px) {
   .course-layout { grid-template-columns: 1fr; }

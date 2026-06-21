@@ -183,6 +183,6 @@ Immagina di aver costruito un'API REST in vibe coding per gestire un blog. Ha en
 
 ## Connessioni
 
-- **Capitolo 4**: [L'API degli LLM](04-01-api-llm) — gli strumenti che rendono possibile il vibe coding
-- **Capitolo 5**: [Sicurezza e Prompt Injection](../capitolo-05-agenti-architettura/05-07-sicurezza-prompt-injection) — le vulnerabilità che il vibe coding può introdurre
-- **Capitolo 7**: [Deployment e Ambienti](../capitolo-07-workflow-multi-agente/07-07-deployment) — prima di deployare codice vibe-coded, audit obbligatorio
+- **Capitolo 5**: [L'API degli LLM](05-01-api-llm) — gli strumenti che rendono possibile il vibe coding
+- **Capitolo 6**: [Sicurezza e Prompt Injection](../capitolo-06-agenti-architettura/06-07-sicurezza-prompt-injection) — le vulnerabilità che il vibe coding può introdurre
+- **Capitolo 8**: [Deployment e Ambienti](../capitolo-08-workflow-multi-agente/08-07-deployment) — prima di deployare codice vibe-coded, audit obbligatorio

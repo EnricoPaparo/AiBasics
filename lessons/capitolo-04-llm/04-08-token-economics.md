@@ -276,7 +276,7 @@ Il pattern chiave è: **misura prima di agire**. Il sistema registra ogni chiama
 
 ## Connessioni
 
-- **Lezione precedente**: [Gestire il Contesto](03-07-gestire-il-contesto) — il context management impatta direttamente i costi
-- **Capitolo 4**: [L'API degli LLM](../capitolo-04-strumenti-infrastruttura/04-01-api-llm) — dove vedere usage e costs nelle risposte API
-- **Capitolo 7**: [Valutazione e Testing](../capitolo-07-workflow-multi-agente/07-06-testing-evals) — come scegliere il modello giusto in base a benchmark di qualità
-- **Capitolo 7**: [Deployment e Ambienti](../capitolo-07-workflow-multi-agente/07-07-deployment) — cost monitoring in produzione
+- **Lezione precedente**: [Gestire il Contesto](04-07-gestire-il-contesto) — il context management impatta direttamente i costi
+- **Capitolo 5**: [L'API degli LLM](../capitolo-05-strumenti-infrastruttura/05-01-api-llm) — dove vedere usage e costs nelle risposte API
+- **Capitolo 8**: [Valutazione e Testing](../capitolo-08-workflow-multi-agente/08-06-testing-evals) — come scegliere il modello giusto in base a benchmark di qualità
+- **Capitolo 8**: [Deployment e Ambienti](../capitolo-08-workflow-multi-agente/08-07-deployment) — cost monitoring in produzione

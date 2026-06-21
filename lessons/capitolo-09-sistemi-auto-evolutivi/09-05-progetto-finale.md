@@ -318,11 +318,11 @@ Questo materiale didattico descrive l'architettura e fornisce i pattern di codic
 Con questa lezione si conclude il percorso completo di AISchool. Hai costruito, capitolo dopo capitolo:
 
 - **Capitolo 1-3**: le fondamenta — Web, intelligenza artificiale, modelli linguistici — necessarie per non trattare nessuna tecnologia successiva come una scatola nera incomprensibile
-- **Capitolo 4**: l'infrastruttura tecnica — API, RAG, Function Calling, MCP, memoria — che trasforma un modello isolato in un sistema capace di agire
-- **Capitolo 5**: l'architettura degli agenti — loop, ragionamento esplicito, orchestrazione, robustezza
-- **Capitolo 6**: l'ingegneria professionale — agent package, Agent Card, prompt versionati, contratti, handoff, skill condivise
-- **Capitolo 7**: i workflow completi — design, LangGraph, review automatico, supervisione umana, valutazione rigorosa
-- **Capitolo 8**: l'auto-miglioramento — self-reflection, prompt evolutivi, riassorbimento della conoscenza, governance
+- **Capitolo 5**: l'infrastruttura tecnica — API, RAG, Function Calling, MCP, memoria — che trasforma un modello isolato in un sistema capace di agire
+- **Capitolo 6**: l'architettura degli agenti — loop, ragionamento esplicito, orchestrazione, robustezza
+- **Capitolo 7**: l'ingegneria professionale — agent package, Agent Card, prompt versionati, contratti, handoff, skill condivise
+- **Capitolo 8**: i workflow completi — design, LangGraph, review automatico, supervisione umana, valutazione rigorosa
+- **Capitolo 9**: l'auto-miglioramento — self-reflection, prompt evolutivi, riassorbimento della conoscenza, governance
 
 Il sistema che hai progettato in questa lezione finale non è un esercizio isolato: è la prova che ogni concetto, da "come funziona Internet" fino a "come un sistema impara dalla propria esperienza", appartiene a un unico edificio coerente — esattamente come promesso nella prima lezione del corso.
 
