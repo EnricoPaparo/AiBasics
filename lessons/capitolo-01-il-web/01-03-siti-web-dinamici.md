@@ -24,7 +24,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Siti Web Dinamici: server, database e la nascita della logica
 
 ## Introduzione
@@ -100,7 +99,7 @@ SELECT nome, email FROM utenti WHERE id = 42;
 
 Questa query dice, in sostanza: "dammi il nome e l'email dell'utente con identificativo 42". Il database risponde con quei dati, e il backend li usa per costruire la pagina.
 
-> **Perché questo conta più avanti:** quando arriveremo a parlare di RAG (Retrieval-Augmented Generation) nella Lezione 4.3, vedremo che un agente AI fa concettualmente la stessa cosa — interroga un database (in quel caso, un database vettoriale) per recuperare informazioni rilevanti prima di generare una risposta. Il pattern "recupera, poi rispondi" nasce qui, nei siti dinamici classici.
+> **Perché questo conta più avanti:** quando arriveremo a parlare di RAG (Retrieval-Augmented Generation) nella Lezione 5.3, vedremo che un agente AI fa concettualmente la stessa cosa — interroga un database (in quel caso, un database vettoriale) per recuperare informazioni rilevanti prima di generare una risposta. Il pattern "recupera, poi rispondi" nasce qui, nei siti dinamici classici.
 
 ---
 
@@ -120,7 +119,7 @@ Allora come fa un sito a "ricordare" che sei loggato, anche se navighi tra pagin
    e costruisce la risposta di conseguenza
 ```
 
-Questo meccanismo — un'identità che persiste attraverso richieste altrimenti indipendenti — è concettualmente identico al problema che affronteremo con la **memoria degli agenti AI** nella Lezione 4.6. Anche un LLM, di base, non ha memoria tra una chiamata API e l'altra: ogni chiamata è stateless, esattamente come HTTP. Il "ricordo" di una conversazione viene ricostruito rispedendo, a ogni richiesta, la cronologia precedente — un meccanismo per certi versi più simile al cookie di quanto si pensi.
+Questo meccanismo — un'identità che persiste attraverso richieste altrimenti indipendenti — è concettualmente identico al problema che affronteremo con la **memoria degli agenti AI** nella Lezione 5.6. Anche un LLM, di base, non ha memoria tra una chiamata API e l'altra: ogni chiamata è stateless, esattamente come HTTP. Il "ricordo" di una conversazione viene ricostruito rispedendo, a ogni richiesta, la cronologia precedente — un meccanismo per certi versi più simile al cookie di quanto si pensi.
 
 ---
 
@@ -242,7 +241,7 @@ La lezione dice che HTTP è *stateless* e che lo stato "sei loggato" viene ricos
 - **Web:** il server non ricorda nativamente le richieste precedenti → si rispedisce a ogni richiesta un **cookie** con l'identità, e il server ricostruisce il contesto dal database.
 - **LLM:** il modello non ricorda i messaggi precedenti → si rispedisce a ogni chiamata **l'intera cronologia della conversazione** nel campo `messages`. Il "ricordo" è un'illusione costruita reinviando tutto il contesto ogni volta.
 
-**Cosa corrisponde al cookie:** la cronologia dei messaggi (`messages`) inviata a ogni chiamata API. È il meccanismo che fa viaggiare lo stato attraverso richieste altrimenti indipendenti — esattamente come il cookie fa viaggiare l'identità. Questo è il problema centrale che la Lezione 4.6 (Memory) affronta in profondità.
+**Cosa corrisponde al cookie:** la cronologia dei messaggi (`messages`) inviata a ogni chiamata API. È il meccanismo che fa viaggiare lo stato attraverso richieste altrimenti indipendenti — esattamente come il cookie fa viaggiare l'identità. Questo è il problema centrale che la Lezione 5.6 (Memory) affronta in profondità.
 
 </details>
 
@@ -254,4 +253,4 @@ La lezione dice che HTTP è *stateless* e che lo stato "sei loggato" viene ricos
 
 **Porta a:** Lezione 1.4 (Web Application) — vedremo come questa logica si sposta sempre più anche nel browser, sfumando il confine tra backend e frontend.
 
-**Ritroverai questi concetti in:** Lezione 4.3 (RAG) — lo stesso pattern "interroga un database, poi costruisci la risposta" applicato a un database vettoriale e a un LLM. Lezione 4.6 (Memory nei sistemi AI) — il problema dello stato e della sua persistenza, qui risolto con i cookie, lì risolto con tecniche di gestione della memoria conversazionale.
+**Ritroverai questi concetti in:** Lezione 5.3 (RAG) — lo stesso pattern "interroga un database, poi costruisci la risposta" applicato a un database vettoriale e a un LLM. Lezione 5.6 (Memory nei sistemi AI) — il problema dello stato e della sua persistenza, qui risolto con i cookie, lì risolto con tecniche di gestione della memoria conversazionale.

@@ -1,13 +1,13 @@
 ---
-id: "03-03"
+id: "04-03"
 titolo: "Il Portale ChatGPT e i suoi equivalenti: anatomia di un prodotto AI"
 sottotitolo: "Tutto quello che abbiamo imparato finora, visto in azione in un'interfaccia che usi ogni giorno"
-capitolo: 3
-capitolo_titolo: "I Modelli Linguistici di Grandi Dimensioni (LLM)"
+capitolo: 4
+capitolo_titolo: "I Modelli Linguistici (LLM)"
 lezione: 3
 durata_stimata: "45 minuti"
 difficolta: "base"
-prerequisiti: ["03-02"]
+prerequisiti: ["04-02"]
 concetti_chiave:
   - chat
   - turno conversazionale
@@ -24,14 +24,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Il Portale ChatGPT e i suoi equivalenti: anatomia di un prodotto AI
 
 ## Introduzione
 
-Questa lezione è un momento di consolidamento, non di novità pura. Useremo tutto ciò che abbiamo imparato — Web Application (1.4), API (1.5), modello vs prodotto (3.1), modello istruito tramite RLHF (3.2) — per smontare, pezzo per pezzo, l'interfaccia che probabilmente hai già usato decine di volte: una chat con un assistente AI come Claude.ai o ChatGPT.
+Questa lezione è un momento di consolidamento, non di novità pura. Useremo tutto ciò che abbiamo imparato — Web Application (1.4), API (1.5), modello vs prodotto (4.1), modello istruito tramite RLHF (4.2) — per smontare, pezzo per pezzo, l'interfaccia che probabilmente hai già usato decine di volte: una chat con un assistente AI come Claude.ai o ChatGPT.
 
-L'obiettivo non è semplicemente "capire come si usa una chat" — sai già farlo. L'obiettivo è guardare sotto la superficie e vedere la struttura tecnica precisa che la rende possibile, perché questa stessa struttura è esattamente quella che useremo, dal Capitolo 4 in avanti, per costruire i nostri sistemi attorno ai modelli AI.
+L'obiettivo non è semplicemente "capire come si usa una chat" — sai già farlo. L'obiettivo è guardare sotto la superficie e vedere la struttura tecnica precisa che la rende possibile, perché questa stessa struttura è esattamente quella che useremo, dal Capitolo 5 in avanti, per costruire i nostri sistemi attorno ai modelli AI.
 
 ---
 
@@ -64,7 +63,7 @@ Ricordi la distinzione vista nella Lezione 1.4 tra "consultare un documento" e "
   └─────────────────────┘                 └──────────────────────┘
 ```
 
-Il **modello** (Claude Sonnet 4.6, GPT, ecc. — la distinzione vista nella Lezione 3.1) è solo **un componente** di questo sistema più ampio. Il backend del prodotto si occupa anche di compiti che il modello, da solo, non farebbe: salvare le conversazioni passate, applicare filtri di sicurezza aggiuntivi, gestire l'autenticazione dell'utente, eventualmente orchestrare strumenti esterni (ricerca web, esecuzione di codice) — funzionalità che vedremo emergere con maggiore dettaglio tecnico nel Capitolo 4.
+Il **modello** (Claude Sonnet 4.6, GPT, ecc. — la distinzione vista nella Lezione 4.1) è solo **un componente** di questo sistema più ampio. Il backend del prodotto si occupa anche di compiti che il modello, da solo, non farebbe: salvare le conversazioni passate, applicare filtri di sicurezza aggiuntivi, gestire l'autenticazione dell'utente, eventualmente orchestrare strumenti esterni (ricerca web, esecuzione di codice) — funzionalità che vedremo emergere con maggiore dettaglio tecnico nel Capitolo 5.
 
 ---
 
@@ -72,7 +71,7 @@ Il **modello** (Claude Sonnet 4.6, GPT, ecc. — la distinzione vista nella Lezi
 
 Quando scrivi un messaggio e ricevi una risposta, hai completato un **turno** (in inglese, *turn*) della conversazione. Ma cosa succede esattamente, tecnicamente, quando scrivi il secondo messaggio, facendo riferimento a qualcosa detto nel primo?
 
-Qui arriva una delle informazioni più importanti, e più sottovalutate, di questa lezione: **il modello non ha memoria nativa tra una chiamata API e l'altra** (lo avevamo anticipato nella Lezione 3.1, parlando di modello vs prodotto, e ancora prima nella Lezione 1.3 a proposito dello stato in HTTP). Ogni volta che invii un nuovo messaggio, il backend del prodotto **invia di nuovo, integralmente, tutta la cronologia della conversazione fino a quel punto**, insieme al nuovo messaggio.
+Qui arriva una delle informazioni più importanti, e più sottovalutate, di questa lezione: **il modello non ha memoria nativa tra una chiamata API e l'altra** (lo avevamo anticipato nella Lezione 4.1, parlando di modello vs prodotto, e ancora prima nella Lezione 1.3 a proposito dello stato in HTTP). Ogni volta che invii un nuovo messaggio, il backend del prodotto **invia di nuovo, integralmente, tutta la cronologia della conversazione fino a quel punto**, insieme al nuovo messaggio.
 
 ```
 TURNO 1
@@ -90,9 +89,9 @@ Il modello risponde: "Parigi ha circa 2,1 milioni di abitanti
                        nella città propriamente detta."
 ```
 
-Il modello "capisce" che "quanti abitanti ha" si riferisce a Parigi non perché "ricorda" la conversazione precedente in senso autonomo, ma perché **l'intera cronologia gli viene rifornita ogni volta**, e il meccanismo di attention (Lezione 2.5) gli permette di collegare correttamente il nuovo messaggio al contesto appena fornito.
+Il modello "capisce" che "quanti abitanti ha" si riferisce a Parigi non perché "ricorda" la conversazione precedente in senso autonomo, ma perché **l'intera cronologia gli viene rifornita ogni volta**, e il meccanismo di attention (Lezione 3.5) gli permette di collegare correttamente il nuovo messaggio al contesto appena fornito.
 
-> **Implicazione pratica diretta:** questo significa che più lunga diventa una conversazione, più testo deve essere rinviato al modello a ogni turno — con conseguenze dirette su costo (le API si pagano tipicamente in base ai token elaborati, come visto nella Lezione 3.1) e su un limite tecnico fondamentale che vediamo nella prossima sezione.
+> **Implicazione pratica diretta:** questo significa che più lunga diventa una conversazione, più testo deve essere rinviato al modello a ogni turno — con conseguenze dirette su costo (le API si pagano tipicamente in base ai token elaborati, come visto nella Lezione 4.1) e su un limite tecnico fondamentale che vediamo nella prossima sezione.
 
 ---
 
@@ -113,9 +112,9 @@ Il **context window** (finestra di contesto) è il numero massimo di token che u
 └─────────────────────────────────────────────────────────┘
 ```
 
-Perché esiste questo limite? Ricordi, dalla Lezione 2.5, che l'attention calcola punteggi di rilevanza tra **tutte le coppie possibili** di token in una sequenza? Questo significa che il costo computazionale dell'attention cresce rapidamente con la lunghezza della sequenza — più token significano un costo di calcolo significativamente maggiore, non semplicemente proporzionale. Questo vincolo tecnico, radicato direttamente nell'architettura Transformer, è il motivo per cui ogni modello ha un limite massimo di contesto, per quanto i progressi tecnici lo abbiano reso via via più ampio negli anni.
+Perché esiste questo limite? Ricordi, dalla Lezione 3.5, che l'attention calcola punteggi di rilevanza tra **tutte le coppie possibili** di token in una sequenza? Questo significa che il costo computazionale dell'attention cresce rapidamente con la lunghezza della sequenza — più token significano un costo di calcolo significativamente maggiore, non semplicemente proporzionale. Questo vincolo tecnico, radicato direttamente nell'architettura Transformer, è il motivo per cui ogni modello ha un limite massimo di contesto, per quanto i progressi tecnici lo abbiano reso via via più ampio negli anni.
 
-> **Perché questo conta enormemente più avanti nel corso:** quando, nella Lezione 4.6, affronteremo la gestione della memoria nei sistemi AI, il problema centrale sarà esattamente questo: come continuare una conversazione o un compito complesso quando la quantità di informazione rilevante supera il context window disponibile. Tecniche come il riassunto progressivo della cronologia, o il recupero selettivo di sole le informazioni rilevanti (anticipando il principio di RAG, Lezione 4.3), esistono precisamente per gestire questo limite.
+> **Perché questo conta enormemente più avanti nel corso:** quando, nella Lezione 5.6, affronteremo la gestione della memoria nei sistemi AI, il problema centrale sarà esattamente questo: come continuare una conversazione o un compito complesso quando la quantità di informazione rilevante supera il context window disponibile. Tecniche come il riassunto progressivo della cronologia, o il recupero selettivo di sole le informazioni rilevanti (anticipando il principio di RAG, Lezione 5.3), esistono precisamente per gestire questo limite.
 
 ---
 
@@ -142,7 +141,7 @@ Ogni messaggio scambiato con un modello ha un **ruolo** associato, che indica ch
 
 Questa struttura a ruoli è esattamente ciò che rende possibile, in un prodotto come Claude.ai, avere un comportamento di base coerente (definito dal `system`, spesso configurato dall'azienda che fornisce il prodotto, non visibile direttamente all'utente finale) mentre l'utente conduce liberamente la propria conversazione tramite i messaggi `user`, ottenendo risposte `assistant`.
 
-> **Perché questo conta enormemente più avanti nel corso:** quando, nel Capitolo 6, parleremo dei prompt come artefatti professionali, distingueremo esattamente system prompt (istruzioni stabili, raramente modificate) da task prompt costruiti dinamicamente — una distinzione che si fonda direttamente sui ruoli appena descritti.
+> **Perché questo conta enormemente più avanti nel corso:** quando, nel Capitolo 7, parleremo dei prompt come artefatti professionali, distingueremo esattamente system prompt (istruzioni stabili, raramente modificate) da task prompt costruiti dinamicamente — una distinzione che si fonda direttamente sui ruoli appena descritti.
 
 ---
 
@@ -167,15 +166,15 @@ Se hai accesso a Claude.ai o ChatGPT, prova questo esperimento:
 2. Continua a fare domande che richiedono di ricordare informazioni dall'inizio della conversazione
 3. Osserva se, superata una certa lunghezza, il prodotto ti avvisa esplicitamente (molte interfacce mostrano un indicatore dell'uso del context, o avvisano quando la conversazione diventa molto lunga) o se le risposte iniziano a perdere coerenza con i dettagli più lontani nella conversazione
 
-Questo esperimento rende tangibile un limite che altrimenti resterebbe puramente teorico, e ti prepara concretamente al problema che affronteremo, con soluzioni tecniche precise, nella Lezione 4.6.
+Questo esperimento rende tangibile un limite che altrimenti resterebbe puramente teorico, e ti prepara concretamente al problema che affronteremo, con soluzioni tecniche precise, nella Lezione 5.6.
 
 ---
 
 ## Riepilogo
 
-- Un prodotto come ChatGPT o Claude.ai è una **Web Application** (Lezione 1.4) che usa un **LLM** (Lezione 3.1) come componente centrale, circondato da logica di gestione della cronologia, sicurezza, e funzionalità aggiuntive.
+- Un prodotto come ChatGPT o Claude.ai è una **Web Application** (Lezione 1.4) che usa un **LLM** (Lezione 4.1) come componente centrale, circondato da logica di gestione della cronologia, sicurezza, e funzionalità aggiuntive.
 - Il modello non ha memoria nativa tra le chiamate: ogni **turno** conversazionale richiede di **rinviare l'intera cronologia** precedente insieme al nuovo messaggio.
-- Il **context window** è il limite massimo di token che un modello può elaborare in una chiamata, una conseguenza tecnica diretta del costo computazionale dell'attention (Lezione 2.5) che cresce con la lunghezza della sequenza.
+- Il **context window** è il limite massimo di token che un modello può elaborare in una chiamata, una conseguenza tecnica diretta del costo computazionale dell'attention (Lezione 3.5) che cresce con la lunghezza della sequenza.
 - Ogni messaggio ha un **ruolo**: `system` (istruzioni di comportamento generale), `user` (i messaggi della persona), `assistant` (le risposte del modello, incluse quelle dei turni precedenti).
 
 ---
@@ -221,7 +220,7 @@ Cresce **più rapidamente del lineare** (quadraticamente, sommando turno per tur
 
 Perché: a ogni turno si rispedisce **l'intera cronologia precedente** + il nuovo messaggio. Al 10° messaggio si reinviano ~10 messaggi; al 100° se ne reinviano ~100. Quindi il singolo turno costa di più man mano che la conversazione cresce, e il costo *cumulativo* dell'intera conversazione è la somma 1+2+3+...+N, che cresce con il quadrato di N.
 
-Conseguenza pratica: conversazioni molto lunghe diventano costose e prima o poi sbattono contro il **context window** — il problema che motiva le tecniche di memoria della Lezione 4.6 (riassunto, recupero selettivo).
+Conseguenza pratica: conversazioni molto lunghe diventano costose e prima o poi sbattono contro il **context window** — il problema che motiva le tecniche di memoria della Lezione 5.6 (riassunto, recupero selettivo).
 
 </details>
 
@@ -239,7 +238,7 @@ Se la mettessi come `user` a ogni turno:
 - Si **mescolerebbe** alle richieste reali dell'utente, rendendo più probabile che il modello la confonda con una richiesta puntuale o che l'utente la sovrascriva.
 - Perderesti la distinzione pulita tra "configurazione del comportamento" (stabile) e "richiesta del turno" (variabile).
 
-Questa distinzione tra prompt stabili (system) e prompt dinamici (task) è la base del Capitolo 6, quando i prompt diventano artefatti versionati.
+Questa distinzione tra prompt stabili (system) e prompt dinamici (task) è la base del Capitolo 7, quando i prompt diventano artefatti versionati.
 
 </details>
 
@@ -247,8 +246,8 @@ Questa distinzione tra prompt stabili (system) e prompt dinamici (task) è la ba
 
 ## Connessioni
 
-**Viene da:** Lezioni 3.1 e 3.2 — qui vediamo, concretamente, come il modello istruito descritto in quelle lezioni viene effettivamente utilizzato all'interno di un prodotto reale.
+**Viene da:** Lezioni 4.1 e 3.2 — qui vediamo, concretamente, come il modello istruito descritto in quelle lezioni viene effettivamente utilizzato all'interno di un prodotto reale.
 
-**Porta a:** Lezione 3.4 (Il Prompting) — avendo capito i ruoli system/user/assistant, siamo pronti ad approfondire come formulare efficacemente le istruzioni in ciascuno di questi ruoli.
+**Porta a:** Lezione 4.4 (Il Prompting) — avendo capito i ruoli system/user/assistant, siamo pronti ad approfondire come formulare efficacemente le istruzioni in ciascuno di questi ruoli.
 
-**Ritroverai questi concetti in:** Lezione 4.6 (Memory nei sistemi AI) — il problema del context window e dell'accumulo della cronologia, qui solo osservato, troverà soluzioni tecniche precise. Lezione 6.4 (I Prompt come Artefatti) — la distinzione system/user che abbiamo introdotto qui sarà la base per capire la differenza tra prompt stabili e prompt dinamici nei sistemi agentivi professionali.
+**Ritroverai questi concetti in:** Lezione 5.6 (Memory nei sistemi AI) — il problema del context window e dell'accumulo della cronologia, qui solo osservato, troverà soluzioni tecniche precise. Lezione 7.4 (I Prompt come Artefatti) — la distinzione system/user che abbiamo introdotto qui sarà la base per capire la differenza tra prompt stabili e prompt dinamici nei sistemi agentivi professionali.

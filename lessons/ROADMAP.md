@@ -1,7 +1,7 @@
 # ROADMAP — Piano Completo del Corso
 
 **Corso:** Intelligenza Artificiale Applicata — Dalla Teoria alla Costruzione di Agenti Professionali
-**Struttura:** 9 Capitoli · 64 Lezioni
+**Struttura:** 10 Capitoli · 68 Lezioni
 
 ---
 
@@ -255,16 +255,17 @@ PyPI, Streamlit/Gradio, API as a Service, plugin/extension. Freemium, pay-per-us
 
 | Cap. | Titolo | Lez. | Nuclei Tematici |
 |------|--------|------|-----------------|
+| 0 | Prima di Iniziare | 2 | Benvenuto e aggancio, ambiente di sviluppo, Python, chiave API, "Hello, Claude" |
 | 1 | Il Web come lo Conosciamo | 5 | HTTP, client/server, web app, API, JSON/YAML |
 | 2 | Git e GitHub | 4 | Version control, branch, GitHub, CI/CD |
 | 3 | L'Intelligenza Artificiale | 5 | ML, DL, NLP, Transformer, Attention |
 | 4 | I Modelli Linguistici (LLM) | 9 | LLM, training, prompting, limiti, context, costi, fine-tuning |
-| 5 | Strumenti e Infrastruttura AI | 11 | API, RAG, tool use, MCP, memory, embeddings, struttura progetto, streaming, debugging |
+| 5 | Strumenti e Infrastruttura AI | 12 | API, RAG, tool use, MCP, memory, embeddings, struttura progetto, streaming, debugging, testing |
 | 6 | Agenti AI: Architettura | 8 | Loop agentivo, ReAct, orchestratore, multi-agent, robustezza, harness, sicurezza, async |
 | 7 | L'Agent Package | 8 | YAML, package, agent card, prompt artefatti, contratti, handoff, skills, versioning |
 | 8 | Workflow Multi-Agente | 7 | Grafo, LangGraph, review layer, HITL, valutazione, testing, deployment |
-| 9 | Sistemi Auto-Evolutivi | 7 | Self-reflection, prompt evolutivi, knowledge, governance, progetto finale, etica, monetizzazione |
-| **Totale** | | **64 lezioni** | **Fondamenti → Strumenti → Agenti → Produzione → Auto-miglioramento** |
+| 9 | Sistemi Auto-Evolutivi | 8 | Self-reflection, prompt evolutivi, knowledge, governance, progetto finale, etica, monetizzazione, diritto |
+| **Totale** | | **68 lezioni** | **Fondamenti → Strumenti → Agenti → Produzione → Auto-miglioramento** |
 
 ---
 

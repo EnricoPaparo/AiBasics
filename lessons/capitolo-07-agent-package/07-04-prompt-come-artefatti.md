@@ -1,13 +1,13 @@
 ---
-id: "06-04"
+id: "07-04"
 titolo: "I Prompt come Artefatti: struttura, template, istanze e versionamento"
 sottotitolo: "Il prompt non è una stringa: è il codice sorgente del comportamento di un agente"
-capitolo: 6
-capitolo_titolo: "L'Agent Package: Struttura, Contratti e Artefatti"
+capitolo: 7
+capitolo_titolo: "L'Agent Package"
 lezione: 4
 durata_stimata: "70 minuti"
 difficolta: "avanzato"
-prerequisiti: ["06-02"]
+prerequisiti: ["07-02"]
 concetti_chiave:
   - prompt template
   - prompt instance
@@ -22,12 +22,11 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # I Prompt come Artefatti: struttura, template, istanze e versionamento
 
 ## Introduzione
 
-Nella Lezione 6.2 abbiamo visto la cartella `prompts/` come componente dell'agent package, e abbiamo accennato che separare il prompt dal codice permette di modificarlo senza rischiare di introdurre bug nella logica di esecuzione. Questa lezione approfondisce con grande precisione **perché** e **come** un prompt deve essere trattato esattamente come codice sorgente: versionato, testato, sottoposto a revisione prima di un deploy, e mai modificato "al volo" senza disciplina.
+Nella Lezione 7.2 abbiamo visto la cartella `prompts/` come componente dell'agent package, e abbiamo accennato che separare il prompt dal codice permette di modificarlo senza rischiare di introdurre bug nella logica di esecuzione. Questa lezione approfondisce con grande precisione **perché** e **come** un prompt deve essere trattato esattamente come codice sorgente: versionato, testato, sottoposto a revisione prima di un deploy, e mai modificato "al volo" senza disciplina.
 
 Questo cambio di prospettiva — dal prompt come "testo che funziona" al prompt come "artefatto di ingegneria" — è probabilmente la transizione mentale più importante per chiunque costruisca sistemi agentivi professionali. Un'organizzazione che tratta i propri prompt con la stessa disciplina con cui tratta il proprio codice costruisce sistemi affidabili nel tempo; un'organizzazione che li tratta come testo informale, modificabile da chiunque senza processo, costruisce sistemi che degradano silenziosamente.
 
@@ -46,7 +45,7 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Anatomia di un prompt professionale
 
-Riprendiamo e formalizziamo, con maggiore rigore di quanto fatto nella Lezione 3.4, la struttura di un prompt ben progettato. Un prompt professionale, in un agent package, tipicamente contiene sezioni distinte e riconoscibili:
+Riprendiamo e formalizziamo, con maggiore rigore di quanto fatto nella Lezione 4.4, la struttura di un prompt ben progettato. Un prompt professionale, in un agent package, tipicamente contiene sezioni distinte e riconoscibili:
 
 ```markdown
 ---
@@ -98,7 +97,7 @@ CONFIDENZA: alta
 NOTE: nessuna
 ```
 
-Ogni sezione risponde a una domanda progettuale specifica: **Ruolo** (chi è l'agente), **Contesto** (cosa riceverà e cosa no), **Istruzioni** (come deve comportarsi), **Vincoli** (cosa non deve fare), **Formato di Output** (la struttura attesa, collegandosi direttamente agli output strutturati della Lezione 4.2), **Esempi** (few-shot prompting, Lezione 3.4). Questa struttura sistematica, ripetuta in modo consistente su tutti i prompt del sistema, è ciò che rende un prompt **revisionabile**: un collega può controllare se ciascuna sezione è presente e ben formulata, esattamente come si farebbe con una code review.
+Ogni sezione risponde a una domanda progettuale specifica: **Ruolo** (chi è l'agente), **Contesto** (cosa riceverà e cosa no), **Istruzioni** (come deve comportarsi), **Vincoli** (cosa non deve fare), **Formato di Output** (la struttura attesa, collegandosi direttamente agli output strutturati della Lezione 5.2), **Esempi** (few-shot prompting, Lezione 4.4). Questa struttura sistematica, ripetuta in modo consistente su tutti i prompt del sistema, è ciò che rende un prompt **revisionabile**: un collega può controllare se ciascuna sezione è presente e ben formulata, esattamente come si farebbe con una code review.
 
 ---
 
@@ -128,7 +127,7 @@ Il **template** è ciò che un membro del team scrive, revisiona, e versiona —
 
 ## 3. Implementazione pratica: un sistema di compilazione di template
 
-Vediamo come si implementa questa distinzione in codice, estendendo il sistema di caricamento dell'agent package costruito nella Lezione 6.2.
+Vediamo come si implementa questa distinzione in codice, estendendo il sistema di caricamento dell'agent package costruito nella Lezione 7.2.
 
 ```python
 import re
@@ -153,7 +152,7 @@ def compila_template(template: str, variabili: dict) -> str:
 def costruisci_prompt_analisi(periodo: str, periodo_confronto: str,
                                 dati_grezzi: str) -> str:
     """
-    Carica il template dell'agente Analista (Lezione 6.2) e
+    Carica il template dell'agente Analista (Lezione 7.2) e
     lo compila in un'istanza pronta per essere inviata al modello.
     """
     _, template = estrai_frontmatter(
@@ -174,10 +173,10 @@ prompt_pronto = costruisci_prompt_analisi(
     dati_grezzi="1.2M€ di vendite, 450 transazioni"
 )
 # Solo ORA, con il template compilato, si procede alla
-# chiamata API vista nella Lezione 4.1
+# chiamata API vista nella Lezione 5.1
 ```
 
-Osserva che la funzione `compila_template` **solleva esplicitamente un errore** se una variabile richiesta dal template non viene fornita, invece di produrre silenziosamente un prompt malformato (con un segnaposto non sostituito inviato per errore al modello). Questo è lo stesso principio di fail-fast e gestione esplicita degli errori visto nella Lezione 4.2 e nella Lezione 5.5: meglio un fallimento immediato e diagnosticabile che un comportamento scorretto silenzioso.
+Osserva che la funzione `compila_template` **solleva esplicitamente un errore** se una variabile richiesta dal template non viene fornita, invece di produrre silenziosamente un prompt malformato (con un segnaposto non sostituito inviato per errore al modello). Questo è lo stesso principio di fail-fast e gestione esplicita degli errori visto nella Lezione 5.2 e nella Lezione 6.5: meglio un fallimento immediato e diagnosticabile che un comportamento scorretto silenzioso.
 
 ---
 
@@ -201,13 +200,13 @@ git commit -m "Chiarire vincolo su linguaggio vago nelle conclusioni"
 
 Questa disciplina — ogni modifica a un prompt passa attraverso un commit, con un messaggio che spiega il **perché** della modifica, eventualmente attraverso una revisione di un collega prima del merge — è esattamente ciò che differenzia un sistema agentivo professionale da un sistema fragile, dove "qualcuno ha cambiato qualcosa nel prompt e ora l'agente si comporta diversamente" senza che nessuno sappia esattamente cosa, quando, o perché.
 
-> **Perché questo conta enormemente per il Capitolo 8:** quando, nella Lezione 8.2, parleremo di prompt auto-evolutivi (un sistema che modifica automaticamente i propri prompt per migliorarsi), la tracciabilità garantita dal versionamento qui descritto sarà la condizione **indispensabile** per poter verificare se una modifica automatica ha effettivamente migliorato le prestazioni, e per poter tornare indietro (rollback) se non lo ha fatto.
+> **Perché questo conta enormemente per il Capitolo 9:** quando, nella Lezione 9.2, parleremo di prompt auto-evolutivi (un sistema che modifica automaticamente i propri prompt per migliorarsi), la tracciabilità garantita dal versionamento qui descritto sarà la condizione **indispensabile** per poter verificare se una modifica automatica ha effettivamente migliorato le prestazioni, e per poter tornare indietro (rollback) se non lo ha fatto.
 
 ---
 
 ## 5. Prompt stabili vs prompt dinamici: dove tracciare il confine
 
-Riprendendo la distinzione tra `system` e `user` introdotta nella Lezione 3.3, formalizziamo ora il principio architetturale che ne deriva per un agent package:
+Riprendendo la distinzione tra `system` e `user` introdotta nella Lezione 4.3, formalizziamo ora il principio architetturale che ne deriva per un agent package:
 
 ```
 PROMPT STABILE (system prompt, in prompts/system.md)
@@ -285,8 +284,8 @@ Elenca le sezioni tipiche di un prompt professionale ben strutturato e, per cias
 - **Contesto:** cosa riceverà e cosa no?
 - **Istruzioni:** come deve comportarsi?
 - **Vincoli:** cosa NON deve fare?
-- **Formato di Output:** quale struttura deve avere la risposta? (collega agli output strutturati, Lezione 4.2)
-- **Esempi:** few-shot prompting (Lezione 3.4).
+- **Formato di Output:** quale struttura deve avere la risposta? (collega agli output strutturati, Lezione 5.2)
+- **Esempi:** few-shot prompting (Lezione 4.4).
 
 Avere queste sezioni in modo consistente rende il prompt **revisionabile** come si fa con una code review: un collega può controllare se ciascuna è presente e ben formulata.
 
@@ -301,7 +300,7 @@ Avere queste sezioni in modo consistente rende il prompt **revisionabile** come 
 
 **(a)** Il **template** è la struttura riutilizzabile con segnaposto (`{{periodo}}`), statica e **versionata in git**. L'**instance** è la versione concreta compilata con i dati reali a runtime, diversa a ogni esecuzione, **mai salvata** come file permanente.
 
-**(b)** Deve **sollevare un errore esplicito** (fail-fast). Se invece sostituisse silenziosamente con stringa vuota, invieresti al modello un prompt malformato (un'istruzione con un buco), ottenendo risposte sbagliate **senza accorgertene**. Meglio un fallimento immediato e diagnosticabile che un comportamento scorretto silenzioso (stesso principio delle Lezioni 4.2 e 5.5).
+**(b)** Deve **sollevare un errore esplicito** (fail-fast). Se invece sostituisse silenziosamente con stringa vuota, invieresti al modello un prompt malformato (un'istruzione con un buco), ottenendo risposte sbagliate **senza accorgertene**. Meglio un fallimento immediato e diagnosticabile che un comportamento scorretto silenzioso (stesso principio delle Lezioni 5.2 e 5.5).
 
 </details>
 
@@ -337,8 +336,8 @@ A runtime: `{{periodo}}`=Q3-2026, `{{periodo_confronto}}`=Q3-2025, `{{dati_grezz
 
 ## Connessioni
 
-**Viene da:** Lezione 3.4 (Il Prompting) e Lezione 3.3 (ruoli system/user) — questa lezione formalizza con rigore professionale concetti introdotti lì in forma base. Lezione 6.2 (L'Agent Package) — approfondisce la cartella `prompts/` introdotta in quella lezione.
+**Viene da:** Lezione 4.4 (Il Prompting) e Lezione 4.3 (ruoli system/user) — questa lezione formalizza con rigore professionale concetti introdotti lì in forma base. Lezione 7.2 (L'Agent Package) — approfondisce la cartella `prompts/` introdotta in quella lezione.
 
-**Porta a:** Lezione 6.7 (Skills e Skill Library) — vedremo come alcune istruzioni, troppo specifiche per il system prompt ma troppo generali per un singolo task, trovano una collocazione propria come "skill" riutilizzabili.
+**Porta a:** Lezione 7.7 (Skills e Skill Library) — vedremo come alcune istruzioni, troppo specifiche per il system prompt ma troppo generali per un singolo task, trovano una collocazione propria come "skill" riutilizzabili.
 
-**Ritroverai questi concetti in:** Lezione 8.2 (Prompt Auto-Evolutivi) — il versionamento qui descritto come buona pratica diventa, in quella lezione, un prerequisito tecnico indispensabile per un sistema che modifica automaticamente i propri prompt. Lezione 8.4 (Governance) — il ciclo di revisione tramite pull request qui introdotto sarà formalizzato come parte del ciclo di vita completo degli artefatti agentivi.
+**Ritroverai questi concetti in:** Lezione 9.2 (Prompt Auto-Evolutivi) — il versionamento qui descritto come buona pratica diventa, in quella lezione, un prerequisito tecnico indispensabile per un sistema che modifica automaticamente i propri prompt. Lezione 9.4 (Governance) — il ciclo di revisione tramite pull request qui introdotto sarà formalizzato come parte del ciclo di vita completo degli artefatti agentivi.

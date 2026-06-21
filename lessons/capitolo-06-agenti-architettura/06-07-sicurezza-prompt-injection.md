@@ -3,7 +3,6 @@ titolo: "Sicurezza e Prompt Injection"
 durata_stimata: "25 min"
 difficolta: "Avanzato"
 ---
-
 # Sicurezza e Prompt Injection
 
 Gli agenti AI introducono una nuova categoria di vulnerabilità che non esisteva nel software tradizionale. Capirle non è opzionale — è parte del lavoro di chiunque costruisce sistemi AI.

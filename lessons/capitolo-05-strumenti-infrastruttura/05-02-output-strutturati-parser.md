@@ -1,13 +1,13 @@
 ---
-id: "04-02"
+id: "05-02"
 titolo: "Output Strutturati e Output Parser: forzare il modello a rispondere in formato preciso"
 sottotitolo: "Il ponte indispensabile tra linguaggio naturale e dati che un programma può usare"
-capitolo: 4
-capitolo_titolo: "Strumenti e Infrastruttura per Sistemi AI"
+capitolo: 5
+capitolo_titolo: "Strumenti e Infrastruttura AI"
 lezione: 2
 durata_stimata: "60 minuti"
 difficolta: "intermedio"
-prerequisiti: ["04-01"]
+prerequisiti: ["05-01"]
 concetti_chiave:
   - output strutturato
   - JSON mode
@@ -23,7 +23,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Output Strutturati e Output Parser: forzare il modello a rispondere in formato preciso
 
 ## Introduzione
@@ -49,7 +48,7 @@ Al termine di questa lezione sarai in grado di:
 
 > **📌 Ricordi?** In [Lezione 01-02] abbiamo visto che HTML e CSS separano il *contenuto* (cosa è un titolo, cosa è un paragrafo) dalla sua *presentazione* (come appare, con quale colore e font). Quella separazione non era un dettaglio estetico: permetteva di modificare l'aspetto in un solo posto senza toccare la struttura. Ora vediamo lo stesso principio applicato all'AI: come in HTML/CSS separiamo struttura da presentazione, qui separiamo il contenuto grezzo dell'LLM — testo libero, variabile, imprevedibile — dalla sua struttura dati. L'output parser è il CSS del mondo AI: un livello intermedio che dà forma prevedibile a un contenuto altrimenti caotico.
 
-Ricorda dalla Lezione 3.1 che un LLM, alla sua base, genera testo prevedendo il token successivo più plausibile. Per impostazione predefinita, questo significa che le risposte sono in **linguaggio naturale**: prosa discorsiva, con tutta la variabilità, ambiguità e flessibilità che il linguaggio umano comporta.
+Ricorda dalla Lezione 4.1 che un LLM, alla sua base, genera testo prevedendo il token successivo più plausibile. Per impostazione predefinita, questo significa che le risposte sono in **linguaggio naturale**: prosa discorsiva, con tutta la variabilità, ambiguità e flessibilità che il linguaggio umano comporta.
 
 ```
 DOMANDA: "Estrai nome, età e città da questo testo:
@@ -68,7 +67,7 @@ Età: 34 anni
 Città: Bologna"
 ```
 
-Nota che tutte queste risposte sono corrette dal punto di vista del contenuto, ma hanno **formati completamente diversi**. Se il tuo programma deve estrarre automaticamente il valore dell'età per inserirlo in un database, dovrebbe scrivere codice capace di interpretare correttamente qualsiasi di queste varianti — e probabilmente molte altre ancora, perché il modello, generando token per token in modo probabilistico (Lezione 3.1), non garantisce automaticamente lo stesso formato a ogni esecuzione.
+Nota che tutte queste risposte sono corrette dal punto di vista del contenuto, ma hanno **formati completamente diversi**. Se il tuo programma deve estrarre automaticamente il valore dell'età per inserirlo in un database, dovrebbe scrivere codice capace di interpretare correttamente qualsiasi di queste varianti — e probabilmente molte altre ancora, perché il modello, generando token per token in modo probabilistico (Lezione 4.1), non garantisce automaticamente lo stesso formato a ogni esecuzione.
 
 Questo è precisamente il problema che gli **output strutturati** risolvono: ottenere dal modello una risposta in un formato fisso, prevedibile, parsabile da un programma in modo affidabile.
 
@@ -89,7 +88,7 @@ Testo: "Mi chiamo Marco, ho 34 anni e vivo a Bologna."
 """
 ```
 
-Con un'istruzione di questo tipo, ben formulata (riusando le tecniche di prompting viste nella Lezione 3.4), il modello tende a produrre consistentemente:
+Con un'istruzione di questo tipo, ben formulata (riusando le tecniche di prompting viste nella Lezione 4.4), il modello tende a produrre consistentemente:
 
 ```json
 {"nome": "Marco", "eta": 34, "citta": "Bologna"}
@@ -120,7 +119,7 @@ class PersonaEstratta(BaseModel):
 
 L'idea centrale è che lo schema **non vive solo nella tua testa o in un commento**: è codice eseguibile, che il tuo programma può usare sia per comunicare al modello esattamente cosa si aspetta, sia per **verificare automaticamente**, dopo aver ricevuto la risposta, che il modello abbia effettivamente rispettato quella struttura — un campo mancante, un tipo di dato sbagliato (una stringa dove ci si aspettava un numero), o un valore fuori dai vincoli previsti vengono rilevati immediatamente, invece di propagarsi silenziosamente come errore nel resto del sistema.
 
-> **Perché questo anticipa direttamente il Capitolo 6:** quando, nella Lezione 6.5, parleremo di "contratti tra agenti", vedremo che uno schema come quello appena definito è esattamente la base tecnica di un contratto: una dichiarazione precisa e verificabile di cosa un componente del sistema si aspetta di ricevere o produrre.
+> **Perché questo anticipa direttamente il Capitolo 7:** quando, nella Lezione 7.5, parleremo di "contratti tra agenti", vedremo che uno schema come quello appena definito è esattamente la base tecnica di un contratto: una dichiarazione precisa e verificabile di cosa un componente del sistema si aspetta di ricevere o produrre.
 
 ---
 
@@ -162,7 +161,7 @@ Questo componente è quello che rende possibile costruire **pipeline affidabili*
 
 ## 5. Gestire gli errori di parsing: cosa fare quando il modello sbaglia formato
 
-Anche con istruzioni ben formulate e schemi precisi, un modello può occasionalmente produrre output che non rispetta esattamente il formato richiesto — ricorda che, come visto nella Lezione 3.5, il comportamento del modello resta intrinsecamente probabilistico, non garantito al 100%. Una strategia di gestione robusta prevede tipicamente:
+Anche con istruzioni ben formulate e schemi precisi, un modello può occasionalmente produrre output che non rispetta esattamente il formato richiesto — ricorda che, come visto nella Lezione 4.5, il comportamento del modello resta intrinsecamente probabilistico, non garantito al 100%. Una strategia di gestione robusta prevede tipicamente:
 
 ```
 1. Tentare il parsing della risposta
@@ -183,13 +182,13 @@ Anche con istruzioni ben formulate e schemi precisi, un modello può occasionalm
    o inventati
 ```
 
-Questo pattern di gestione — tentare, correggere, fare fallback, infine fallire in modo esplicito e controllato — anticipa direttamente il principio di **graceful degradation** (fallire in modo controllato) che approfondiremo con maggiore rigore nella Lezione 5.5, parlando della robustezza degli agenti.
+Questo pattern di gestione — tentare, correggere, fare fallback, infine fallire in modo esplicito e controllato — anticipa direttamente il principio di **graceful degradation** (fallire in modo controllato) che approfondiremo con maggiore rigore nella Lezione 6.5, parlando della robustezza degli agenti.
 
 ---
 
 ## Esempio Pratico: Una Pipeline Completa di Estrazione Strutturata
 
-Mettiamo insieme tutti i pezzi di questa lezione in un esempio end-to-end, costruendo su quanto visto nella Lezione 4.1:
+Mettiamo insieme tutti i pezzi di questa lezione in un esempio end-to-end, costruendo su quanto visto nella Lezione 5.1:
 
 ```python
 import anthropic
@@ -233,7 +232,7 @@ print(f"Categoria: {risultato.categoria}, Urgenza: {risultato.urgenza}")
 # → Categoria: assistenza, Urgenza: alta
 ```
 
-Questo esempio, per quanto semplice, contiene già tutti gli ingredienti di un componente di automazione reale: una chiamata API (Lezione 4.1), un'istruzione di formato precisa (questa lezione, Sezione 2), e una validazione tramite schema (questa lezione, Sezione 3) — il risultato finale, `risultato.categoria` e `risultato.urgenza`, sono dati Python pienamente utilizzabili, ad esempio, per instradare automaticamente la recensione al team giusto.
+Questo esempio, per quanto semplice, contiene già tutti gli ingredienti di un componente di automazione reale: una chiamata API (Lezione 5.1), un'istruzione di formato precisa (questa lezione, Sezione 2), e una validazione tramite schema (questa lezione, Sezione 3) — il risultato finale, `risultato.categoria` e `risultato.urgenza`, sono dati Python pienamente utilizzabili, ad esempio, per instradare automaticamente la recensione al team giusto.
 
 ---
 
@@ -298,7 +297,7 @@ Il vantaggio: l'errore emerge **subito ed esplicitamente**, invece di propagarsi
 
 ### Esercizio 3 — Strategia anti-errore 🔴 Avanzato
 
-Il modello a volte restituisce JSON malformato o circondato da testo. Progetta una strategia di gestione robusta in più livelli. Quale principio della Lezione 5.5 anticipa?
+Il modello a volte restituisce JSON malformato o circondato da testo. Progetta una strategia di gestione robusta in più livelli. Quale principio della Lezione 6.5 anticipa?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -309,7 +308,7 @@ Strategia a livelli (dal tentativo ottimista al fallimento controllato):
 3. Se fallisce ancora → **parsing permissivo di fallback**: estrai solo la porzione che sembra JSON, ignorando il testo circostante.
 4. Se anche questo fallisce → **fallisci in modo esplicito**, segnalando l'errore al resto del sistema invece di propagare dati inventati/corrotti.
 
-Anticipa il principio di **graceful degradation** (Lezione 5.5): un sistema robusto degrada in modo controllato e, quando proprio non può, fallisce in modo visibile e gestibile — mai silenziosamente con dati sbagliati.
+Anticipa il principio di **graceful degradation** (Lezione 6.5): un sistema robusto degrada in modo controllato e, quando proprio non può, fallisce in modo visibile e gestibile — mai silenziosamente con dati sbagliati.
 
 </details>
 
@@ -317,8 +316,8 @@ Anticipa il principio di **graceful degradation** (Lezione 5.5): un sistema robu
 
 ## Connessioni
 
-**Viene da:** Lezione 4.1 — qui aggiungiamo, alla chiamata API di base, il livello di precisione necessario per ottenere dati utilizzabili da un programma, non solo testo per un umano.
+**Viene da:** Lezione 5.1 — qui aggiungiamo, alla chiamata API di base, il livello di precisione necessario per ottenere dati utilizzabili da un programma, non solo testo per un umano.
 
-**Porta a:** Lezione 4.3 (RAG) e Lezione 4.4 (Function Calling) — entrambe le tecniche richiedono che il modello produca output strutturati (rispettivamente, per integrare informazioni recuperate, e per specificare quale strumento usare e con quali parametri).
+**Porta a:** Lezione 5.3 (RAG) e Lezione 5.4 (Function Calling) — entrambe le tecniche richiedono che il modello produca output strutturati (rispettivamente, per integrare informazioni recuperate, e per specificare quale strumento usare e con quali parametri).
 
-**Ritroverai questi concetti in:** Lezione 6.5 (Contratti tra Agenti) — lo schema Pydantic visto qui è precisamente l'antenato tecnico del concetto di "contratto" tra componenti di un sistema multi-agente. Lezione 6.3 (Agent Card) — gli schemi di input/output di un agente, dichiarati nella sua Agent Card, si basano esattamente su questo principio di validazione strutturata.
+**Ritroverai questi concetti in:** Lezione 7.5 (Contratti tra Agenti) — lo schema Pydantic visto qui è precisamente l'antenato tecnico del concetto di "contratto" tra componenti di un sistema multi-agente. Lezione 7.3 (Agent Card) — gli schemi di input/output di un agente, dichiarati nella sua Agent Card, si basano esattamente su questo principio di validazione strutturata.

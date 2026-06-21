@@ -1,8 +1,8 @@
 ---
-id: "02-01"
+id: "03-01"
 titolo: "Intelligenza Artificiale: storia, definizioni e rami principali"
 sottotitolo: "Demistificare la parola più abusata e meno capita della tecnologia contemporanea"
-capitolo: 2
+capitolo: 3
 capitolo_titolo: "L'Intelligenza Artificiale: Cosa È Davvero"
 lezione: 1
 durata_stimata: "50 minuti"
@@ -24,7 +24,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Intelligenza Artificiale: storia, definizioni e rami principali
 
 In questo capitolo costruiremo una mappa del territorio dell'intelligenza artificiale: sobria, onesta, e resistente alle esagerazioni che si leggono ogni giorno. Prima di usare questi sistemi con competenza reale, è necessario capire cosa sono davvero — e cosa non sono.
@@ -56,7 +55,7 @@ Definire "intelligenza artificiale" in modo filosoficamente rigoroso è un probl
 
 Nota cosa questa definizione **non dice**: non dice che il sistema "pensa", non dice che il sistema "capisce" nel senso in cui un umano capisce, non dice nulla sulla coscienza o sull'esperienza soggettiva. È una definizione basata sul comportamento osservabile (cosa il sistema riesce a fare), non sui meccanismi interni o su ipotetici stati mentali.
 
-Questa cautela non è pignoleria accademica: è una protezione contro uno degli errori più comuni e più costosi nell'uso pratico dell'AI, che è attribuire comprensione, intenzionalità o coscienza a sistemi che, internamente, eseguono operazioni matematiche su numeri. Torneremo su questo punto con grande precisione quando arriveremo a parlare degli LLM nel Capitolo 3.
+Questa cautela non è pignoleria accademica: è una protezione contro uno degli errori più comuni e più costosi nell'uso pratico dell'AI, che è attribuire comprensione, intenzionalità o coscienza a sistemi che, internamente, eseguono operazioni matematiche su numeri. Torneremo su questo punto con grande precisione quando arriveremo a parlare degli LLM nel Capitolo 4.
 
 ---
 
@@ -130,11 +129,11 @@ Il termine "Intelligenza Artificiale" è un cappello molto ampio, sotto il quale
 ```
 
 - **Machine Learning** è un sottoinsieme dell'AI: l'approccio "impara dai dati" descritto sopra
-- **Deep Learning** è un sottoinsieme del Machine Learning: usa specificamente le **reti neurali artificiali**, strutture a più strati che vedremo in dettaglio nella Lezione 2.3
+- **Deep Learning** è un sottoinsieme del Machine Learning: usa specificamente le **reti neurali artificiali**, strutture a più strati che vedremo in dettaglio nella Lezione 3.3
 - **NLP** (Natural Language Processing) è l'area applicativa che si occupa di linguaggio: comprenderlo, generarlo, tradurlo. Oggi è dominata dal Deep Learning, ma esisteva (con risultati molto più limitati) anche prima
 - **Computer Vision** è l'area applicativa che si occupa di immagini e video: riconoscimento di oggetti, volti, scene
 
-I modelli linguistici di grandi dimensioni che studieremo nel Capitolo 3 — Claude, GPT, e simili — sono il punto di incontro tra Deep Learning e NLP: usano reti neurali profonde, applicate specificamente al linguaggio.
+I modelli linguistici di grandi dimensioni che studieremo nel Capitolo 4 — Claude, GPT, e simili — sono il punto di incontro tra Deep Learning e NLP: usano reti neurali profonde, applicate specificamente al linguaggio.
 
 ---
 
@@ -169,7 +168,7 @@ Prova a classificare questi sistemi che probabilmente usi già, usando la mappa 
 | Riconoscimento del tuo volto per sbloccare il telefono | Computer Vision (Deep Learning) | Interpreta un'immagine per identificare un pattern specifico |
 | Traduzione automatica di una pagina web | NLP (Deep Learning) | Comprende e genera linguaggio in un'altra lingua |
 | Suggerimenti di prossima parola mentre scrivi un messaggio | NLP (Deep Learning, versione semplificata) | Prevede testo basandosi su pattern linguistici |
-| Un assistente come Claude che risponde a domande complesse | NLP + Deep Learning, su scala molto più ampia | Lo stesso principio dei precedenti, ma con architetture e scala radicalmente superiori (Capitolo 3) |
+| Un assistente come Claude che risponde a domande complesse | NLP + Deep Learning, su scala molto più ampia | Lo stesso principio dei precedenti, ma con architetture e scala radicalmente superiori (Capitolo 4) |
 
 Questo esercizio di classificazione non è fine a se stesso: ti abitua a guardare un sistema AI e chiederti "che tipo di problema sta risolvendo, e con quale approccio?" — una domanda che farai costantemente quando progetterai agenti e dovrai scegliere quale strumento o modello usare per quale compito.
 
@@ -238,10 +237,10 @@ La lezione dice che sapere che i modelli sono "AI ristretta" e fallibili ci rend
 
 Il paradosso: **proprio perché non ci fidiamo ciecamente del modello**, progettiamo difese attorno a esso. Chi crede che l'AI "capisca" come un umano tende a darle troppa autonomia e a non controllare l'output. Chi sa che il modello è uno strumento ristretto che sbaglia in modi specifici e prevedibili, invece, progetta:
 
-- **layer di review** (Lezione 7.3): un secondo agente che critica l'output del primo.
-- **human-in-the-loop** (Lezione 7.4): un umano che approva nei punti critici.
-- **gestione errori e fallback** (Lezione 5.5): cosa fare quando il modello sbaglia.
-- **self-reflection** (Lezione 8.1): far rivalutare al modello il proprio lavoro.
+- **layer di review** (Lezione 8.3): un secondo agente che critica l'output del primo.
+- **human-in-the-loop** (Lezione 8.4): un umano che approva nei punti critici.
+- **gestione errori e fallback** (Lezione 6.5): cosa fare quando il modello sbaglia.
+- **self-reflection** (Lezione 9.1): far rivalutare al modello il proprio lavoro.
 
 Conclusione: l'onestà sui limiti non è pessimismo — è ingegneria. L'affidabilità di un sistema agentivo nasce dai controlli che mettiamo *attorno* a un componente intrinsecamente fallibile, non dalla pretesa che quel componente sia infallibile.
 
@@ -253,6 +252,6 @@ Conclusione: l'onestà sui limiti non è pessimismo — è ingegneria. L'affidab
 
 **Viene da:** Capitolo 1 — abbiamo capito come due sistemi comunicano (API); ora iniziamo a capire cosa può esserci, concettualmente, dall'altra parte di quella comunicazione.
 
-**Porta a:** Lezione 2.2 (Machine Learning) — approfondiremo nel dettaglio il meccanismo di "apprendimento dai dati" solo accennato qui.
+**Porta a:** Lezione 3.2 (Machine Learning) — approfondiremo nel dettaglio il meccanismo di "apprendimento dai dati" solo accennato qui.
 
-**Ritroverai questi concetti in:** Lezione 3.1 (Cos'è un LLM) — vedremo come gli LLM si posizionano esattamente all'intersezione di Deep Learning e NLP descritta in questa lezione. Lezione 3.5 (Limiti degli LLM) — la distinzione AI ristretta/generale tornerà per inquadrare con precisione cosa un modello linguistico può e non può fare.
+**Ritroverai questi concetti in:** Lezione 4.1 (Cos'è un LLM) — vedremo come gli LLM si posizionano esattamente all'intersezione di Deep Learning e NLP descritta in questa lezione. Lezione 4.5 (Limiti degli LLM) — la distinzione AI ristretta/generale tornerà per inquadrare con precisione cosa un modello linguistico può e non può fare.

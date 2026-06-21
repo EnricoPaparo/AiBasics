@@ -1,13 +1,13 @@
 ---
-id: "02-03"
+id: "03-03"
 titolo: "Reti Neurali e Deep Learning: il cervello artificiale spiegato bene"
 sottotitolo: "Dare una forma concreta alla 'funzione matematica con parametri regolabili'"
-capitolo: 2
+capitolo: 3
 capitolo_titolo: "L'Intelligenza Artificiale: Cosa È Davvero"
 lezione: 3
 durata_stimata: "60 minuti"
 difficolta: "base"
-prerequisiti: ["02-02"]
+prerequisiti: ["03-02"]
 concetti_chiave:
   - neurone artificiale
   - peso
@@ -25,14 +25,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Reti Neurali e Deep Learning: il cervello artificiale spiegato bene
 
 ## Introduzione
 
 Nella lezione precedente abbiamo definito un modello come "una funzione matematica con parametri regolabili, aggiustati durante l'addestramento". È una definizione corretta ma astratta. Questa lezione la rende concreta, mostrando esattamente che *forma* ha questa funzione quando parliamo di Deep Learning: la rete neurale artificiale.
 
-Capire — anche solo intuitivamente — come è costruita una rete neurale è il prerequisito indispensabile per la prossima lezione, dove affronteremo il problema del linguaggio, e per la Lezione 2.5, dove vedremo l'architettura Transformer che rende possibili i modelli linguistici moderni. Non useremo formule matematiche: l'obiettivo non è che tu sappia calcolare una rete neurale a mano, ma che tu abbia un modello mentale corretto di cosa stia succedendo, sufficiente a non trattare mai più questi sistemi come scatole nere incomprensibili.
+Capire — anche solo intuitivamente — come è costruita una rete neurale è il prerequisito indispensabile per la prossima lezione, dove affronteremo il problema del linguaggio, e per la Lezione 3.5, dove vedremo l'architettura Transformer che rende possibili i modelli linguistici moderni. Non useremo formule matematiche: l'obiettivo non è che tu sappia calcolare una rete neurale a mano, ma che tu abbia un modello mentale corretto di cosa stia succedendo, sufficiente a non trattare mai più questi sistemi come scatole nere incomprensibili.
 
 ---
 
@@ -151,7 +150,7 @@ Spieghiamolo a parole, senza derivate.
 
 2. Si confronta l'output prodotto con l'output desiderato
    (questo richiede di sapere la risposta corretta —
-   torna l'apprendimento supervisionato visto nella Lezione 2.2)
+   torna l'apprendimento supervisionato visto nella Lezione 3.2)
 
 3. Si calcola quanto e in che direzione l'errore finale
    sia "responsabilità" di ciascun peso della rete,
@@ -176,11 +175,11 @@ Questo processo, ripetuto un numero enorme di volte su un numero enorme di esemp
 
 Le reti neurali, come idea teorica, esistono fin dagli anni '50 e '60. Perché la rivoluzione concreta è arrivata solo a partire dal 2012 (l'anno spartiacque è generalmente associato a un sistema chiamato AlexNet, che vinse in modo schiacciante una competizione di riconoscimento immagini)? Tre fattori si sono combinati:
 
-1. **Dati**: l'arrivo di Internet ha resi disponibili dataset enormi, necessari per addestrare reti con milioni di parametri senza overfitting (concetto visto nella Lezione 2.2)
+1. **Dati**: l'arrivo di Internet ha resi disponibili dataset enormi, necessari per addestrare reti con milioni di parametri senza overfitting (concetto visto nella Lezione 3.2)
 2. **Potenza di calcolo**: le GPU (schede grafiche), originariamente progettate per i videogiochi, si sono rivelate eccezionalmente efficienti anche per i calcoli matriciali richiesti dalle reti neurali
 3. **Algoritmi migliori**: perfezionamenti tecnici (funzioni di attivazione più efficaci, tecniche per stabilizzare l'addestramento di reti molto profonde) hanno reso pratico addestrare reti con molti più strati di quanto fosse possibile prima
 
-Questa combinazione di fattori — dati, calcolo, algoritmi — è esattamente la stessa che, pochi anni dopo, renderà possibile l'addestramento dei modelli linguistici di grandi dimensioni che studieremo nel Capitolo 3, su scala ancora più estrema.
+Questa combinazione di fattori — dati, calcolo, algoritmi — è esattamente la stessa che, pochi anni dopo, renderà possibile l'addestramento dei modelli linguistici di grandi dimensioni che studieremo nel Capitolo 4, su scala ancora più estrema.
 
 ---
 
@@ -223,7 +222,7 @@ Nota che i pesi (`0.7` e `-0.5`) incorporano già un'informazione sensata: il pe
 - Organizzando molti neuroni in **strati** collegati in sequenza, si costruisce una **rete neurale**: ogni strato riceve gli output del precedente.
 - La **profondità** (numero di strati nascosti) permette alla rete di costruire rappresentazioni via via più astratte, combinando pattern semplici in pattern complessi.
 - La **backpropagation** è l'algoritmo che regola i pesi della rete, ripercorrendo all'indietro l'errore tra output prodotto e output desiderato, e aggiustando ogni peso nella direzione che lo riduce.
-- La combinazione di **dati**, **potenza di calcolo (GPU)** e **algoritmi migliori** ha reso il Deep Learning praticamente efficace a partire dal 2012, aprendo la strada a tutto ciò che vedremo nel Capitolo 3.
+- La combinazione di **dati**, **potenza di calcolo (GPU)** e **algoritmi migliori** ha reso il Deep Learning praticamente efficace a partire dal 2012, aprendo la strada a tutto ciò che vedremo nel Capitolo 4.
 
 ---
 
@@ -233,7 +232,7 @@ Nota che i pesi (`0.7` e `-0.5`) incorporano già un'informazione sensata: il pe
 
 2. Nell'analogia del riconoscimento di un volto per strati successivi (contorni → forme → volto intero), cosa pensi possa rappresentare uno strato "ancora più profondo" rispetto a quelli descritti? Prova a immaginare un'astrazione superiore a "riconoscere un volto".
 
-3. La backpropagation richiede di conoscere la risposta corretta per calcolare l'errore. Rifletti su questo: che relazione ha questo requisito con la distinzione tra apprendimento supervisionato e non supervisionato vista nella Lezione 2.2?
+3. La backpropagation richiede di conoscere la risposta corretta per calcolare l'errore. Rifletti su questo: che relazione ha questo requisito con la distinzione tra apprendimento supervisionato e non supervisionato vista nella Lezione 3.2?
 
 ---
 
@@ -252,7 +251,7 @@ Somma pesata = `(3 × 0.5) + (2 × -1) + 1` = `1.5 - 2 + 1` = **`0.5`**.
 
 (Poi a `0.5` si applicherebbe la funzione di attivazione, es. ReLU → resta `0.5` perché positivo.)
 
-**Cosa sono i pesi:** sono i **parametri regolabili** del modello — gli stessi "parametri" della Lezione 2.2. Non vengono scritti a mano: vengono aggiustati dalla backpropagation durante l'addestramento. Un peso negativo (come `w2 = -1`) indica che quell'input *spinge verso il basso* l'output.
+**Cosa sono i pesi:** sono i **parametri regolabili** del modello — gli stessi "parametri" della Lezione 3.2. Non vengono scritti a mano: vengono aggiustati dalla backpropagation durante l'addestramento. Un peso negativo (come `w2 = -1`) indica che quell'input *spinge verso il basso* l'output.
 
 </details>
 
@@ -271,7 +270,7 @@ Perché è un problema: il linguaggio (e il mondo reale) è pieno di relazioni *
 
 ### Esercizio 3 — Spiega la backpropagation 🔴 Avanzato
 
-Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispondi: perché la backpropagation richiede di conoscere la "risposta corretta"? Che relazione ha con la distinzione supervisionato/non supervisionato della Lezione 2.2?
+Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispondi: perché la backpropagation richiede di conoscere la "risposta corretta"? Che relazione ha con la distinzione supervisionato/non supervisionato della Lezione 3.2?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -285,7 +284,7 @@ Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispond
 
 **Perché serve la risposta corretta:** il passo 2 calcola l'errore come differenza tra output prodotto e output *atteso*. Senza conoscere l'output atteso, non c'è errore da misurare né direzione in cui correggere.
 
-**Relazione con la Lezione 2.2:** questo requisito è esattamente ciò che definisce l'**apprendimento supervisionato** — servono esempi *etichettati* con la risposta giusta. Per questo l'addestramento classico con backpropagation è supervisionato: ha bisogno del "libro con le soluzioni in fondo".
+**Relazione con la Lezione 3.2:** questo requisito è esattamente ciò che definisce l'**apprendimento supervisionato** — servono esempi *etichettati* con la risposta giusta. Per questo l'addestramento classico con backpropagation è supervisionato: ha bisogno del "libro con le soluzioni in fondo".
 
 </details>
 
@@ -293,11 +292,11 @@ Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispond
 
 ## Connessioni
 
-**Viene da:** Lezione 2.2 — qui diamo forma concreta al "modello come funzione matematica con parametri regolabili" descritto in astratto.
+**Viene da:** Lezione 3.2 — qui diamo forma concreta al "modello come funzione matematica con parametri regolabili" descritto in astratto.
 
-**Porta a:** Lezione 2.4 (NLP) — vedremo come si può "dare in pasto" il testo, che non è fatto di numeri, a una rete neurale che lavora solo con numeri.
+**Porta a:** Lezione 3.4 (NLP) — vedremo come si può "dare in pasto" il testo, che non è fatto di numeri, a una rete neurale che lavora solo con numeri.
 
-**Ritroverai questi concetti in:** Lezione 2.5 (Transformer) — l'architettura che useremo per gli LLM è una particolare evoluzione, molto sofisticata, dei principi di strati e pesi visti qui. Lezione 3.1 (Cos'è un LLM) — i "miliardi di parametri" di cui si parla sempre, riferendosi ai modelli linguistici, sono esattamente i pesi descritti in questa lezione, su scala enormemente più grande.
+**Ritroverai questi concetti in:** Lezione 3.5 (Transformer) — l'architettura che useremo per gli LLM è una particolare evoluzione, molto sofisticata, dei principi di strati e pesi visti qui. Lezione 4.1 (Cos'è un LLM) — i "miliardi di parametri" di cui si parla sempre, riferendosi ai modelli linguistici, sono esattamente i pesi descritti in questa lezione, su scala enormemente più grande.
 
 ---
 

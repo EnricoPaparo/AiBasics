@@ -3,7 +3,6 @@ titolo: "L'Harness"
 durata_stimata: "25 min"
 difficolta: "Avanzato"
 ---
-
 # L'Harness
 
 Hai scritto un ottimo system prompt. Hai definito i tool. Hai testato il ragionamento del modello. Ma chi esegue tutto questo? Chi chiama l'API, gestisce gli errori, tiene traccia dei tool call, monitora il contesto? Entra in scena l'harness.

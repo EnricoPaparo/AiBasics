@@ -1,13 +1,13 @@
 ---
-id: "05-05"
+id: "06-05"
 titolo: "Gestione degli Errori, Robustezza e Osservabilità negli Agenti"
 sottotitolo: "Chiudere il capitolo con maturità ingegneristica: cosa serve prima di andare in produzione"
-capitolo: 5
+capitolo: 6
 capitolo_titolo: "Agenti AI: Architettura e Ragionamento"
 lezione: 5
 durata_stimata: "60 minuti"
 difficolta: "intermedio"
-prerequisiti: ["05-04"]
+prerequisiti: ["06-04"]
 concetti_chiave:
   - retry
   - fallback
@@ -24,14 +24,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Gestione degli Errori, Robustezza e Osservabilità negli Agenti
 
 ## Introduzione
 
-Chiudiamo il Capitolo 5 con la lezione che separa un prototipo interessante da un sistema pronto per l'uso reale. Negli esempi delle lezioni precedenti, abbiamo costruito agenti che **funzionano quando tutto va bene**: il modello risponde correttamente, gli strumenti restituiscono i dati attesi, le chiamate API non falliscono. Ma un sistema in produzione deve gestire anche tutto ciò che, prima o poi, **non va bene** — ed è precisamente questa capacità di gestire i fallimenti, in modo controllato e prevedibile, che distingue un'architettura matura da un esperimento fragile.
+Chiudiamo il Capitolo 6 con la lezione che separa un prototipo interessante da un sistema pronto per l'uso reale. Negli esempi delle lezioni precedenti, abbiamo costruito agenti che **funzionano quando tutto va bene**: il modello risponde correttamente, gli strumenti restituiscono i dati attesi, le chiamate API non falliscono. Ma un sistema in produzione deve gestire anche tutto ciò che, prima o poi, **non va bene** — ed è precisamente questa capacità di gestire i fallimenti, in modo controllato e prevedibile, che distingue un'architettura matura da un esperimento fragile.
 
-Questa lezione raccoglie e formalizza precauzioni che abbiamo già introdotto in forma semplice — il `max_iterazioni` della Lezione 5.1, l'exponential backoff della Lezione 4.1 — e le organizza in una strategia coerente di robustezza, completando così tutta l'architettura concettuale necessaria prima di affrontare, nel Capitolo 6, come impacchettare un agente in modo professionale.
+Questa lezione raccoglie e formalizza precauzioni che abbiamo già introdotto in forma semplice — il `max_iterazioni` della Lezione 6.1, l'exponential backoff della Lezione 5.1 — e le organizza in una strategia coerente di robustezza, completando così tutta l'architettura concettuale necessaria prima di affrontare, nel Capitolo 7, come impacchettare un agente in modo professionale.
 
 ---
 
@@ -52,37 +51,37 @@ Non tutti gli errori che un agente può incontrare sono della stessa natura, e c
 
 ```
 ERRORI DI STRUMENTO
-  Una chiamata a uno strumento esterno (Lezione 4.4) fallisce:
+  Una chiamata a uno strumento esterno (Lezione 5.4) fallisce:
   timeout di rete, API esterna non disponibile, parametri
   non validi. È l'equivalente, nel mondo agentivo, degli
-  errori HTTP visti nella Lezione 4.1 (429, 500, ecc.)
+  errori HTTP visti nella Lezione 5.1 (429, 500, ecc.)
 
 LOOP
   L'agente ripete la stessa azione, o un piccolo ciclo di
   azioni, senza fare progressi verso l'obiettivo (problema
-  già identificato nella Lezione 5.2)
+  già identificato nella Lezione 6.2)
 
 ALLUCINAZIONI
-  Il modello genera, nel proprio PENSIERO (Lezione 5.2) o
+  Il modello genera, nel proprio PENSIERO (Lezione 6.2) o
   nella risposta finale, informazioni inventate o non
   supportate dai dati effettivamente raccolti — il limite
-  strutturale visto nella Lezione 3.5, qui nel contesto
+  strutturale visto nella Lezione 4.5, qui nel contesto
   specifico di un processo agentivo multi-passo
 
 ERRORI DI PIANO
-  L'agente (o l'orchestratore, Lezione 5.3) scompone il
+  L'agente (o l'orchestratore, Lezione 6.3) scompone il
   problema in modo inadeguato fin dall'inizio: anche se
   ogni singolo passo viene eseguito correttamente, la
   STRATEGIA complessiva non porta al risultato desiderato
 ```
 
-Questa classificazione conta perché la soluzione tecnica appropriata è diversa per ciascun caso: un errore di strumento si gestisce con retry; un loop si gestisce con limiti e rilevamento di pattern ripetitivi; un'allucinazione si gestisce con verifica e ancoraggio ai dati (lo stesso principio del RAG, Lezione 4.3); un errore di piano richiede spesso intervento umano (Lezione 7.4) o un meccanismo di revisione del piano stesso.
+Questa classificazione conta perché la soluzione tecnica appropriata è diversa per ciascun caso: un errore di strumento si gestisce con retry; un loop si gestisce con limiti e rilevamento di pattern ripetitivi; un'allucinazione si gestisce con verifica e ancoraggio ai dati (lo stesso principio del RAG, Lezione 5.3); un errore di piano richiede spesso intervento umano (Lezione 8.4) o un meccanismo di revisione del piano stesso.
 
 ---
 
 ## 2. Retry e Fallback: la prima linea di difesa
 
-Per gli **errori di strumento**, la strategia più diretta — già introdotta in forma semplice nella Lezione 4.1 con l'exponential backoff — è il **retry**: ritentare l'operazione fallita, eventualmente con un'attesa crescente tra i tentativi.
+Per gli **errori di strumento**, la strategia più diretta — già introdotta in forma semplice nella Lezione 5.1 con l'exponential backoff — è il **retry**: ritentare l'operazione fallita, eventualmente con un'attesa crescente tra i tentativi.
 
 Quando il retry esaurisce i propri tentativi senza successo, entra in gioco il **fallback**: una strategia alternativa che permette al sistema di continuare a funzionare, anche con informazioni o capacità ridotte, invece di fallire completamente.
 
@@ -165,13 +164,13 @@ STATO SEMI-APERTO
 normale)    nuovo raffreddamento)
 ```
 
-Questo pattern è particolarmente importante in sistemi multi-agente (Lezione 5.4) dove un singolo strumento può essere chiamato da più agenti contemporaneamente: senza un circuit breaker, un servizio esterno in difficoltà potrebbe essere sommerso da tentativi di retry provenienti da ogni agente, aggravando ulteriormente il problema invece di lasciarlo recuperare.
+Questo pattern è particolarmente importante in sistemi multi-agente (Lezione 6.4) dove un singolo strumento può essere chiamato da più agenti contemporaneamente: senza un circuit breaker, un servizio esterno in difficoltà potrebbe essere sommerso da tentativi di retry provenienti da ogni agente, aggravando ulteriormente il problema invece di lasciarlo recuperare.
 
 ---
 
 ## 4. Graceful Degradation: fallire in modo controllato
 
-Il principio di **graceful degradation** (degradazione controllata), già menzionato nella Lezione 4.2 a proposito degli output parser, va ora generalizzato a livello di intero sistema agentivo: quando una componente fallisce e nessun fallback è in grado di sostituirla completamente, il sistema deve **comunicare chiaramente i propri limiti**, invece di produrre un risultato silenziosamente incompleto o, peggio, inventato.
+Il principio di **graceful degradation** (degradazione controllata), già menzionato nella Lezione 5.2 a proposito degli output parser, va ora generalizzato a livello di intero sistema agentivo: quando una componente fallisce e nessun fallback è in grado di sostituirla completamente, il sistema deve **comunicare chiaramente i propri limiti**, invece di produrre un risultato silenziosamente incompleto o, peggio, inventato.
 
 ```python
 def agente_con_degradazione_controllata(domanda: str) -> dict:
@@ -196,7 +195,7 @@ def agente_con_degradazione_controllata(domanda: str) -> dict:
     return risultato
 ```
 
-Questo approccio — restituire sempre, insieme alla risposta, un'indicazione esplicita di eventuali limitazioni — è precisamente il tipo di onestà sui propri limiti che, ricordando la Lezione 3.2 (RLHF), un buon assistente AI dovrebbe avere anche a livello di singola risposta testuale; qui lo applichiamo a livello di **architettura del sistema**, rendendolo un comportamento garantito dal codice, non solo sperato dal comportamento del modello.
+Questo approccio — restituire sempre, insieme alla risposta, un'indicazione esplicita di eventuali limitazioni — è precisamente il tipo di onestà sui propri limiti che, ricordando la Lezione 4.2 (RLHF), un buon assistente AI dovrebbe avere anche a livello di singola risposta testuale; qui lo applichiamo a livello di **architettura del sistema**, rendendolo un comportamento garantito dal codice, non solo sperato dal comportamento del modello.
 
 ---
 
@@ -214,7 +213,7 @@ logger = logging.getLogger("agente")
 
 def esegui_agente_osservabile(obiettivo: str, max_iterazioni: int = 5) -> str:
     """
-    Estende il loop agentivo della Lezione 5.1 con logging
+    Estende il loop agentivo della Lezione 6.1 con logging
     strutturato a ogni fase del ciclo.
     """
     client = anthropic.Anthropic()
@@ -245,7 +244,7 @@ def esegui_agente_osservabile(obiettivo: str, max_iterazioni: int = 5) -> str:
             logger.info(json.dumps({"evento": "esecuzione_completata"}))
             return risposta.content[0].text
 
-        # ... gestione strumenti come nella Lezione 5.1 ...
+        # ... gestione strumenti come nella Lezione 6.1 ...
 
     logger.warning(json.dumps({
         "evento": "limite_iterazioni_raggiunto",
@@ -254,9 +253,9 @@ def esegui_agente_osservabile(obiettivo: str, max_iterazioni: int = 5) -> str:
     return "Limite di iterazioni raggiunto."
 ```
 
-Nota la scelta di registrare i log in **formato strutturato** (JSON), riprendendo direttamente il principio della Lezione 4.2: un log strutturato può essere interrogato, filtrato, e analizzato automaticamente — ad esempio, per scoprire quante esecuzioni raggiungono il limite di iterazioni, o qual è il consumo medio di token per tipo di richiesta — invece di restare testo grezzo difficile da analizzare su larga scala.
+Nota la scelta di registrare i log in **formato strutturato** (JSON), riprendendo direttamente il principio della Lezione 5.2: un log strutturato può essere interrogato, filtrato, e analizzato automaticamente — ad esempio, per scoprire quante esecuzioni raggiungono il limite di iterazioni, o qual è il consumo medio di token per tipo di richiesta — invece di restare testo grezzo difficile da analizzare su larga scala.
 
-> **Perché questo conta enormemente nel Capitolo 7:** quando parleremo di valutazione dei workflow nella Lezione 7.5, questi stessi log strutturati saranno la materia prima su cui costruire metriche, dashboard, e test di regressione. L'osservabilità non è un accessorio: è l'infrastruttura di dati su cui si basa ogni miglioramento futuro del sistema.
+> **Perché questo conta enormemente nel Capitolo 8:** quando parleremo di valutazione dei workflow nella Lezione 8.5, questi stessi log strutturati saranno la materia prima su cui costruire metriche, dashboard, e test di regressione. L'osservabilità non è un accessorio: è l'infrastruttura di dati su cui si basa ogni miglioramento futuro del sistema.
 
 ---
 
@@ -288,7 +287,7 @@ Cosa puoi dedurre, solo da questi log, senza nemmeno guardare il contenuto speci
 
 ## Domande di Verifica
 
-1. Un agente multi-agente (Lezione 5.4) ha un nodo che chiama frequentemente un servizio esterno ora in down per manutenzione programmata. Spiega perché un circuit breaker sarebbe preferibile al solo retry con backoff in questo scenario specifico.
+1. Un agente multi-agente (Lezione 6.4) ha un nodo che chiama frequentemente un servizio esterno ora in down per manutenzione programmata. Spiega perché un circuit breaker sarebbe preferibile al solo retry con backoff in questo scenario specifico.
 
 2. Riprendi l'esempio di codice della Sezione 4 (`agente_con_degradazione_controllata`). Perché restituire un dizionario con il campo `"limitazioni"` è una scelta migliore, dal punto di vista dell'utente finale, rispetto a fallire silenziosamente e mostrare comunque solo `risultato["risposta"]`?
 
@@ -309,8 +308,8 @@ Associa ogni tipo di errore alla strategia di gestione più appropriata: (a) err
 
 - **(a) errore di strumento** → **retry** (con backoff) ed eventuale **fallback**.
 - **(b) loop** → **limiti** (`max_iterazioni`) e **rilevamento di pattern ripetitivi**.
-- **(c) allucinazione** → **verifica e ancoraggio ai dati** (principio del RAG, Lezione 4.3).
-- **(d) errore di piano** → **intervento umano** (Lezione 7.4) o **revisione del piano**.
+- **(c) allucinazione** → **verifica e ancoraggio ai dati** (principio del RAG, Lezione 5.3).
+- **(d) errore di piano** → **intervento umano** (Lezione 8.4) o **revisione del piano**.
 
 Lezione chiave: non esiste una soluzione unica. Classificare correttamente il tipo di errore è il primo passo per scegliere la difesa giusta.
 
@@ -346,12 +345,12 @@ Un servizio esterno è in down per manutenzione programmata. Più agenti continu
 
 ## Connessioni
 
-**Viene da:** Lezione 4.1 (exponential backoff), Lezione 5.1 (max_iterazioni), Lezione 5.2 (problema del loop) — questa lezione raccoglie e sistematizza precauzioni introdotte in forma semplice nelle lezioni precedenti.
+**Viene da:** Lezione 5.1 (exponential backoff), Lezione 6.1 (max_iterazioni), Lezione 6.2 (problema del loop) — questa lezione raccoglie e sistematizza precauzioni introdotte in forma semplice nelle lezioni precedenti.
 
-**Porta a:** Capitolo 6 (L'Agent Package) — un agente robusto, con gestione degli errori e logging ben progettati, è precisamente ciò che merita di essere impacchettato secondo gli standard professionali che vedremo in quel capitolo.
+**Porta a:** Capitolo 7 (L'Agent Package) — un agente robusto, con gestione degli errori e logging ben progettati, è precisamente ciò che merita di essere impacchettato secondo gli standard professionali che vedremo in quel capitolo.
 
-**Ritroverai questi concetti in:** Lezione 7.5 (Valutazione dei Workflow) — i log strutturati qui introdotti sono la materia prima per le metriche e i test di regressione di quella lezione. Lezione 8.1 (Self-Reflection) — il principio di un agente che riconosce e comunica i propri limiti, qui applicato a livello di gestione degli errori, anticipa il concetto più ampio di un agente che valuta criticamente il proprio stesso comportamento.
+**Ritroverai questi concetti in:** Lezione 8.5 (Valutazione dei Workflow) — i log strutturati qui introdotti sono la materia prima per le metriche e i test di regressione di quella lezione. Lezione 9.1 (Self-Reflection) — il principio di un agente che riconosce e comunica i propri limiti, qui applicato a livello di gestione degli errori, anticipa il concetto più ampio di un agente che valuta criticamente il proprio stesso comportamento.
 
 ---
 
-**CHIUSURA DEL CAPITOLO 5.** Con questa lezione si conclude l'intera architettura concettuale degli agenti: cosa sono (5.1), come ragionano in modo osservabile (5.2), come si coordinano tramite un orchestratore (5.3), quali topologie può assumere un sistema multi-agente (5.4), e come si rendono robusti e osservabili (5.5). Il Capitolo 6 affronta ora la dimensione che trasforma questi pattern architetturali in pratica professionale: come impacchettare un agente in file, contratti e artefatti strutturati, pronti per essere mantenuti, versionati, e fatti evolvere nel tempo da un team, non solo da un singolo script.
+**CHIUSURA DEL CAPITOLO 6.** Con questa lezione si conclude l'intera architettura concettuale degli agenti: cosa sono (6.1), come ragionano in modo osservabile (6.2), come si coordinano tramite un orchestratore (6.3), quali topologie può assumere un sistema multi-agente (6.4), e come si rendono robusti e osservabili (6.5). Il Capitolo 7 affronta ora la dimensione che trasforma questi pattern architetturali in pratica professionale: come impacchettare un agente in file, contratti e artefatti strutturati, pronti per essere mantenuti, versionati, e fatti evolvere nel tempo da un team, non solo da un singolo script.

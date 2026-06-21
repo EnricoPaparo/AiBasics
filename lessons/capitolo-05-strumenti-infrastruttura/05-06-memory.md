@@ -1,13 +1,13 @@
 ---
-id: "04-06"
+id: "05-06"
 titolo: "Memory nei sistemi AI: breve e lungo termine"
 sottotitolo: "L'ultimo mattone prima degli agenti: come un sistema 'ricorda' nel tempo"
-capitolo: 4
-capitolo_titolo: "Strumenti e Infrastruttura per Sistemi AI"
+capitolo: 5
+capitolo_titolo: "Strumenti e Infrastruttura AI"
 lezione: 6
 durata_stimata: "60 minuti"
 difficolta: "intermedio"
-prerequisiti: ["04-03", "04-04"]
+prerequisiti: ["05-03","05-04"]
 concetti_chiave:
   - memoria in-context
   - memoria esterna
@@ -23,14 +23,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Memory nei sistemi AI: breve e lungo termine
 
 ## Introduzione
 
-Chiudiamo il Capitolo 4 — e con esso l'intera infrastruttura tecnica necessaria prima di poter parlare seriamente di agenti — affrontando un problema che abbiamo incontrato, in forme diverse, fin dall'inizio del corso: la **memoria**. L'avevamo vista nella Lezione 1.3 a proposito dei cookie nei siti dinamici, nella Lezione 3.3 a proposito dei turni conversazionali e del context window, e nella Lezione 3.5 come limite strutturale: il modello, di per sé, non ha memoria persistente tra le chiamate.
+Chiudiamo il Capitolo 5 — e con esso l'intera infrastruttura tecnica necessaria prima di poter parlare seriamente di agenti — affrontando un problema che abbiamo incontrato, in forme diverse, fin dall'inizio del corso: la **memoria**. L'avevamo vista nella Lezione 1.3 a proposito dei cookie nei siti dinamici, nella Lezione 4.3 a proposito dei turni conversazionali e del context window, e nella Lezione 4.5 come limite strutturale: il modello, di per sé, non ha memoria persistente tra le chiamate.
 
-Questa lezione sistematizza tutto questo in un quadro coerente, e introduce le tecniche concrete con cui i sistemi AI costruiscono qualcosa che si comporta come memoria, pur partendo da un modello fondamentalmente stateless. È l'ultimo passaggio infrastrutturale prima del Capitolo 5: un agente che non ricorda nulla di ciò che ha fatto nei passi precedenti del proprio compito non potrebbe svolgere alcun compito che richieda più di un singolo passaggio — e vedremo che quasi nessun compito interessante si risolve in un solo passaggio.
+Questa lezione sistematizza tutto questo in un quadro coerente, e introduce le tecniche concrete con cui i sistemi AI costruiscono qualcosa che si comporta come memoria, pur partendo da un modello fondamentalmente stateless. È l'ultimo passaggio infrastrutturale prima del Capitolo 6: un agente che non ricorda nulla di ciò che ha fatto nei passi precedenti del proprio compito non potrebbe svolgere alcun compito che richieda più di un singolo passaggio — e vedremo che quasi nessun compito interessante si risolve in un solo passaggio.
 
 ---
 
@@ -53,7 +52,7 @@ Il termine "memoria", applicato ai sistemi AI, copre in realtà concetti tecnica
 ┌────────────────────────────────────────────────────────┐
 │  MEMORIA IN-CONTEXT                                       │
 │  La cronologia della conversazione corrente, rinviata      │
-│  a ogni chiamata (Lezione 3.3). Esiste solo durante         │
+│  a ogni chiamata (Lezione 4.3). Esiste solo durante         │
 │  la sessione attiva, limitata dal context window.          │
 ├────────────────────────────────────────────────────────┤
 │  MEMORIA ESTERNA (persistente)                             │
@@ -83,7 +82,7 @@ Il termine "memoria", applicato ai sistemi AI, copre in realtà concetti tecnica
 
 ## 2. Il problema del context window, ripreso e risolto in pratica
 
-Avevamo descritto, nella Lezione 3.3, il limite tecnico del context window: superata una certa lunghezza di conversazione, semplicemente non c'è più spazio per inviare tutta la cronologia al modello. Questa lezione affronta concretamente come si gestisce questo limite in un sistema reale.
+Avevamo descritto, nella Lezione 4.3, il limite tecnico del context window: superata una certa lunghezza di conversazione, semplicemente non c'è più spazio per inviare tutta la cronologia al modello. Questa lezione affronta concretamente come si gestisce questo limite in un sistema reale.
 
 ### Strategia 1: Sliding Window (finestra scorrevole)
 
@@ -104,7 +103,7 @@ Questa strategia è semplice da implementare, ma ha un limite evidente: se l'ute
 
 ### Strategia 2: Summarization progressiva (riassunto progressivo)
 
-Una strategia più sofisticata consiste nell'usare il modello stesso (con una chiamata API dedicata, come visto nella Lezione 4.1) per **riassumere periodicamente** la parte più vecchia della conversazione, mantenendo nel contesto un riassunto compatto invece della cronologia integrale.
+Una strategia più sofisticata consiste nell'usare il modello stesso (con una chiamata API dedicata, come visto nella Lezione 5.1) per **riassumere periodicamente** la parte più vecchia della conversazione, mantenendo nel contesto un riassunto compatto invece della cronologia integrale.
 
 ```
 1. La conversazione raggiunge una certa lunghezza
@@ -126,11 +125,11 @@ Questa tecnica permette di "comprimere" informazioni che altrimenti occuperebber
 
 ### Strategia 3: Memoria esterna con recupero selettivo
 
-Una terza strategia, concettualmente più vicina a RAG (Lezione 4.3), consiste nel salvare l'intera cronologia in una memoria esterna persistente (un database, eventualmente con embedding per la ricerca semantica), e **recuperare solo le porzioni rilevanti** per la domanda attuale, invece di mantenere tutto nel context window in ogni momento.
+Una terza strategia, concettualmente più vicina a RAG (Lezione 5.3), consiste nel salvare l'intera cronologia in una memoria esterna persistente (un database, eventualmente con embedding per la ricerca semantica), e **recuperare solo le porzioni rilevanti** per la domanda attuale, invece di mantenere tutto nel context window in ogni momento.
 
 ```
 Cronologia completa salvata esternamente
-(es. in un vector database, Lezione 4.3)
+(es. in un vector database, Lezione 5.3)
               │
               ▼
 Domanda attuale dell'utente
@@ -145,7 +144,7 @@ Solo queste porzioni rilevanti vengono incluse
 nel contesto inviato al modello
 ```
 
-Questa è, in sostanza, l'applicazione del principio RAG non a documenti esterni generici, ma alla **cronologia stessa della conversazione** — un'idea che ritroveremo, formalizzata con maggiore rigore, quando parleremo di memoria episodica degli agenti nel Capitolo 8.
+Questa è, in sostanza, l'applicazione del principio RAG non a documenti esterni generici, ma alla **cronologia stessa della conversazione** — un'idea che ritroveremo, formalizzata con maggiore rigore, quando parleremo di memoria episodica degli agenti nel Capitolo 9.
 
 ---
 
@@ -173,7 +172,7 @@ Questo richiede necessariamente una **memoria esterna** (Sezione 1), salvata in 
    sono state raccolte
 ```
 
-Questo meccanismo — qui descritto in modo semplificato — è precisamente il principio su cui si basano i sistemi di memoria a lungo termine dei prodotti AI più avanzati, ed è anche un'anticipazione diretta e dichiarata del problema del **riassorbimento della conoscenza** che affronteremo formalmente nella Lezione 8.3, parlando di sistemi che migliorano accumulando esperienza nel tempo.
+Questo meccanismo — qui descritto in modo semplificato — è precisamente il principio su cui si basano i sistemi di memoria a lungo termine dei prodotti AI più avanzati, ed è anche un'anticipazione diretta e dichiarata del problema del **riassorbimento della conoscenza** che affronteremo formalmente nella Lezione 9.3, parlando di sistemi che migliorano accumulando esperienza nel tempo.
 
 ---
 
@@ -181,7 +180,7 @@ Questo meccanismo — qui descritto in modo semplificato — è precisamente il 
 
 ### Il problema: il contesto svanisce alla chiusura della sessione
 
-La sezione precedente ha descritto il flusso concettuale della memoria tra sessioni. Ma c'è un problema pratico immediato che chiunque costruisce un sistema reale si trova ad affrontare: se l'utente torna domani, il contesto è completamente perso. Il modello, stateless per costruzione (Lezione 3.5), non ricorda nulla di ciò che è stato detto nella sessione precedente — a meno che quella cronologia non venga salvata da qualche parte e ricaricata esplicitamente all'avvio della nuova sessione.
+La sezione precedente ha descritto il flusso concettuale della memoria tra sessioni. Ma c'è un problema pratico immediato che chiunque costruisce un sistema reale si trova ad affrontare: se l'utente torna domani, il contesto è completamente perso. Il modello, stateless per costruzione (Lezione 4.5), non ricorda nulla di ciò che è stato detto nella sessione precedente — a meno che quella cronologia non venga salvata da qualche parte e ricaricata esplicitamente all'avvio della nuova sessione.
 
 ### Soluzione concreta: salvare e ricaricare la cronologia con SQLite
 
@@ -272,7 +271,7 @@ def prepara_contesto_con_riassunto(
     return contesto
 ```
 
-Questo pattern — riassunto delle sessioni precedenti più ultime interazioni integrali — è la base di quasi tutti i sistemi di memoria persistente in produzione. Ritroverai questa struttura formalizzata quando, nel Capitolo 8, parleremo di agenti che accumulano esperienza nel tempo.
+Questo pattern — riassunto delle sessioni precedenti più ultime interazioni integrali — è la base di quasi tutti i sistemi di memoria persistente in produzione. Ritroverai questa struttura formalizzata quando, nel Capitolo 9, parleremo di agenti che accumulano esperienza nel tempo.
 
 ---
 
@@ -290,7 +289,7 @@ Seguendo lo spirito di valutazione equilibrata di questo corso, è importante ri
 - **Privacy**: salvare informazioni personali su un utente, anche con buone intenzioni, comporta responsabilità significative sulla gestione, sicurezza, e cancellabilità di quei dati
 - **Costo e complessità**: ogni meccanismo di memoria aggiunge un livello di infrastruttura (database, logica di estrazione, logica di recupero) che deve essere progettato, mantenuto, e monitorato
 
-> **Perché questa valutazione equilibrata conta per il resto del corso:** quando, nella Lezione 6.3, parleremo di Agent Card e di come un agente dichiara le proprie capacità, e quando, nel Capitolo 8, parleremo di sistemi che accumulano conoscenza nel tempo, questa stessa tensione tra beneficio e rischio tornerà costantemente. La memoria non è "sempre meglio averne di più" — è una risorsa progettuale che richiede scelte deliberate su cosa salvare, per quanto tempo, e con quali garanzie di correttezza e sicurezza.
+> **Perché questa valutazione equilibrata conta per il resto del corso:** quando, nella Lezione 7.3, parleremo di Agent Card e di come un agente dichiara le proprie capacità, e quando, nel Capitolo 9, parleremo di sistemi che accumulano conoscenza nel tempo, questa stessa tensione tra beneficio e rischio tornerà costantemente. La memoria non è "sempre meglio averne di più" — è una risorsa progettuale che richiede scelte deliberate su cosa salvare, per quanto tempo, e con quali garanzie di correttezza e sicurezza.
 
 ---
 
@@ -400,12 +399,12 @@ Lezione: la memoria è un *suggerimento di contesto*, non un vincolo rigido. "Pi
 
 ## Connessioni
 
-**Viene da:** Lezione 3.3 (context window) e Lezione 3.5 (statelessness del modello) — questa lezione fornisce le soluzioni tecniche concrete ai problemi lì identificati. Lezione 4.3 (RAG) — il principio di recupero selettivo per similarità si applica qui alla cronologia conversazionale stessa.
+**Viene da:** Lezione 4.3 (context window) e Lezione 4.5 (statelessness del modello) — questa lezione fornisce le soluzioni tecniche concrete ai problemi lì identificati. Lezione 5.3 (RAG) — il principio di recupero selettivo per similarità si applica qui alla cronologia conversazionale stessa.
 
-**Porta a:** Capitolo 5 (Agenti AI) — un agente che deve eseguire compiti complessi, articolati su più passaggi, dipende criticamente dalla capacità di "ricordare" cosa ha già fatto nei passaggi precedenti: la memoria in-context, qui descritta, è precisamente il meccanismo che rende possibile questa continuità all'interno di un singolo compito agentivo.
+**Porta a:** Capitolo 6 (Agenti AI) — un agente che deve eseguire compiti complessi, articolati su più passaggi, dipende criticamente dalla capacità di "ricordare" cosa ha già fatto nei passaggi precedenti: la memoria in-context, qui descritta, è precisamente il meccanismo che rende possibile questa continuità all'interno di un singolo compito agentivo.
 
-**Ritroverai questi concetti in:** Lezione 6.2 (L'Agent Package) — la cartella `memory/` di un agente professionale formalizza esattamente le strategie descritte in questa lezione. Lezione 8.3 (Riassorbimento della Conoscenza) — la distinzione tra memoria episodica e semantica, qui introdotta, è il fondamento concettuale per capire come un sistema agentivo trasforma esperienze specifiche in conoscenza generale che migliora il comportamento futuro.
+**Ritroverai questi concetti in:** Lezione 7.2 (L'Agent Package) — la cartella `memory/` di un agente professionale formalizza esattamente le strategie descritte in questa lezione. Lezione 9.3 (Riassorbimento della Conoscenza) — la distinzione tra memoria episodica e semantica, qui introdotta, è il fondamento concettuale per capire come un sistema agentivo trasforma esperienze specifiche in conoscenza generale che migliora il comportamento futuro.
 
 ---
 
-**CHIUSURA DEL CAPITOLO 4.** Con questa lezione si conclude l'intera infrastruttura tecnica del corso: chiamate API (4.1), output strutturati (4.2), accesso a informazioni esterne tramite RAG (4.3), capacità di azione tramite Function Calling (4.4), standardizzazione tramite MCP (4.5), e gestione della memoria (4.6). Ogni singolo componente che un agente richiede per funzionare è stato ora costruito, pezzo per pezzo, con piena consapevolezza del problema che risolve. Il Capitolo 5 può finalmente assemblare questi componenti in un sistema coerente: il primo vero agente del corso.
+**CHIUSURA DEL CAPITOLO 5.** Con questa lezione si conclude l'intera infrastruttura tecnica del corso: chiamate API (5.1), output strutturati (5.2), accesso a informazioni esterne tramite RAG (5.3), capacità di azione tramite Function Calling (5.4), standardizzazione tramite MCP (5.5), e gestione della memoria (5.6). Ogni singolo componente che un agente richiede per funzionare è stato ora costruito, pezzo per pezzo, con piena consapevolezza del problema che risolve. Il Capitolo 6 può finalmente assemblare questi componenti in un sistema coerente: il primo vero agente del corso.

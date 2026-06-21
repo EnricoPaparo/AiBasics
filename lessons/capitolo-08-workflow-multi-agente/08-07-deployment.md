@@ -3,7 +3,6 @@ titolo: "Deployment e Ambienti"
 durata_stimata: "25 min"
 difficolta: "Avanzato"
 ---
-
 # Deployment e Ambienti
 
 Costruire un agente AI che funziona in locale è la parte facile. Portarlo in produzione in modo sicuro, scalabile e monitorabile è dove la maggior parte dei progetti si inceppa.

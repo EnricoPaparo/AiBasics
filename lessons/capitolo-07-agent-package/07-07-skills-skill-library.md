@@ -1,13 +1,13 @@
 ---
-id: "06-07"
+id: "07-07"
 titolo: "Skills e Skill Library: competenze riutilizzabili tra agenti"
 sottotitolo: "L'ultimo mattone del package: come centralizzare la conoscenza condivisa tra molti agenti"
-capitolo: 6
-capitolo_titolo: "L'Agent Package: Struttura, Contratti e Artefatti"
+capitolo: 7
+capitolo_titolo: "L'Agent Package"
 lezione: 7
 durata_stimata: "65 minuti"
 difficolta: "avanzato"
-prerequisiti: ["06-04"]
+prerequisiti: ["07-04"]
 concetti_chiave:
   - skill
   - skill library
@@ -22,12 +22,11 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Skills e Skill Library: competenze riutilizzabili tra agenti
 
 ## Introduzione
 
-Chiudiamo il Capitolo 6 — il nucleo ingegneristico professionale di questo corso — con un concetto che completa l'agent package costruito nella Lezione 6.2: le **skill**. Avevamo lasciato questa cartella, `skills/`, solo accennata in quella lezione. È il momento di trattarla con la stessa profondità riservata a prompt, contratti, e handoff.
+Chiudiamo il Capitolo 7 — il nucleo ingegneristico professionale di questo corso — con un concetto che completa l'agent package costruito nella Lezione 7.2: le **skill**. Avevamo lasciato questa cartella, `skills/`, solo accennata in quella lezione. È il momento di trattarla con la stessa profondità riservata a prompt, contratti, e handoff.
 
 Una skill risolve un problema specifico, diverso da quelli già affrontati: cosa fare quando una **competenza specifica** — non uno strumento eseguibile, non un singolo prompt — deve essere condivisa tra **molti agenti diversi**, e mantenuta aggiornata in un unico posto, invece di essere duplicata (e quindi, inevitabilmente, fatta divergere nel tempo) in ciascun agente che ne ha bisogno.
 
@@ -46,10 +45,10 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Tool vs Skill: una distinzione che va fissata con precisione
 
-Il termine "skill" viene a volte usato in modo intercambiabile con "tool" (Lezione 4.4), ma descrive un concetto fondamentalmente diverso.
+Il termine "skill" viene a volte usato in modo intercambiabile con "tool" (Lezione 5.4), ma descrive un concetto fondamentalmente diverso.
 
 ```
-TOOL (Lezione 4.4)                     SKILL
+TOOL (Lezione 5.4)                     SKILL
 
 È CODICE eseguibile                    È CONOSCENZA/ISTRUZIONE
                                          strutturata
@@ -76,7 +75,7 @@ di un'azione)                           di dominio
 
 ## 2. Perché serve una Skill Library
 
-Immagina che, nel tuo sistema, sia l'Agente Analista Vendite (Lezione 5.3) sia un nuovo Agente Previsioni Finanziarie debbano entrambi calcolare correttamente variazioni percentuali anno su anno, gestendo correttamente i casi limite (ad esempio, cosa succede se il valore dell'anno precedente era zero — un'operazione che produrrebbe una divisione per zero).
+Immagina che, nel tuo sistema, sia l'Agente Analista Vendite (Lezione 6.3) sia un nuovo Agente Previsioni Finanziarie debbano entrambi calcolare correttamente variazioni percentuali anno su anno, gestendo correttamente i casi limite (ad esempio, cosa succede se il valore dell'anno precedente era zero — un'operazione che produrrebbe una divisione per zero).
 
 Senza una skill condivisa, questa logica dovrebbe essere **scritta due volte**, in due prompt diversi, da persone potenzialmente diverse, in momenti diversi. Il rischio concreto: una delle due versioni viene successivamente corretta per un bug scoperto in produzione, mentre l'altra resta con il problema originale — le due versioni **divergono silenziosamente**, esattamente il tipo di incoerenza che abbiamo combattuto, sotto altre forme, in tutto questo capitolo.
 
@@ -144,7 +143,7 @@ valore_attuale = 500, valore_precedente = 0
 → "variazione non calcolabile: assenza di dato base"
 ```
 
-Nota che questo documento è scritto seguendo esattamente le stesse convenzioni di frontmatter della Lezione 6.1, e una struttura per sezioni simile a quella dei prompt professionali della Lezione 6.4 — non è un caso: una skill è, concettualmente, un **frammento di prompt riutilizzabile**, con la propria identità, versione, e ciclo di vita.
+Nota che questo documento è scritto seguendo esattamente le stesse convenzioni di frontmatter della Lezione 7.1, e una struttura per sezioni simile a quella dei prompt professionali della Lezione 7.4 — non è un caso: una skill è, concettualmente, un **frammento di prompt riutilizzabile**, con la propria identità, versione, e ciclo di vita.
 
 ---
 
@@ -156,7 +155,7 @@ Vediamo come un agente "carica" dinamicamente una skill, inserendola nel proprio
 def carica_skill(id_skill: str, cartella_skill_library: str) -> str:
     """
     Carica il contenuto di una skill dalla libreria condivisa,
-    riusando il parser di frontmatter della Lezione 6.1.
+    riusando il parser di frontmatter della Lezione 7.1.
     """
     percorso = os.path.join(cartella_skill_library, f"{id_skill}.md")
     _, contenuto = estrai_frontmatter(percorso)
@@ -211,22 +210,22 @@ PRINCIPI DI GOVERNANCE CONSIGLIATI
    della Sezione 3) — responsabile della sua correttezza
 
 2. Le modifiche passano attraverso REVISIONE (pull request,
-   Lezione 6.4), specialmente se la skill è usata da agenti
+   Lezione 7.4), specialmente se la skill è usata da agenti
    di più team diversi
 
-3. Le modifiche sono VERSIONATE (Lezione 6.1, e formalizzate
-   nella Lezione 8.4): un cambiamento che altera il
+3. Le modifiche sono VERSIONATE (Lezione 7.1, e formalizzate
+   nella Lezione 9.4): un cambiamento che altera il
    comportamento atteso della skill richiede un nuovo
    numero di versione, non una modifica silenziosa
 
 4. Gli agenti che usano una skill DICHIARANO quale versione
-   si aspettano (esattamente come un contratto, Lezione 6.5),
+   si aspettano (esattamente come un contratto, Lezione 7.5),
    permettendo di rilevare automaticamente se un agente sta
    usando una versione obsoleta o se una nuova versione
    della skill introduce un cambiamento che richiede verifica
 ```
 
-Questi principi anticipano direttamente la trattazione completa della governance degli artefatti agentivi che affronteremo nella Lezione 8.4 — qui applicata specificamente al caso delle skill condivise, che per la loro natura di "conoscenza centralizzata usata da molti" sono particolarmente sensibili a una governance disciplinata.
+Questi principi anticipano direttamente la trattazione completa della governance degli artefatti agentivi che affronteremo nella Lezione 9.4 — qui applicata specificamente al caso delle skill condivise, che per la loro natura di "conoscenza centralizzata usata da molti" sono particolarmente sensibili a una governance disciplinata.
 
 ---
 
@@ -236,15 +235,15 @@ Applica questo criterio: **una logica merita di diventare una skill condivisa qu
 
 1. "Rispondi sempre in italiano formale" — **non una skill**: è una preferenza di comportamento specifica di un singolo agente, non una competenza procedurale condivisibile
 2. "Come interpretare correttamente le date in formato italiano vs americano, evitando ambiguità tra giorno/mese" — **buona candidata a skill**: è una procedura specifica, riutilizzabile da qualsiasi agente che debba elaborare date, e potrebbe richiedere aggiornamenti se si scoprono nuovi casi limite
-3. "Il nome del cliente per questa specifica richiesta è Mario Rossi" — **non una skill, né un prompt stabile**: è un dato specifico della singola esecuzione (un task prompt dinamico, Lezione 6.4), non una competenza riutilizzabile
+3. "Il nome del cliente per questa specifica richiesta è Mario Rossi" — **non una skill, né un prompt stabile**: è un dato specifico della singola esecuzione (un task prompt dinamico, Lezione 7.4), non una competenza riutilizzabile
 
 ---
 
 ## Riepilogo
 
-- Una **skill** è conoscenza o istruzione procedurale strutturata che arricchisce il contesto di ragionamento di un agente, distinta da un **tool** (Lezione 4.4), che è codice eseguibile che produce un risultato concreto.
+- Una **skill** è conoscenza o istruzione procedurale strutturata che arricchisce il contesto di ragionamento di un agente, distinta da un **tool** (Lezione 5.4), che è codice eseguibile che produce un risultato concreto.
 - Una **skill library** centralizza competenze condivise tra più agenti, evitando la duplicazione (e la conseguente divergenza nel tempo) della stessa logica in prompt separati.
-- Una skill si struttura come documento `.md` con frontmatter (Lezione 6.1), seguendo le stesse convenzioni degli altri artefatti dell'agent package.
+- Una skill si struttura come documento `.md` con frontmatter (Lezione 7.1), seguendo le stesse convenzioni degli altri artefatti dell'agent package.
 - La **skill injection** inserisce dinamicamente il contenuto di una skill nel prompt di sistema di un agente a runtime, permettendo a più agenti di condividere esattamente la stessa logica senza duplicarla nel codice.
 - La **governance** di una skill library condivisa richiede owner dichiarati, processo di revisione, versionamento esplicito, e dichiarazione delle versioni attese da parte di chi consuma la skill.
 
@@ -316,12 +315,12 @@ Spesso la scelta migliore è **combinare**: un tool per il calcolo esatto + una 
 
 ## Connessioni
 
-**Viene da:** Lezione 6.4 (I Prompt come Artefatti) — una skill è concettualmente un frammento di prompt riutilizzabile, con la stessa disciplina di versionamento. Lezione 4.4 (Function Calling) — la distinzione tool/skill richiama e completa quella distinzione.
+**Viene da:** Lezione 7.4 (I Prompt come Artefatti) — una skill è concettualmente un frammento di prompt riutilizzabile, con la stessa disciplina di versionamento. Lezione 5.4 (Function Calling) — la distinzione tool/skill richiama e completa quella distinzione.
 
-**Porta a:** Capitolo 7 (Workflow Multi-Agente) — un workflow professionale combina agent package completi (Lezione 6.2), ciascuno potenzialmente arricchito da skill condivise, coordinati attraverso handoff (Lezione 6.6) e contratti (Lezione 6.5).
+**Porta a:** Capitolo 8 (Workflow Multi-Agente) — un workflow professionale combina agent package completi (Lezione 7.2), ciascuno potenzialmente arricchito da skill condivise, coordinati attraverso handoff (Lezione 7.6) e contratti (Lezione 7.5).
 
-**Ritroverai questi concetti in:** Lezione 8.4 (Governance e Versioning) — i principi di governance qui applicati alle skill saranno generalizzati a tutti gli artefatti di un sistema agentivo maturo.
+**Ritroverai questi concetti in:** Lezione 9.4 (Governance e Versioning) — i principi di governance qui applicati alle skill saranno generalizzati a tutti gli artefatti di un sistema agentivo maturo.
 
 ---
 
-**CHIUSURA DEL CAPITOLO 6.** Con questa lezione si conclude l'intero nucleo ingegneristico professionale del corso: la struttura di file di un agent package (6.2), la sua identità pubblica tramite Agent Card (6.3), i prompt trattati come codice sorgente versionato (6.4), i contratti che garantiscono coerenza tra agenti (6.5), gli handoff che trasferiscono responsabilità con tutto il contesto necessario (6.6), e le skill che centralizzano conoscenza condivisa (6.7) — tutto fondato sul formato YAML/frontmatter introdotto in apertura (6.1). Il Capitolo 7 assembla ora questi agent package in workflow multi-agente completi, implementati con strumenti professionali come LangGraph.
+**CHIUSURA DEL CAPITOLO 7.** Con questa lezione si conclude l'intero nucleo ingegneristico professionale del corso: la struttura di file di un agent package (7.2), la sua identità pubblica tramite Agent Card (7.3), i prompt trattati come codice sorgente versionato (7.4), i contratti che garantiscono coerenza tra agenti (7.5), gli handoff che trasferiscono responsabilità con tutto il contesto necessario (7.6), e le skill che centralizzano conoscenza condivisa (7.7) — tutto fondato sul formato YAML/frontmatter introdotto in apertura (7.1). Il Capitolo 8 assembla ora questi agent package in workflow multi-agente completi, implementati con strumenti professionali come LangGraph.

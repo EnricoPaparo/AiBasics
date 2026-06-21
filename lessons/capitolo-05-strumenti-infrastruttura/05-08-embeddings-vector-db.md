@@ -3,7 +3,6 @@ titolo: "Embeddings e Vector Database"
 durata_stimata: "25 min"
 difficolta: "Intermedio"
 ---
-
 # Embeddings e Vector Database
 
 > **📌 Ricordi?** In [Lezione 03-04] abbiamo visto che le parole possono essere rappresentate come vettori nello spazio matematico: "gatto" e "cane" sono punti vicini, "gatto" e "automobile" sono lontani. Quella intuizione — la distanza geometrica come misura del significato condiviso — era l'intuizione fondamentale degli embedding. Questa lezione costruisce direttamente su quella premessa: ora vediamo come quegli stessi vettori si generano in pratica, dove si archiviano, e come si usano per trovare documenti rilevanti senza confrontare nemmeno una parola alla volta.

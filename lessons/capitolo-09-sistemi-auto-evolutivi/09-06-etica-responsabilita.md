@@ -3,7 +3,6 @@ titolo: "Etica e Responsabilità nell'AI"
 durata_stimata: "25 min"
 difficolta: "Intermedio"
 ---
-
 # Etica e Responsabilità nell'AI
 
 Costruire un sistema AI che funziona tecnicamente è necessario ma non sufficiente. Come professionista, sei responsabile non solo del codice che scrivi, ma delle conseguenze che produce nel mondo reale.

@@ -3,7 +3,6 @@ titolo: "Fine-Tuning: Quando e Come"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Fine-Tuning: Quando e Come
 
 Una delle domande più comuni quando si lavora con gli LLM è: "Dovrei fare fine-tuning del modello per il mio caso d'uso?" La risposta è quasi sempre: **prima prova il prompting, poi il RAG, e solo se entrambi non bastano considera il fine-tuning**. Questa lezione spiega perché, e come fare fine-tuning quando ha davvero senso.

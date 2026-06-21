@@ -3,7 +3,6 @@ titolo: "Token Economics e Costi"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Token Economics e Costi
 
 Un agente AI che funziona bene ma costa 500€ al giorno non è un prodotto — è un problema. Capire come vengono calcolati i costi è parte integrante del mestiere.
