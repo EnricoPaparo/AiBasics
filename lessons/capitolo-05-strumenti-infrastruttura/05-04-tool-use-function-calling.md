@@ -1,13 +1,13 @@
 ---
-id: "04-04"
+id: "05-04"
 titolo: "Tool Use e Function Calling: dare al modello la capacità di agire"
 sottotitolo: "Il meccanismo tecnico esatto che rende possibile, per la prima volta, parlare di 'agenti'"
-capitolo: 4
-capitolo_titolo: "Strumenti e Infrastruttura per Sistemi AI"
+capitolo: 5
+capitolo_titolo: "Strumenti e Infrastruttura AI"
 lezione: 4
 durata_stimata: "65 minuti"
 difficolta: "intermedio"
-prerequisiti: ["04-02"]
+prerequisiti: ["05-02"]
 concetti_chiave:
   - function calling
   - tool use
@@ -22,14 +22,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Tool Use e Function Calling: dare al modello la capacità di agire
 
 ## Introduzione
 
-Questa lezione segna un punto di svolta concettuale in tutto il corso. Nella Lezione 3.5 avevamo elencato, con la tabella delle cose che un LLM "grezzo" può e non può fare, un limite fondamentale: il modello **produce solo testo**, non può agire nel mondo reale. RAG, visto nella lezione precedente, estende ciò che il modello *sa*, fornendogli accesso a informazioni esterne — ma non gli dà ancora la capacità di *fare* qualcosa.
+Questa lezione segna un punto di svolta concettuale in tutto il corso. Nella Lezione 4.5 avevamo elencato, con la tabella delle cose che un LLM "grezzo" può e non può fare, un limite fondamentale: il modello **produce solo testo**, non può agire nel mondo reale. RAG, visto nella lezione precedente, estende ciò che il modello *sa*, fornendogli accesso a informazioni esterne — ma non gli dà ancora la capacità di *fare* qualcosa.
 
-Il **Function Calling** (chiamata di funzione, spesso indicato anche come Tool Use, uso di strumenti) è il meccanismo tecnico che risolve esattamente questo limite. È, letteralmente, il meccanismo che rende possibile, per la prima volta in questo corso, iniziare a parlare seriamente di "agenti" — perché un agente, come vedremo formalmente nella Lezione 5.1, è precisamente un sistema che può percepire, ragionare, **e agire**. Questa lezione costruisce il "agire".
+Il **Function Calling** (chiamata di funzione, spesso indicato anche come Tool Use, uso di strumenti) è il meccanismo tecnico che risolve esattamente questo limite. È, letteralmente, il meccanismo che rende possibile, per la prima volta in questo corso, iniziare a parlare seriamente di "agenti" — perché un agente, come vedremo formalmente nella Lezione 6.1, è precisamente un sistema che può percepire, ragionare, **e agire**. Questa lezione costruisce il "agire".
 
 ---
 
@@ -271,11 +270,11 @@ Concetto chiave: sicurezza per **costruzione** (il tool non esiste nel manifest)
 
 ## Connessioni
 
-**Viene da:** Lezione 3.5 (Limiti degli LLM) — il Function Calling risolve direttamente il limite "mancanza di azione" descritto lì. Lezione 4.2 (Output Strutturati) — la richiesta di uno strumento da parte del modello è essa stessa un output strutturato.
+**Viene da:** Lezione 4.5 (Limiti degli LLM) — il Function Calling risolve direttamente il limite "mancanza di azione" descritto lì. Lezione 5.2 (Output Strutturati) — la richiesta di uno strumento da parte del modello è essa stessa un output strutturato.
 
-**Porta a:** Lezione 4.5 (MCP) — vedremo come standardizzare la connessione tra modelli e strumenti esterni.
+**Porta a:** Lezione 5.5 (MCP) — vedremo come standardizzare la connessione tra modelli e strumenti esterni.
 
-**Ritroverai questi concetti in:** Lezione 5.1 (Cos'è un Agente AI) — il ciclo modello-richiesta-esecuzione-risultato visto qui è uno dei quattro componenti fondamentali di un agente. Lezione 6.2 (L'Agent Package) — il tool manifest diventerà la cartella `tools/` esplicita di un agente professionale.
+**Ritroverai questi concetti in:** Lezione 6.1 (Cos'è un Agente AI) — il ciclo modello-richiesta-esecuzione-risultato visto qui è uno dei quattro componenti fondamentali di un agente. Lezione 7.2 (L'Agent Package) — il tool manifest diventerà la cartella `tools/` esplicita di un agente professionale.
 
 ---
 

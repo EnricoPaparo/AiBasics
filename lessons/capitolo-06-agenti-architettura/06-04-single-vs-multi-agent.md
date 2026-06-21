@@ -1,13 +1,13 @@
 ---
-id: "05-04"
+id: "06-04"
 titolo: "Agenti Single vs Multi-Agent: quando un agente non basta"
 sottotitolo: "Formalizzare le topologie di sistema, e capire dove si rompe la coerenza"
-capitolo: 5
+capitolo: 6
 capitolo_titolo: "Agenti AI: Architettura e Ragionamento"
 lezione: 4
 durata_stimata: "65 minuti"
 difficolta: "intermedio"
-prerequisiti: ["05-03"]
+prerequisiti: ["06-03"]
 concetti_chiave:
   - topologia
   - pipeline sequenziale
@@ -22,14 +22,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Agenti Single vs Multi-Agent: quando un agente non basta
 
 ## Introduzione
 
 Nella lezione precedente abbiamo costruito un orchestratore che coordina due agenti specializzati. Questa lezione fa un passo indietro per formalizzare con maggiore rigore una domanda che abbiamo solo accennato: **quando, esattamente, conviene passare da un singolo agente a un sistema multi-agente?** E, una volta presa questa decisione, **quali forme può assumere** l'architettura risultante?
 
-Non è una domanda accademica. Costruire un sistema multi-agente quando un singolo agente ben progettato sarebbe stato sufficiente introduce complessità non necessaria — più chiamate API (Lezione 4.1), più punti di possibile fallimento, più difficoltà di debug. Costruire un singolo agente sovraccaricato quando la situazione richiederebbe specializzazione produce, come visto nella lezione precedente, errori che si propagano senza controllo. Questa lezione ti dà i criteri per scegliere correttamente.
+Non è una domanda accademica. Costruire un sistema multi-agente quando un singolo agente ben progettato sarebbe stato sufficiente introduce complessità non necessaria — più chiamate API (Lezione 5.1), più punti di possibile fallimento, più difficoltà di debug. Costruire un singolo agente sovraccaricato quando la situazione richiederebbe specializzazione produce, come visto nella lezione precedente, errori che si propagano senza controllo. Questa lezione ti dà i criteri per scegliere correttamente.
 
 ---
 
@@ -46,7 +45,7 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. I segnali concreti che indicano la necessità di più agenti
 
-Riprendendo e formalizzando quanto visto nella Lezione 5.3, i segnali che indicano che un singolo agente generalista ha raggiunto il proprio limite sono tipicamente:
+Riprendendo e formalizzando quanto visto nella Lezione 6.3, i segnali che indicano che un singolo agente generalista ha raggiunto il proprio limite sono tipicamente:
 
 ```
 SEGNALE 1: Eterogeneità delle competenze richieste
@@ -58,7 +57,7 @@ SEGNALE 1: Eterogeneità delle competenze richieste
 SEGNALE 2: Crescita incontrollata del contesto
   Il numero di strumenti, istruzioni, ed esempi necessari
   per un singolo agente continua a crescere, avvicinandosi
-  ai limiti del context window (Lezione 3.3)
+  ai limiti del context window (Lezione 4.3)
 
 SEGNALE 3: Necessità di checkpoint intermedi
   Vuoi poter VERIFICARE un risultato parziale prima che il
@@ -71,7 +70,7 @@ SEGNALE 4: Riusabilità
   poterla riutilizzare come componente indipendente
 ```
 
-Se nessuno di questi segnali è presente, un singolo agente ben progettato — con un buon prompt (Lezione 3.4), gli strumenti giusti (Lezione 4.4), e un loop ReAct (Lezione 5.2) — resta spesso la scelta più semplice ed efficiente.
+Se nessuno di questi segnali è presente, un singolo agente ben progettato — con un buon prompt (Lezione 4.4), gli strumenti giusti (Lezione 5.4), e un loop ReAct (Lezione 6.2) — resta spesso la scelta più semplice ed efficiente.
 
 ---
 
@@ -84,7 +83,7 @@ Agente A → Agente B → Agente C → Agente D
 (estrae)   (analizza)  (verifica)  (scrive)
 ```
 
-È precisamente la topologia usata, in forma semplificata, nella Lezione 5.3 (Analista → Scrittore). È facile da progettare, da prevedere, e da debuggare — ma è anche la più **rigida**: se un risultato intermedio richiedesse di tornare a una fase precedente (ad esempio, l'agente di verifica scopre un problema nei dati estratti dall'Agente A), una pipeline puramente sequenziale non gestisce nativamente questo tipo di retroazione.
+È precisamente la topologia usata, in forma semplificata, nella Lezione 6.3 (Analista → Scrittore). È facile da progettare, da prevedere, e da debuggare — ma è anche la più **rigida**: se un risultato intermedio richiedesse di tornare a una fase precedente (ad esempio, l'agente di verifica scopre un problema nei dati estratti dall'Agente A), una pipeline puramente sequenziale non gestisce nativamente questo tipo di retroazione.
 
 ---
 
@@ -108,13 +107,13 @@ Un'**architettura a grafo** generalizza la pipeline sequenziale permettendo **ar
                               correttive
 ```
 
-Questa topologia risolve direttamente il limite di rigidità della pipeline sequenziale, al costo di una maggiore complessità di progettazione: bisogna decidere esplicitamente quali condizioni attivano quali percorsi, ed evitare di costruire cicli che non terminano mai — lo stesso problema di loop incontrato nella Lezione 5.2, qui a un livello di sistema invece che di singolo agente. Anticipiamo qui che questa topologia troverà, nella Lezione 7.2, un'implementazione tecnica precisa tramite il framework LangGraph, pensato esattamente per costruire grafi di questo tipo.
+Questa topologia risolve direttamente il limite di rigidità della pipeline sequenziale, al costo di una maggiore complessità di progettazione: bisogna decidere esplicitamente quali condizioni attivano quali percorsi, ed evitare di costruire cicli che non terminano mai — lo stesso problema di loop incontrato nella Lezione 6.2, qui a un livello di sistema invece che di singolo agente. Anticipiamo qui che questa topologia troverà, nella Lezione 8.2, un'implementazione tecnica precisa tramite il framework LangGraph, pensato esattamente per costruire grafi di questo tipo.
 
 ---
 
 ## 4. Architettura a Rete: comunicazione paritaria tra agenti
 
-Una terza topologia, meno comune ma utile in scenari specifici, è l'**architettura a rete**, dove non esiste necessariamente un orchestratore centrale (Lezione 5.3) che dirige il flusso: gli agenti comunicano tra loro in modo più paritario, ciascuno potendo, in linea di principio, interagire con qualsiasi altro.
+Una terza topologia, meno comune ma utile in scenari specifici, è l'**architettura a rete**, dove non esiste necessariamente un orchestratore centrale (Lezione 6.3) che dirige il flusso: gli agenti comunicano tra loro in modo più paritario, ciascuno potendo, in linea di principio, interagire con qualsiasi altro.
 
 ```
         Agente A ←──────→ Agente B
@@ -125,13 +124,13 @@ Una terza topologia, meno comune ma utile in scenari specifici, è l'**architett
         Agente D ←──╳──→ Agente C
 ```
 
-Questa topologia è più flessibile ma anche più difficile da rendere prevedibile e da debuggare, perché non esiste un singolo punto di coordinamento che mantiene una visione d'insieme del processo (a differenza dell'orchestratore della Lezione 5.3). Per questo motivo, la maggior parte dei sistemi multi-agente professionali — incluso tutto ciò che costruiremo nel resto di questo corso — preferisce topologie con un grado di coordinamento centrale (pipeline o grafo), riservando l'architettura a rete a casi specifici in cui la comunicazione paritaria tra agenti specializzati è effettivamente il modello più naturale per il problema.
+Questa topologia è più flessibile ma anche più difficile da rendere prevedibile e da debuggare, perché non esiste un singolo punto di coordinamento che mantiene una visione d'insieme del processo (a differenza dell'orchestratore della Lezione 6.3). Per questo motivo, la maggior parte dei sistemi multi-agente professionali — incluso tutto ciò che costruiremo nel resto di questo corso — preferisce topologie con un grado di coordinamento centrale (pipeline o grafo), riservando l'architettura a rete a casi specifici in cui la comunicazione paritaria tra agenti specializzati è effettivamente il modello più naturale per il problema.
 
 ---
 
 ## 5. Implementazione pratica: una pipeline a quattro agenti
 
-Estendiamo l'esempio della Lezione 5.3 con un esempio più completo e realistico: una pipeline a quattro fasi, che include un punto di verifica intermedio — esattamente il "Segnale 3" descritto nella Sezione 1.
+Estendiamo l'esempio della Lezione 6.3 con un esempio più completo e realistico: una pipeline a quattro fasi, che include un punto di verifica intermedio — esattamente il "Segnale 3" descritto nella Sezione 1.
 
 ```python
 import anthropic
@@ -226,7 +225,7 @@ chiamato:
   si aspettava, o interpretarla in modo inconsistente
 ```
 
-Questo problema, qui solo identificato, è precisamente la motivazione che ci porterà, nella Lezione 6.5, a introdurre **contratti espliciti** tra agenti — schemi formali e condivisi (basati sul principio di Pydantic/JSON Schema già visto nella Lezione 4.2) che garantiscono che l'output di un agente e l'input atteso dal successivo usino esattamente la stessa terminologia e struttura, verificabile automaticamente invece di sperare in una coerenza informale tra prompt scritti separatamente.
+Questo problema, qui solo identificato, è precisamente la motivazione che ci porterà, nella Lezione 7.5, a introdurre **contratti espliciti** tra agenti — schemi formali e condivisi (basati sul principio di Pydantic/JSON Schema già visto nella Lezione 5.2) che garantiscono che l'output di un agente e l'input atteso dal successivo usino esattamente la stessa terminologia e struttura, verificabile automaticamente invece di sperare in una coerenza informale tra prompt scritti separatamente.
 
 ---
 
@@ -236,7 +235,7 @@ Applichiamo i criteri di questa lezione a tre scenari concreti:
 
 1. **"Traduci questo documento in tre lingue diverse"** — i tre compiti di traduzione sono indipendenti tra loro e non richiedono coordinamento sequenziale: un'architettura a rete (o, più semplicemente, tre chiamate parallele indipendenti) sarebbe più adatta di una pipeline rigida
 2. **"Estrai i dati da una fattura, verificali contro il database clienti, e genera una conferma d'ordine"** — ogni fase dipende strettamente dal risultato della precedente, e un errore in una fase deve bloccare le successive: una pipeline sequenziale (eventualmente con un arco condizionale per la verifica, come nell'esempio della Sezione 5) è la scelta naturale
-3. **"Monitora continuamente un sistema, e quando rilevi un'anomalia, coordina automaticamente diagnosi, notifica e correzione"** — il flusso non è prevedibile in anticipo, dipende da eventi che si verificano nel tempo: un'architettura a grafo con pattern event-driven (Lezione 5.3) è più adatta di una pipeline fissa
+3. **"Monitora continuamente un sistema, e quando rilevi un'anomalia, coordina automaticamente diagnosi, notifica e correzione"** — il flusso non è prevedibile in anticipo, dipende da eventi che si verificano nel tempo: un'architettura a grafo con pattern event-driven (Lezione 6.3) è più adatta di una pipeline fissa
 
 ---
 
@@ -246,13 +245,13 @@ Applichiamo i criteri di questa lezione a tre scenari concreti:
 - La **pipeline sequenziale** è la topologia più semplice e prevedibile, ma rigida: non gestisce nativamente la necessità di tornare a una fase precedente.
 - L'**architettura a grafo** generalizza la pipeline con archi condizionali e cicli, offrendo maggiore flessibilità a costo di maggiore complessità progettuale.
 - L'**architettura a rete** permette comunicazione paritaria tra agenti senza coordinamento centrale, ma è più difficile da rendere prevedibile — riservata a scenari specifici.
-- La **coerenza terminologica** tra agenti diversi è un problema pratico concreto, che richiede contratti espliciti (anticipando la Lezione 6.5) per essere risolto in modo robusto, non lasciato alla sola buona volontà di chi scrive i singoli prompt.
+- La **coerenza terminologica** tra agenti diversi è un problema pratico concreto, che richiede contratti espliciti (anticipando la Lezione 7.5) per essere risolto in modo robusto, non lasciato alla sola buona volontà di chi scrive i singoli prompt.
 
 ---
 
 ## Domande di Verifica
 
-1. Riprendi il Segnale 2 (crescita incontrollata del contesto). Spiega, collegandolo esplicitamente al meccanismo di attention visto nella Lezione 2.5, perché un contesto molto più lungo non è solo "più lento" ma comporta un costo computazionale che cresce in modo non lineare.
+1. Riprendi il Segnale 2 (crescita incontrollata del contesto). Spiega, collegandolo esplicitamente al meccanismo di attention visto nella Lezione 3.5, perché un contesto molto più lungo non è solo "più lento" ma comporta un costo computazionale che cresce in modo non lineare.
 
 2. Nel codice della Sezione 5, cosa succederebbe se rimuovessimo completamente la Fase 3 (verifica)? Quale dei quattro segnali della Sezione 1 verrebbe, di fatto, ignorato?
 
@@ -298,7 +297,7 @@ Criterio: indipendenza → parallelo; dipendenza lineare → pipeline; imprevedi
 
 ### Esercizio 3 — Coerenza terminologica 🔴 Avanzato
 
-L'agente di estrazione produce `{"importo_totale": 1200000}` ma l'agente di analisi si aspetta un campo `valore_vendite`. Che problema crea? Perché i prompt scritti separatamente non bastano, e quale soluzione introduce la Lezione 6.5?
+L'agente di estrazione produce `{"importo_totale": 1200000}` ma l'agente di analisi si aspetta un campo `valore_vendite`. Che problema crea? Perché i prompt scritti separatamente non bastano, e quale soluzione introduce la Lezione 7.5?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -307,7 +306,7 @@ L'agente di estrazione produce `{"importo_totale": 1200000}` ma l'agente di anal
 
 **Perché i prompt non bastano:** scritti separatamente, magari in momenti diversi, due agenti possono usare nomi diversi per lo stesso concetto. Affidarsi alla "coerenza informale" è fragile: nessuno garantisce che restino allineati.
 
-**La soluzione (Lezione 6.5): contratti espliciti.** Uno schema formale e **condiviso** (basato su Pydantic/JSON Schema, Lezione 4.2) definisce esattamente i nomi, i tipi e la struttura che l'output di un agente e l'input del successivo devono rispettare. La coerenza diventa **verificabile automaticamente**, non una speranza. È il salto dall'artigianato all'ingegneria dei sistemi multi-agente.
+**La soluzione (Lezione 7.5): contratti espliciti.** Uno schema formale e **condiviso** (basato su Pydantic/JSON Schema, Lezione 5.2) definisce esattamente i nomi, i tipi e la struttura che l'output di un agente e l'input del successivo devono rispettare. La coerenza diventa **verificabile automaticamente**, non una speranza. È il salto dall'artigianato all'ingegneria dei sistemi multi-agente.
 
 </details>
 
@@ -315,8 +314,8 @@ L'agente di estrazione produce `{"importo_totale": 1200000}` ma l'agente di anal
 
 ## Connessioni
 
-**Viene da:** Lezione 5.3 (L'Orchestratore) — questa lezione formalizza e generalizza le topologie di coordinamento solo accennate in quella lezione.
+**Viene da:** Lezione 6.3 (L'Orchestratore) — questa lezione formalizza e generalizza le topologie di coordinamento solo accennate in quella lezione.
 
-**Porta a:** Lezione 5.5 (Gestione degli Errori) — vedremo come rendere robusti questi sistemi multi-agente contro fallimenti che, come visto, possono verificarsi a ogni singolo nodo della topologia.
+**Porta a:** Lezione 6.5 (Gestione degli Errori) — vedremo come rendere robusti questi sistemi multi-agente contro fallimenti che, come visto, possono verificarsi a ogni singolo nodo della topologia.
 
-**Ritroverai questi concetti in:** Lezione 6.5 (Contratti tra Agenti) — il problema della coerenza terminologica, qui identificato, riceverà una soluzione tecnica precisa e formale. Lezione 7.1 e 7.2 (Progettare un Workflow, LangGraph) — l'architettura a grafo qui introdotta concettualmente diventerà un'implementazione tecnica completa con un framework dedicato.
+**Ritroverai questi concetti in:** Lezione 7.5 (Contratti tra Agenti) — il problema della coerenza terminologica, qui identificato, riceverà una soluzione tecnica precisa e formale. Lezione 8.1 e 7.2 (Progettare un Workflow, LangGraph) — l'architettura a grafo qui introdotta concettualmente diventerà un'implementazione tecnica completa con un framework dedicato.

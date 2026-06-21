@@ -1,13 +1,13 @@
 ---
-id: "05-03"
+id: "06-03"
 titolo: "L'Orchestratore: il direttore d'orchestra del sistema agentivo"
 sottotitolo: "Quando un singolo agente non basta più: chi decide chi fa cosa"
-capitolo: 5
+capitolo: 6
 capitolo_titolo: "Agenti AI: Architettura e Ragionamento"
 lezione: 3
 durata_stimata: "70 minuti"
 difficolta: "intermedio"
-prerequisiti: ["05-02"]
+prerequisiti: ["06-02"]
 concetti_chiave:
   - orchestratore
   - pianificazione
@@ -22,14 +22,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # L'Orchestratore: il direttore d'orchestra del sistema agentivo
 
 ## Introduzione
 
-Nella Lezione 5.1 abbiamo costruito un singolo agente, capace di usare più strumenti all'interno di un proprio loop. Nella Lezione 5.2 abbiamo reso quel ragionamento esplicito e osservabile. Ma c'è una domanda che non abbiamo ancora affrontato: cosa succede quando un compito è così ampio, o richiede competenze così diverse tra loro, che **un singolo agente, per quanto ben progettato, non è la soluzione più efficace**?
+Nella Lezione 6.1 abbiamo costruito un singolo agente, capace di usare più strumenti all'interno di un proprio loop. Nella Lezione 6.2 abbiamo reso quel ragionamento esplicito e osservabile. Ma c'è una domanda che non abbiamo ancora affrontato: cosa succede quando un compito è così ampio, o richiede competenze così diverse tra loro, che **un singolo agente, per quanto ben progettato, non è la soluzione più efficace**?
 
-Questa lezione introduce l'**orchestratore**: un componente specifico, con responsabilità distinte da quelle di un agente "esecutore", il cui compito non è risolvere direttamente un problema, ma **decidere come scomporlo e a chi affidarne le parti**. È una lezione cruciale perché, senza un orchestratore ben compreso, l'intera architettura multi-agente che affronteremo nella prossima lezione, e poi nel Capitolo 7, risulterebbe ingestibile.
+Questa lezione introduce l'**orchestratore**: un componente specifico, con responsabilità distinte da quelle di un agente "esecutore", il cui compito non è risolvere direttamente un problema, ma **decidere come scomporlo e a chi affidarne le parti**. È una lezione cruciale perché, senza un orchestratore ben compreso, l'intera architettura multi-agente che affronteremo nella prossima lezione, e poi nel Capitolo 8, risulterebbe ingestibile.
 
 ---
 
@@ -46,12 +45,12 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Perché un agente "generalista" raggiunge un limite
 
-Immagina di voler costruire un sistema che, data una richiesta come "Analizza le vendite del trimestre, confrontale con l'anno precedente, e scrivi un report con raccomandazioni", debba davvero eseguire questo compito end-to-end. Potresti, in linea di principio, dare a un singolo agente (come quello della Lezione 5.1) accesso a **tutti** gli strumenti necessari — accesso al database vendite, capacità di fare calcoli statistici, capacità di scrivere testo ben strutturato — e lasciare che il suo loop ReAct (Lezione 5.2) gestisca l'intero processo.
+Immagina di voler costruire un sistema che, data una richiesta come "Analizza le vendite del trimestre, confrontale con l'anno precedente, e scrivi un report con raccomandazioni", debba davvero eseguire questo compito end-to-end. Potresti, in linea di principio, dare a un singolo agente (come quello della Lezione 6.1) accesso a **tutti** gli strumenti necessari — accesso al database vendite, capacità di fare calcoli statistici, capacità di scrivere testo ben strutturato — e lasciare che il suo loop ReAct (Lezione 6.2) gestisca l'intero processo.
 
 Questo approccio, però, incontra limiti pratici concreti man mano che il compito cresce in complessità:
 
-- **Il contesto si affolla**: ogni strumento aggiunto, ogni passo intermedio, si accumula nella memoria dell'agente (Lezione 4.6), avvicinandosi sempre più al limite del context window (Lezione 3.3)
-- **Le competenze richieste sono eterogenee**: analizzare dati richiede un tipo di "ragionamento" diverso da scrivere un report ben argomentato — un singolo prompt di sistema (Lezione 3.4) capace di guidare bene entrambi i compiti diventa via via più difficile da scrivere e mantenere
+- **Il contesto si affolla**: ogni strumento aggiunto, ogni passo intermedio, si accumula nella memoria dell'agente (Lezione 5.6), avvicinandosi sempre più al limite del context window (Lezione 4.3)
+- **Le competenze richieste sono eterogenee**: analizzare dati richiede un tipo di "ragionamento" diverso da scrivere un report ben argomentato — un singolo prompt di sistema (Lezione 4.4) capace di guidare bene entrambi i compiti diventa via via più difficile da scrivere e mantenere
 - **Gli errori si propagano senza controllo intermedio**: se l'agente unico commette un errore nell'analisi dei dati, questo errore si propaga silenziosamente nel report finale, senza un punto di verifica intermedio
 
 La soluzione architetturale a questi limiti non è "un agente più grande e più capace": è **scomporre il problema** in sotto-compiti più piccoli e specializzati, ciascuno affidato a un agente dedicato — e introdurre un componente che coordina questa scomposizione.
@@ -107,7 +106,7 @@ SINTESI:          Passa l'analisi completata all'Agente Scrittore,
 
 ## 3. Implementazione pratica: un orchestratore minimo
 
-Costruiamo un esempio concreto, estendendo i pattern già visti. Per chiarezza didattica, useremo due agenti specializzati semplici (riutilizzando la struttura della Lezione 5.1), e un orchestratore che li coordina.
+Costruiamo un esempio concreto, estendendo i pattern già visti. Per chiarezza didattica, useremo due agenti specializzati semplici (riutilizzando la struttura della Lezione 6.1), e un orchestratore che li coordina.
 
 ```python
 import anthropic
@@ -189,7 +188,7 @@ print(risultato)
 
 Osserva la struttura: l'**orchestratore non esegue mai direttamente** l'analisi dei dati né la scrittura del report — queste responsabilità sono interamente delegate agli agenti specializzati. Il ruolo dell'orchestratore è, letteralmente, decidere **come** scomporre il problema e **a chi** affidare ciascuna parte, esattamente come descritto nella Sezione 2.
 
-> **Perché questa separazione conta:** ciascun agente specializzato ha un system prompt (Lezione 3.4) molto più focalizzato e semplice da scrivere correttamente, rispetto a un singolo prompt che dovrebbe gestire sia l'analisi quantitativa sia la scrittura discorsiva. Questo principio di "responsabilità singola per agente" è lo stesso che ritroveremo, formalizzato con maggiore rigore, parlando di agent package nella Lezione 6.2.
+> **Perché questa separazione conta:** ciascun agente specializzato ha un system prompt (Lezione 4.4) molto più focalizzato e semplice da scrivere correttamente, rispetto a un singolo prompt che dovrebbe gestire sia l'analisi quantitativa sia la scrittura discorsiva. Questo principio di "responsabilità singola per agente" è lo stesso che ritroveremo, formalizzato con maggiore rigore, parlando di agent package nella Lezione 7.2.
 
 ---
 
@@ -240,14 +239,14 @@ COSA VEDE L'ORCHESTRATORE:               COSA NON VEDE:
 - Quali fasi sono state completate         specifico dell'Agente
 - I risultati (output) prodotti da         Analista
   ciascun agente                         - Il ragionamento ReAct
-- Se un agente ha fallito o prodotto       interno (Lezione 5.2)
+- Se un agente ha fallito o prodotto       interno (Lezione 6.2)
   un risultato insufficiente               di un singolo agente
                                             specializzato
 ```
 
 Questa separazione — l'orchestratore vede i risultati, non i meccanismi interni — è un principio di **incapsulamento**, concettualmente identico a quello visto nella Lezione 1.5 a proposito delle API ("non hai bisogno di sapere come funziona la cucina, solo cosa puoi ordinare dal menù"). Ogni agente specializzato è, dal punto di vista dell'orchestratore, una "scatola" con un'interfaccia chiara (cosa riceve, cosa restituisce) ma un funzionamento interno che non deve necessariamente essere visibile dall'esterno.
 
-> **Perché questo anticipa direttamente il Capitolo 6:** questa nozione di "interfaccia chiara verso l'esterno, dettagli interni incapsulati" è esattamente il principio su cui si fonda l'Agent Card che vedremo nella Lezione 6.3 — un documento che dichiara cosa un agente fa e quali dati si aspetta, senza esporre necessariamente i dettagli della sua implementazione interna.
+> **Perché questo anticipa direttamente il Capitolo 7:** questa nozione di "interfaccia chiara verso l'esterno, dettagli interni incapsulati" è esattamente il principio su cui si fonda l'Agent Card che vedremo nella Lezione 7.3 — un documento che dichiara cosa un agente fa e quali dati si aspetta, senza esporre necessariamente i dettagli della sua implementazione interna.
 
 ---
 
@@ -288,11 +287,11 @@ Questo confronto rende tangibile perché la scomposizione orchestrata non sia se
 
 ## Domande di Verifica
 
-1. Riprendi l'esempio "Analizza le vendite e scrivi un report" senza orchestratore. Oltre al problema di propagazione degli errori descritto nella lezione, quale altro limite (collegandolo al context window della Lezione 3.3) incontrerebbe un singolo agente generalista su compiti via via più estesi?
+1. Riprendi l'esempio "Analizza le vendite e scrivi un report" senza orchestratore. Oltre al problema di propagazione degli errori descritto nella lezione, quale altro limite (collegandolo al context window della Lezione 4.3) incontrerebbe un singolo agente generalista su compiti via via più estesi?
 
 2. In quale scenario concreto preferiresti un pattern di orchestrazione event-driven invece di top-down? Costruisci un esempio in cui pianificare tutto in anticipo sarebbe controproducente.
 
-3. Nel codice della Sezione 3, il MONITORAGGIO implementato è estremamente semplice (`len(risultato_analisi.strip()) < 10`). Quali verifiche più sofisticate potrebbero rendere questo passaggio più robusto, collegando la tua risposta al concetto di output strutturati visto nella Lezione 4.2?
+3. Nel codice della Sezione 3, il MONITORAGGIO implementato è estremamente semplice (`len(risultato_analisi.strip()) < 10`). Quali verifiche più sofisticate potrebbero rendere questo passaggio più robusto, collegando la tua risposta al concetto di output strutturati visto nella Lezione 5.2?
 
 ---
 
@@ -332,14 +331,14 @@ Il pattern **ibrido** (piano di alto livello + adattamento) è il più comune ne
 
 ### Esercizio 3 — Incapsulamento e monitoraggio robusto 🔴 Avanzato
 
-(a) Cosa vede e cosa NON vede l'orchestratore di ciascun agente? A quale principio già visto (Lezione 1.5) corrisponde? (b) Il monitoraggio d'esempio era `len(risultato) < 10`. Come lo renderesti più robusto usando la Lezione 4.2?
+(a) Cosa vede e cosa NON vede l'orchestratore di ciascun agente? A quale principio già visto (Lezione 1.5) corrisponde? (b) Il monitoraggio d'esempio era `len(risultato) < 10`. Come lo renderesti più robusto usando la Lezione 5.2?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
 
 **(a) Incapsulamento:** l'orchestratore vede l'**obiettivo**, le **fasi completate** e i **risultati (output)** di ciascun agente, e se un agente ha fallito. **Non** vede i dettagli interni: il system prompt specifico né il ragionamento ReAct interno di ogni agente. È il principio di **incapsulamento** delle API (Lezione 1.5): "non devi sapere come funziona la cucina, solo cosa puoi ordinare". Ogni agente è una scatola con interfaccia chiara e interni nascosti.
 
-**(b) Monitoraggio più robusto:** invece di controllare solo la lunghezza, far produrre all'agente un **output strutturato** (Lezione 4.2) validato con uno schema Pydantic. Così il monitoraggio verifica che i **campi attesi siano presenti, dei tipi giusti e dentro i vincoli** (es. che `percentuale` sia un numero tra -100 e 100), rilevando subito un'analisi malformata invece di accorgersene solo dalla lunghezza del testo.
+**(b) Monitoraggio più robusto:** invece di controllare solo la lunghezza, far produrre all'agente un **output strutturato** (Lezione 5.2) validato con uno schema Pydantic. Così il monitoraggio verifica che i **campi attesi siano presenti, dei tipi giusti e dentro i vincoli** (es. che `percentuale` sia un numero tra -100 e 100), rilevando subito un'analisi malformata invece di accorgersene solo dalla lunghezza del testo.
 
 </details>
 
@@ -347,8 +346,8 @@ Il pattern **ibrido** (piano di alto livello + adattamento) è il più comune ne
 
 ## Connessioni
 
-**Viene da:** Lezioni 5.1 e 5.2 — l'orchestratore coordina agenti costruiti esattamente secondo i pattern (loop agentivo, ReAct) visti in quelle lezioni.
+**Viene da:** Lezioni 6.1 e 5.2 — l'orchestratore coordina agenti costruiti esattamente secondo i pattern (loop agentivo, ReAct) visti in quelle lezioni.
 
-**Porta a:** Lezione 5.4 (Single vs Multi-Agent) — formalizzeremo con maggiore rigore le topologie di sistemi multi-agente, di cui l'orchestratore è il componente centrale.
+**Porta a:** Lezione 6.4 (Single vs Multi-Agent) — formalizzeremo con maggiore rigore le topologie di sistemi multi-agente, di cui l'orchestratore è il componente centrale.
 
-**Ritroverai questi concetti in:** Lezione 6.3 (Agent Card) — il principio di incapsulamento qui descritto (l'orchestratore vede risultati, non meccanismi interni) è il fondamento concettuale dell'Agent Card. Lezione 7.2 (LangGraph) — vedremo come framework dedicati permettono di implementare pattern di orchestrazione complessi (incluso l'ibrido descritto qui) con strumenti più robusti del semplice codice Python visto in questa lezione.
+**Ritroverai questi concetti in:** Lezione 7.3 (Agent Card) — il principio di incapsulamento qui descritto (l'orchestratore vede risultati, non meccanismi interni) è il fondamento concettuale dell'Agent Card. Lezione 8.2 (LangGraph) — vedremo come framework dedicati permettono di implementare pattern di orchestrazione complessi (incluso l'ibrido descritto qui) con strumenti più robusti del semplice codice Python visto in questa lezione.

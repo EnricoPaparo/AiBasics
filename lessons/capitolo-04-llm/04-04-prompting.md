@@ -1,13 +1,13 @@
 ---
-id: "03-04"
+id: "04-04"
 titolo: "Il Prompting: comunicare con un LLM in modo efficace"
 sottotitolo: "La prima competenza pratica e trasferibile di tutto il corso"
-capitolo: 3
-capitolo_titolo: "I Modelli Linguistici di Grandi Dimensioni (LLM)"
+capitolo: 4
+capitolo_titolo: "I Modelli Linguistici (LLM)"
 lezione: 4
 durata_stimata: "60 minuti"
 difficolta: "base"
-prerequisiti: ["03-03"]
+prerequisiti: ["04-03"]
 concetti_chiave:
   - prompt
   - zero-shot
@@ -24,14 +24,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Il Prompting: comunicare con un LLM in modo efficace
 
 ## Introduzione
 
 Fino a questa lezione, abbiamo costruito comprensione: cosa è un LLM, come viene addestrato, come è strutturato un prodotto che lo utilizza. Da qui in poi iniziamo a costruire **competenza pratica**: come comunicare efficacemente con un modello per ottenere il risultato che desideri.
 
-Questa è, volutamente, la prima lezione del corso che ha un taglio più immediatamente applicabile. Tutto quello che imparerai qui — come strutturare istruzioni, come fornire esempi, come guidare il ragionamento — sarà esattamente la base tecnica su cui costruiremo, dal Capitolo 6 in avanti, i prompt professionali e versionati che faranno funzionare i nostri agenti. Il prompting non è un'abilità "soft" o intuitiva: è ingegneria della comunicazione con un sistema che si comporta secondo regole precise, anche se probabilistiche.
+Questa è, volutamente, la prima lezione del corso che ha un taglio più immediatamente applicabile. Tutto quello che imparerai qui — come strutturare istruzioni, come fornire esempi, come guidare il ragionamento — sarà esattamente la base tecnica su cui costruiremo, dal Capitolo 7 in avanti, i prompt professionali e versionati che faranno funzionare i nostri agenti. Il prompting non è un'abilità "soft" o intuitiva: è ingegneria della comunicazione con un sistema che si comporta secondo regole precise, anche se probabilistiche.
 
 ---
 
@@ -48,7 +47,7 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Perché la formulazione conta: il prompt come contesto che guida la previsione
 
-Ricorda la definizione di LLM data nella Lezione 3.1: il modello prevede il token successivo più probabile **dato il contesto fornito finora**. Questo significa, in modo diretto e non metaforico, che **il prompt è l'unico strumento che hai per influenzare quel contesto**, e quindi l'unico strumento per influenzare quale risposta il modello considererà più probabile generare.
+Ricorda la definizione di LLM data nella Lezione 4.1: il modello prevede il token successivo più probabile **dato il contesto fornito finora**. Questo significa, in modo diretto e non metaforico, che **il prompt è l'unico strumento che hai per influenzare quel contesto**, e quindi l'unico strumento per influenzare quale risposta il modello considererà più probabile generare.
 
 Un prompt vago produce un contesto vago, che lascia ampio spazio a molteplici continuazioni plausibili — non perché il modello sia "confuso", ma perché, dato un contesto poco specifico, esistono effettivamente molte continuazioni statisticamente ragionevoli. Un prompt preciso restringe drasticamente lo spazio delle continuazioni plausibili, aumentando la probabilità che il modello produca esattamente il tipo di risposta che desideri.
 
@@ -73,7 +72,7 @@ con il tempo di visita consigliato per ciascuno, in formato elenco"
 
 ### Zero-shot prompting
 
-**Zero-shot** significa chiedere al modello di svolgere un compito senza fornire alcun esempio di come farlo — ti affidi interamente alla conoscenza e capacità già acquisite dal modello durante l'addestramento (Lezione 3.2).
+**Zero-shot** significa chiedere al modello di svolgere un compito senza fornire alcun esempio di come farlo — ti affidi interamente alla conoscenza e capacità già acquisite dal modello durante l'addestramento (Lezione 4.2).
 
 ```
 Prompt zero-shot:
@@ -82,7 +81,7 @@ positivo, negativo o neutro: 'Il prodotto è arrivato
 in ritardo ma la qualità è eccellente.'"
 ```
 
-Per molti compiti comuni e ben rappresentati nei dati di addestramento, lo zero-shot funziona sorprendentemente bene — il modello istruito (Lezione 3.2) ha già "visto", durante il proprio addestramento, moltissimi esempi di classificazione di sentimento, e ha generalizzato il compito.
+Per molti compiti comuni e ben rappresentati nei dati di addestramento, lo zero-shot funziona sorprendentemente bene — il modello istruito (Lezione 4.2) ha già "visto", durante il proprio addestramento, moltissimi esempi di classificazione di sentimento, e ha generalizzato il compito.
 
 ### Few-shot prompting
 
@@ -129,9 +128,9 @@ a 120 km/h e deve percorrere 360 km, a che ora arriva?"
   Risposta: arriva alle 17:00."
 ```
 
-> **Perché questo funziona, collegandolo a quanto già sai:** ricorda che ogni token generato diventa parte del contesto per il token successivo (Lezione 3.1). Quando il modello genera esplicitamente "360 km ÷ 120 km/h = 3 ore", questo calcolo intermedio diventa disponibile come contesto per generare il passo successivo, riducendo la probabilità di errori che potrebbero verificarsi se il modello dovesse "saltare" direttamente a una conclusione complessa senza passaggi intermedi espliciti nel proprio stesso output.
+> **Perché questo funziona, collegandolo a quanto già sai:** ricorda che ogni token generato diventa parte del contesto per il token successivo (Lezione 4.1). Quando il modello genera esplicitamente "360 km ÷ 120 km/h = 3 ore", questo calcolo intermedio diventa disponibile come contesto per generare il passo successivo, riducendo la probabilità di errori che potrebbero verificarsi se il modello dovesse "saltare" direttamente a una conclusione complessa senza passaggi intermedi espliciti nel proprio stesso output.
 
-Questa tecnica anticipa direttamente un concetto centrale del Capitolo 5: il pattern **ReAct**, che vedremo nella Lezione 5.2, estende esattamente questa idea di "ragionamento esplicito prima dell'azione" al contesto degli agenti che devono decidere quali strumenti usare.
+Questa tecnica anticipa direttamente un concetto centrale del Capitolo 6: il pattern **ReAct**, che vedremo nella Lezione 6.2, estende esattamente questa idea di "ragionamento esplicito prima dell'azione" al contesto degli agenti che devono decidere quali strumenti usare.
 
 ---
 
@@ -155,7 +154,7 @@ USER (turno 5, molto dopo): "E la respirazione cellulare?"
   senza doverla ripetere a ogni turno
 ```
 
-Questa persistenza è esattamente ciò che rende il system prompt lo strumento giusto per definire **ruolo, tono, vincoli di formato, e regole di comportamento stabili** — mentre i messaggi `user` sono lo strumento giusto per richieste specifiche di quel particolare turno. Questa distinzione, qui vista a livello di utilizzo base, diventerà cruciale nel Capitolo 6 quando parleremo di prompt come artefatti versionati: il system prompt di un agente è tipicamente un file stabile, raramente modificato, mentre i task prompt (costruiti dinamicamente con i dati del turno specifico) cambiano a ogni esecuzione.
+Questa persistenza è esattamente ciò che rende il system prompt lo strumento giusto per definire **ruolo, tono, vincoli di formato, e regole di comportamento stabili** — mentre i messaggi `user` sono lo strumento giusto per richieste specifiche di quel particolare turno. Questa distinzione, qui vista a livello di utilizzo base, diventerà cruciale nel Capitolo 7 quando parleremo di prompt come artefatti versionati: il system prompt di un agente è tipicamente un file stabile, raramente modificato, mentre i task prompt (costruiti dinamicamente con i dati del turno specifico) cambiano a ogni esecuzione.
 
 ---
 
@@ -163,7 +162,7 @@ Questa persistenza è esattamente ciò che rende il system prompt lo strumento g
 
 Oltre al testo del prompt, le API dei modelli linguistici esposero tipicamente alcuni parametri numerici che influenzano **come** il modello seleziona il token successivo tra quelli ad alta probabilità.
 
-Ricorda, dalla Lezione 3.1, che il modello calcola una distribuzione di probabilità su tutti i token possibili. La **temperature** controlla quanto "audacemente" il modello si allontana dalla scelta più probabile in assoluto:
+Ricorda, dalla Lezione 4.1, che il modello calcola una distribuzione di probabilità su tutti i token possibili. La **temperature** controlla quanto "audacemente" il modello si allontana dalla scelta più probabile in assoluto:
 
 ```
 Temperature BASSA (es. 0.1):
@@ -181,7 +180,7 @@ narrativa, brainstorming)
 
 Un parametro correlato, **top-p** (o nucleus sampling), limita la selezione solo all'insieme più ristretto di token la cui probabilità cumulativa raggiunge una certa soglia, escludendo la "coda" di opzioni molto improbabili — un meccanismo complementare per controllare la varietà delle risposte senza permettere scelte assurde o totalmente fuori contesto.
 
-> **Implicazione pratica diretta:** quando costruiremo agenti nel Capitolo 5, la scelta della temperature non sarà un dettaglio estetico. Un agente che deve eseguire calcoli precisi o seguire un protocollo rigoroso vorrà tipicamente una temperature bassa (comportamento prevedibile, ripetibile); un agente coinvolto in compiti di brainstorming creativo potrebbe beneficiare di una temperature più alta.
+> **Implicazione pratica diretta:** quando costruiremo agenti nel Capitolo 6, la scelta della temperature non sarà un dettaglio estetico. Un agente che deve eseguire calcoli precisi o seguire un protocollo rigoroso vorrà tipicamente una temperature bassa (comportamento prevedibile, ripetibile); un agente coinvolto in compiti di brainstorming creativo potrebbe beneficiare di una temperature più alta.
 
 ---
 
@@ -189,9 +188,9 @@ Un parametro correlato, **top-p** (o nucleus sampling), limita la selezione solo
 
 Per quanto potenti, le tecniche descritte in questa lezione hanno limiti che è importante riconoscere onestamente, perché motivano direttamente tutto ciò che costruiremo nei capitoli successivi:
 
-- **Il prompting non dà accesso a informazioni che il modello non possiede** (problema risolto dal RAG, Lezione 4.3)
-- **Il prompting non permette al modello di eseguire azioni reali nel mondo** — può solo generare testo (problema risolto dal Function Calling, Lezione 4.4)
-- **Il prompting non garantisce, da solo, un comportamento coerente su compiti molto lunghi e complessi** che richiedono pianificazione, verifica, correzione (problema affrontato dall'intera architettura agentiva, a partire dal Capitolo 5)
+- **Il prompting non dà accesso a informazioni che il modello non possiede** (problema risolto dal RAG, Lezione 5.3)
+- **Il prompting non permette al modello di eseguire azioni reali nel mondo** — può solo generare testo (problema risolto dal Function Calling, Lezione 5.4)
+- **Il prompting non garantisce, da solo, un comportamento coerente su compiti molto lunghi e complessi** che richiedono pianificazione, verifica, correzione (problema affrontato dall'intera architettura agentiva, a partire dal Capitolo 6)
 
 Tieni a mente questi limiti: non significano che il prompting sia "insufficiente" o "superato" — significa che il prompting è la **base fondamentale e indispensabile** su cui si costruiscono tecniche più sofisticate, non un'alternativa a esse.
 
@@ -305,7 +304,7 @@ Per ciascun caso scegli temperature **bassa** o **alta** e motiva: (a) un agente
 - **(b) nomi creativi per un brand** → **alta**: vuoi varietà e soluzioni inaspettate.
 - **(c) protocollo passo-passo ripetibile** → **bassa**: comportamento deterministico e affidabile.
 
-**Collegamento al design degli agenti:** la temperature non è un dettaglio estetico. Un agente che esegue calcoli, segue contratti o protocolli rigorosi (Capitolo 5-6) vuole temperature bassa per essere prevedibile e testabile; un agente in fase di brainstorming può beneficiare di temperature più alta. Scegliere la temperature è una decisione architetturale legata al *ruolo* dell'agente nel sistema.
+**Collegamento al design degli agenti:** la temperature non è un dettaglio estetico. Un agente che esegue calcoli, segue contratti o protocolli rigorosi (Capitolo 6-6) vuole temperature bassa per essere prevedibile e testabile; un agente in fase di brainstorming può beneficiare di temperature più alta. Scegliere la temperature è una decisione architetturale legata al *ruolo* dell'agente nel sistema.
 
 </details>
 
@@ -313,11 +312,11 @@ Per ciascun caso scegli temperature **bassa** o **alta** e motiva: (a) un agente
 
 ## Connessioni
 
-**Viene da:** Lezione 3.3 — qui rendiamo operativa la distinzione tra ruoli system/user/assistant appena introdotta.
+**Viene da:** Lezione 4.3 — qui rendiamo operativa la distinzione tra ruoli system/user/assistant appena introdotta.
 
-**Porta a:** Lezione 3.5 (Limiti e allucinazioni) — vedremo che, per quanto ben formulato, un prompt non può eliminare completamente alcuni limiti strutturali del modello.
+**Porta a:** Lezione 4.5 (Limiti e allucinazioni) — vedremo che, per quanto ben formulato, un prompt non può eliminare completamente alcuni limiti strutturali del modello.
 
-**Ritroverai questi concetti in:** Lezione 5.2 (ReAct e Chain-of-Thought) — la tecnica chain-of-thought vista qui in forma semplice si estenderà a un intero pattern architetturale per gli agenti. Lezione 6.4 (I Prompt come Artefatti) — system prompt e task prompt, qui distinti a livello di utilizzo, diventeranno artefatti professionali versionati e strutturati.
+**Ritroverai questi concetti in:** Lezione 6.2 (ReAct e Chain-of-Thought) — la tecnica chain-of-thought vista qui in forma semplice si estenderà a un intero pattern architetturale per gli agenti. Lezione 7.4 (I Prompt come Artefatti) — system prompt e task prompt, qui distinti a livello di utilizzo, diventeranno artefatti professionali versionati e strutturati.
 
 ---
 

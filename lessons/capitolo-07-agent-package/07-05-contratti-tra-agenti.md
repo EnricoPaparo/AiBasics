@@ -1,13 +1,13 @@
 ---
-id: "06-05"
+id: "07-05"
 titolo: "Contratti tra Agenti: schemi di input/output e validazione"
 sottotitolo: "Risolvere finalmente, in modo rigoroso, il problema di coerenza identificato nel Capitolo 5"
-capitolo: 6
-capitolo_titolo: "L'Agent Package: Struttura, Contratti e Artefatti"
+capitolo: 7
+capitolo_titolo: "L'Agent Package"
 lezione: 5
 durata_stimata: "65 minuti"
 difficolta: "avanzato"
-prerequisiti: ["06-03", "04-02"]
+prerequisiti: ["07-03","05-02"]
 concetti_chiave:
   - contratto
   - JSON Schema
@@ -22,14 +22,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Contratti tra Agenti: schemi di input/output e validazione
 
 ## Introduzione
 
-Nella Lezione 5.4 abbiamo identificato un problema concreto: agenti diversi, scritti in momenti diversi, possono usare terminologie diverse per concetti che dovrebbero essere identici (`importo_totale` contro `valore_vendite`), causando incoerenze silenziose nella pipeline. Avevamo promesso, in quella lezione, che la soluzione sarebbe arrivata sotto forma di **contratti formali**. Questa lezione tiene quella promessa.
+Nella Lezione 6.4 abbiamo identificato un problema concreto: agenti diversi, scritti in momenti diversi, possono usare terminologie diverse per concetti che dovrebbero essere identici (`importo_totale` contro `valore_vendite`), causando incoerenze silenziose nella pipeline. Avevamo promesso, in quella lezione, che la soluzione sarebbe arrivata sotto forma di **contratti formali**. Questa lezione tiene quella promessa.
 
-Un contratto, nel senso che useremo qui, non è un documento legale: è una **dichiarazione tecnica precisa e verificabile automaticamente** di cosa un agente si aspetta di ricevere e cosa garantisce di restituire. È, concettualmente, l'estensione naturale di tutto ciò che abbiamo già costruito — gli output strutturati della Lezione 4.2, lo schema referenziato nell'Agent Card della Lezione 6.3 — qui formalizzato come componente esplicito e centrale dell'architettura di un sistema multi-agente.
+Un contratto, nel senso che useremo qui, non è un documento legale: è una **dichiarazione tecnica precisa e verificabile automaticamente** di cosa un agente si aspetta di ricevere e cosa garantisce di restituire. È, concettualmente, l'estensione naturale di tutto ciò che abbiamo già costruito — gli output strutturati della Lezione 5.2, lo schema referenziato nell'Agent Card della Lezione 7.3 — qui formalizzato come componente esplicito e centrale dell'architettura di un sistema multi-agente.
 
 ---
 
@@ -38,7 +37,7 @@ Un contratto, nel senso che useremo qui, non è un documento legale: è una **di
 Al termine di questa lezione sarai in grado di:
 
 - Spiegare cosa è un contratto in un sistema distribuito e perché diventa indispensabile quando crescono il numero di agenti
-- Definire contratti di input e output con Pydantic per un agente reale, riutilizzando le competenze della Lezione 4.2
+- Definire contratti di input e output con Pydantic per un agente reale, riutilizzando le competenze della Lezione 5.2
 - Implementare validazione automatica con gestione esplicita delle violazioni
 - Progettare una strategia di escalation per i casi in cui un contratto viene violato
 
@@ -48,7 +47,7 @@ Al termine di questa lezione sarai in grado di:
 
 Un **contratto**, nel contesto dei sistemi distribuiti (un concetto dell'ingegneria del software applicabile direttamente ai sistemi multi-agente), è la promessa esplicita e verificabile su **cosa entra** e **cosa esce** da un componente, indipendentemente da come quel componente è implementato internamente.
 
-Con un solo agente, o con due agenti scritti dalla stessa persona nello stesso momento (come negli esempi della Lezione 5.3), la coerenza terminologica può essere mantenuta "a memoria", senza formalizzazione esplicita. Ma il problema cresce rapidamente:
+Con un solo agente, o con due agenti scritti dalla stessa persona nello stesso momento (come negli esempi della Lezione 6.3), la coerenza terminologica può essere mantenuta "a memoria", senza formalizzazione esplicita. Ma il problema cresce rapidamente:
 
 ```
 CON 2 AGENTI:                          CON 10 AGENTI:
@@ -66,7 +65,7 @@ Questa crescita combinatoria — con N agenti, il numero di possibili interazion
 
 ## 2. Definire un contratto con Pydantic
 
-Riprendiamo direttamente la competenza costruita nella Lezione 4.2, applicandola ora non a un singolo output di un modello, ma al **contratto completo** di un agente all'interno di un agent package.
+Riprendiamo direttamente la competenza costruita nella Lezione 5.2, applicandola ora non a un singolo output di un modello, ma al **contratto completo** di un agente all'interno di un agent package.
 
 ```python
 from pydantic import BaseModel, Field
@@ -95,7 +94,7 @@ class OutputAnalistaVendite(BaseModel):
     note: str = ""
 ```
 
-Osserva che questi schemi **risolvono esattamente** il problema identificato nella Lezione 5.4: il campo si chiama `valore_vendite`, non `importo_totale` né alcuna altra variante — ed essendo definito in un unico posto, condiviso da chiunque debba interagire con questo agente, non c'è più spazio per ambiguità terminologica tra chi produce questo input e chi consuma quell'output.
+Osserva che questi schemi **risolvono esattamente** il problema identificato nella Lezione 6.4: il campo si chiama `valore_vendite`, non `importo_totale` né alcuna altra variante — ed essendo definito in un unico posto, condiviso da chiunque debba interagire con questo agente, non c'è più spazio per ambiguità terminologica tra chi produce questo input e chi consuma quell'output.
 
 > **Perché Literal è una scelta progettuale precisa:** il tipo `Literal["crescita", "calo", "stabile"]` non accetta **nessun altro valore possibile** per il campo `trend`. Questo è più rigoroso di un semplice `str`, perché elimina alla radice il rischio che un agente a valle riceva un valore inatteso come "in aumento" invece di "crescita" — una variante semanticamente equivalente ma testualmente diversa, che causerebbe esattamente il tipo di incoerenza silenziosa che i contratti sono pensati per prevenire.
 
@@ -137,7 +136,7 @@ def esegui_agente_analista_con_contratto(dati_grezzi: dict) -> dict:
     input_validato = valida_input_agente(dati_grezzi, InputAnalistaVendite)
 
     # ... qui avverrebbe la chiamata API reale al modello
-    # (Lezione 4.1), usando input_validato per costruire il prompt ...
+    # (Lezione 5.1), usando input_validato per costruire il prompt ...
     risultato_grezzo_dal_modello = {
         "trend": "crescita",
         "variazione_percentuale": 9.1,
@@ -152,7 +151,7 @@ def esegui_agente_analista_con_contratto(dati_grezzi: dict) -> dict:
     return output_validato.model_dump()
 ```
 
-Questo doppio controllo — validare sia l'input ricevuto sia l'output prodotto, **ai confini** del componente — è un principio di robustezza analogo a quello visto nella Lezione 5.5: meglio fallire immediatamente, con un errore chiaro e diagnosticabile (`ContrattoViolato`), che lasciare propagare dati incoerenti in profondità nel sistema, dove l'origine del problema diventerebbe sempre più difficile da rintracciare.
+Questo doppio controllo — validare sia l'input ricevuto sia l'output prodotto, **ai confini** del componente — è un principio di robustezza analogo a quello visto nella Lezione 6.5: meglio fallire immediatamente, con un errore chiaro e diagnosticabile (`ContrattoViolato`), che lasciare propagare dati incoerenti in profondità nel sistema, dove l'origine del problema diventerebbe sempre più difficile da rintracciare.
 
 ---
 
@@ -166,7 +165,7 @@ CAUSA: Il MODELLO ha prodotto un output che non rispetta
         invece di "crescita")
 
   → STRATEGIA: ri-tentare la chiamata con un prompt
-    rafforzato (riprendendo il pattern della Lezione 4.2),
+    rafforzato (riprendendo il pattern della Lezione 5.2),
     o applicare un mapping di normalizzazione per le
     varianti più comuni
 
@@ -186,20 +185,20 @@ CAUSA: Il contratto stesso è cambiato (una nuova versione
         chiamanti ne siano stati informati
 
   → STRATEGIA: questo è precisamente il problema di
-    versionamento discusso nella Lezione 6.3 — la
+    versionamento discusso nella Lezione 7.3 — la
     soluzione non è tecnica ma di PROCESSO: ogni
     cambiamento di contratto richiede un aggiornamento
-    di versione esplicito (Lezione 8.4) e comunicazione
+    di versione esplicito (Lezione 9.4) e comunicazione
     a chi dipende dall'agente
 ```
 
-> **Quando l'escalation diventa necessaria:** se le violazioni di un certo tipo si ripetono con frequenza anomala (ad esempio, il modello produce ripetutamente output che violano lo schema, nonostante i tentativi di correzione), questo è un segnale che merita **intervento umano** — non un problema che un sistema automatico dovrebbe continuare a tentare di risolvere autonomamente all'infinito. Anticipiamo qui il principio di escalation che formalizzeremo con rigore nella Lezione 7.4, parlando di Human-in-the-Loop.
+> **Quando l'escalation diventa necessaria:** se le violazioni di un certo tipo si ripetono con frequenza anomala (ad esempio, il modello produce ripetutamente output che violano lo schema, nonostante i tentativi di correzione), questo è un segnale che merita **intervento umano** — non un problema che un sistema automatico dovrebbe continuare a tentare di risolvere autonomamente all'infinito. Anticipiamo qui il principio di escalation che formalizzeremo con rigore nella Lezione 8.4, parlando di Human-in-the-Loop.
 
 ---
 
 ## Esempio Pratico: Tracciare una Violazione Attraverso il Sistema
 
-Immagina che l'Agente Scrittore (Lezione 5.3), a valle dell'Agente Analista, riceva questo output:
+Immagina che l'Agente Scrittore (Lezione 6.3), a valle dell'Agente Analista, riceva questo output:
 
 ```python
 output_ricevuto = {
@@ -226,7 +225,7 @@ Senza questa validazione esplicita, l'Agente Scrittore avrebbe potuto ricevere "
 
 - Un **contratto** è la dichiarazione esplicita e verificabile di cosa un agente si aspetta come input e cosa garantisce come output, indipendentemente dalla sua implementazione interna.
 - I contratti diventano **indispensabili**, non opzionali, quando il numero di agenti in un sistema cresce, poiché le possibili interazioni crescono in modo combinatorio.
-- **Pydantic**, già introdotto nella Lezione 4.2, si applica direttamente alla definizione di contratti completi per un agent package, con tipi rigorosi come `Literal` per eliminare ambiguità terminologiche.
+- **Pydantic**, già introdotto nella Lezione 5.2, si applica direttamente alla definizione di contratti completi per un agent package, con tipi rigorosi come `Literal` per eliminare ambiguità terminologiche.
 - La **validazione automatica ai confini** del componente (sia in ingresso sia in uscita) intercetta le violazioni immediatamente, prevenendo la propagazione silenziosa di dati incoerenti.
 - Le violazioni di contratto richiedono strategie diverse in base alla causa: rafforzare il prompt, rifiutare input non conformi, o aggiornare formalmente il contratto con relativo versionamento — e, in caso di violazioni ricorrenti, **escalation** verso supervisione umana.
 
@@ -284,9 +283,9 @@ L'agente a valle riceve `{"trend": "in aumento", ...}` ma il contratto ammette s
 **(b) Strategie per causa:**
 - **Il modello** ha prodotto "in aumento" → ri-tentare con prompt rafforzato, o normalizzare le varianti comuni con un mapping.
 - **Il chiamante** ha fornito input non conforme (es. periodo nel formato sbagliato) → **rifiutare** esplicitamente con un errore chiaro sul campo problematico; mai "indovinare".
-- **Il contratto è cambiato** (nuova versione dell'agente) senza avviso → problema di **processo/versioning** (Lezioni 6.3/8.4): serve un cambio di versione esplicito e comunicazione ai dipendenti.
+- **Il contratto è cambiato** (nuova versione dell'agente) senza avviso → problema di **processo/versioning** (Lezioni 7.3/8.4): serve un cambio di versione esplicito e comunicazione ai dipendenti.
 
-**(c) Escalation umana:** quando le violazioni dello stesso tipo si ripetono con frequenza anomala nonostante i tentativi di correzione. Non è qualcosa che un sistema automatico debba continuare a ritentare all'infinito — è un segnale per un intervento umano (anticipa la Lezione 7.4).
+**(c) Escalation umana:** quando le violazioni dello stesso tipo si ripetono con frequenza anomala nonostante i tentativi di correzione. Non è qualcosa che un sistema automatico debba continuare a ritentare all'infinito — è un segnale per un intervento umano (anticipa la Lezione 8.4).
 
 </details>
 
@@ -294,8 +293,8 @@ L'agente a valle riceve `{"trend": "in aumento", ...}` ma il contratto ammette s
 
 ## Connessioni
 
-**Viene da:** Lezione 4.2 (Output Strutturati) — i contratti sono l'applicazione diretta di Pydantic a livello di intero agente, non solo di singola chiamata. Lezione 5.4 (Single vs Multi-Agent) — questa lezione risolve formalmente il problema di coerenza terminologica lì identificato.
+**Viene da:** Lezione 5.2 (Output Strutturati) — i contratti sono l'applicazione diretta di Pydantic a livello di intero agente, non solo di singola chiamata. Lezione 6.4 (Single vs Multi-Agent) — questa lezione risolve formalmente il problema di coerenza terminologica lì identificato.
 
-**Porta a:** Lezione 6.6 (Gli Handoff) — vedremo come i contratti qui definiti diventano parte integrante del documento di handoff che un agente passa al successivo.
+**Porta a:** Lezione 7.6 (Gli Handoff) — vedremo come i contratti qui definiti diventano parte integrante del documento di handoff che un agente passa al successivo.
 
-**Ritroverai questi concetti in:** Lezione 7.3 (Il Layer di Review) — un agente reviewer può usare esattamente questi stessi contratti come criteri oggettivi di valutazione. Lezione 7.4 (Human-in-the-Loop) — l'escalation per violazioni ricorrenti, qui anticipata, sarà formalizzata come pattern architetturale completo.
+**Ritroverai questi concetti in:** Lezione 8.3 (Il Layer di Review) — un agente reviewer può usare esattamente questi stessi contratti come criteri oggettivi di valutazione. Lezione 8.4 (Human-in-the-Loop) — l'escalation per violazioni ricorrenti, qui anticipata, sarà formalizzata come pattern architetturale completo.

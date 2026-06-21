@@ -1,13 +1,13 @@
 ---
-id: "07-05"
+id: "08-05"
 titolo: "Valutazione dei Workflow: metriche, evals e testing end-to-end"
 sottotitolo: "Chiudere il capitolo con la domanda che conta davvero: come sai se il sistema funziona?"
-capitolo: 7
-capitolo_titolo: "Workflow Multi-Agente: Design e Implementazione"
+capitolo: 8
+capitolo_titolo: "Workflow Multi-Agente"
 lezione: 5
 durata_stimata: "65 minuti"
 difficolta: "avanzato"
-prerequisiti: ["07-04"]
+prerequisiti: ["08-04"]
 concetti_chiave:
   - metriche di sistema
   - LLM-as-judge
@@ -22,14 +22,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Valutazione dei Workflow: metriche, evals e testing end-to-end
 
 ## Introduzione
 
-Chiudiamo il Capitolo 7 — e l'intera parte del corso dedicata all'implementazione di workflow multi-agente — con la domanda che, in ultima analisi, conta più di ogni altra: **come sai se il sistema che hai costruito funziona davvero?** Avere un workflow elegantemente progettato (7.1), implementato con un framework robusto (7.2), arricchito da review automatico (7.3) e supervisione umana (7.4), non garantisce automaticamente che il sistema, nel suo complesso, produca risultati di qualità in modo consistente.
+Chiudiamo il Capitolo 8 — e l'intera parte del corso dedicata all'implementazione di workflow multi-agente — con la domanda che, in ultima analisi, conta più di ogni altra: **come sai se il sistema che hai costruito funziona davvero?** Avere un workflow elegantemente progettato (8.1), implementato con un framework robusto (8.2), arricchito da review automatico (8.3) e supervisione umana (8.4), non garantisce automaticamente che il sistema, nel suo complesso, produca risultati di qualità in modo consistente.
 
-Questa lezione costruisce la disciplina di valutazione che chiude il ciclo di sviluppo: senza di essa, ogni modifica al sistema — un prompt aggiornato (Lezione 6.4), una skill corretta (Lezione 6.7), una nuova versione di un agente (Lezione 6.3) — sarebbe un salto nel buio, senza modo di sapere se ha effettivamente migliorato o peggiorato il comportamento complessivo.
+Questa lezione costruisce la disciplina di valutazione che chiude il ciclo di sviluppo: senza di essa, ogni modifica al sistema — un prompt aggiornato (Lezione 7.4), una skill corretta (Lezione 7.7), una nuova versione di un agente (Lezione 7.3) — sarebbe un salto nel buio, senza modo di sapere se ha effettivamente migliorato o peggiorato il comportamento complessivo.
 
 ---
 
@@ -58,13 +57,13 @@ o cattivo, ma non PERCHÉ                   un problema è stato
                                             di scrittura?
 
 Un errore nel nodo di estrazione           Puoi correggere la CAUSA
-(Lezione 7.1) potrebbe essere              specifica, invece di
+(Lezione 8.1) potrebbe essere              specifica, invece di
 "corretto" casualmente da un nodo          rivedere genericamente
 di scrittura molto abile — mascherando     tutto il sistema
 il problema reale invece di risolverlo
 ```
 
-Questo principio — valutare ogni componente, non solo il risultato complessivo — riprende direttamente la logica del logging strutturato della Lezione 5.5: senza visibilità granulare, la diagnosi di un problema diventa enormemente più difficile.
+Questo principio — valutare ogni componente, non solo il risultato complessivo — riprende direttamente la logica del logging strutturato della Lezione 6.5: senza visibilità granulare, la diagnosi di un problema diventa enormemente più difficile.
 
 ---
 
@@ -74,16 +73,16 @@ Questo principio — valutare ogni componente, non solo il risultato complessivo
 METRICHE PER AGENTE SINGOLO            METRICHE DI SISTEMA
 
 - Tasso di violazione del contratto    - Latenza end-to-end (tempo
-  dichiarato (Lezione 6.5)               totale dall'input
+  dichiarato (Lezione 7.5)               totale dall'input
                                           dell'utente all'output
 - Tasso di approvazione dal              finale)
-  Critic-Agent (Lezione 7.3)
+  Critic-Agent (Lezione 8.3)
                                         - Numero medio di cicli di
 - Numero di token consumati per          revisione prima
-  esecuzione (costo, Lezione 4.1)        dell'approvazione (7.3)
+  esecuzione (costo, Lezione 5.1)        dell'approvazione (8.3)
 
 - Frequenza di escalation a            - Tasso di escalation a
-  revisione umana (Lezione 7.4)          umano sull'INTERO processo
+  revisione umana (Lezione 8.4)          umano sull'INTERO processo
                                           (non solo per singolo nodo)
 
                                         - Tasso di errore END-TO-END
@@ -98,7 +97,7 @@ Un sistema può avere ottime metriche per ogni singolo agente, e tuttavia una me
 
 ## 3. LLM-as-Judge: vantaggi e rischi
 
-Per molte valutazioni — specialmente quelle che riguardano la **qualità** di un output testuale, non solo la sua conformità a un contratto strutturato (Lezione 6.5) — non esiste una metrica numerica oggettiva immediata. La tecnica **LLM-as-judge** usa un modello linguistico per valutare la qualità dell'output di un altro componente del sistema, riprendendo lo stesso principio del Critic-Agent (Lezione 7.3) ma applicato specificamente al contesto di valutazione e misurazione, non di correzione in tempo reale.
+Per molte valutazioni — specialmente quelle che riguardano la **qualità** di un output testuale, non solo la sua conformità a un contratto strutturato (Lezione 7.5) — non esiste una metrica numerica oggettiva immediata. La tecnica **LLM-as-judge** usa un modello linguistico per valutare la qualità dell'output di un altro componente del sistema, riprendendo lo stesso principio del Critic-Agent (Lezione 8.3) ma applicato specificamente al contesto di valutazione e misurazione, non di correzione in tempo reale.
 
 ```python
 def valuta_qualita_report_llm_judge(report_generato: str,
@@ -130,20 +129,20 @@ def valuta_qualita_report_llm_judge(report_generato: str,
 ```
 RISCHIO 1: Il giudice condivide gli stessi bias del
             sistema valutato (se usa lo stesso modello
-            sottostante, Capitolo 3)
+            sottostante, Capitolo 4)
 
 RISCHIO 2: Inconsistenza tra valutazioni dello stesso
             output in esecuzioni diverse (la natura
-            probabilistica vista nella Lezione 3.1
+            probabilistica vista nella Lezione 4.1
             si applica anche al giudice)
 
 RISCHIO 3: Il giudice può essere "ingannato" da un
             output ben scritto stilisticamente ma
             sostanzialmente carente — lo stesso problema
-            di plausibilità vs verità della Lezione 3.5
+            di plausibilità vs verità della Lezione 4.5
 ```
 
-**Mitigazioni pratiche:** usare criteri di valutazione il più possibile **strutturati e specifici** (riprendendo le rubriche della Lezione 7.3), eseguire la stessa valutazione **più volte** e verificarne la consistenza, e — per le decisioni più critiche — non affidarsi mai esclusivamente all'LLM-as-judge senza un campione di verifica umana periodica, esattamente il principio di supervisione della Lezione 7.4 applicato qui al processo di valutazione stesso.
+**Mitigazioni pratiche:** usare criteri di valutazione il più possibile **strutturati e specifici** (riprendendo le rubriche della Lezione 8.3), eseguire la stessa valutazione **più volte** e verificarne la consistenza, e — per le decisioni più critiche — non affidarsi mai esclusivamente all'LLM-as-judge senza un campione di verifica umana periodica, esattamente il principio di supervisione della Lezione 8.4 applicato qui al processo di valutazione stesso.
 
 ---
 
@@ -218,7 +217,7 @@ print(f"Test passati: {report['passati']}/{len(CASI_TEST)}")
 
 ## 5. Regression Testing: garantire che una modifica non rompa nulla
 
-Il valore più importante di una test suite come quella della Sezione 4 emerge non al primo utilizzo, ma **ogni volta che qualcosa nel sistema cambia**: un prompt aggiornato (Lezione 6.4), una nuova versione di una skill (Lezione 6.7), un aggiustamento alla policy di escalation (Lezione 7.4).
+Il valore più importante di una test suite come quella della Sezione 4 emerge non al primo utilizzo, ma **ogni volta che qualcosa nel sistema cambia**: un prompt aggiornato (Lezione 7.4), una nuova versione di una skill (Lezione 7.7), un aggiustamento alla policy di escalation (Lezione 8.4).
 
 ```
 PRIMA DI UNA MODIFICA              DOPO LA MODIFICA
@@ -240,7 +239,7 @@ Questo principio — eseguire la stessa suite di test prima e dopo ogni modifica
 
 ## 6. Osservabilità in produzione: dashboard e alert
 
-Riprendendo e completando il logging strutturato della Lezione 5.5, un sistema in produzione beneficia di una visualizzazione aggregata delle metriche raccolte, non solo di singoli log da consultare manualmente.
+Riprendendo e completando il logging strutturato della Lezione 6.5, un sistema in produzione beneficia di una visualizzazione aggregata delle metriche raccolte, non solo di singoli log da consultare manualmente.
 
 ```
 DASHBOARD MINIMO DI OSSERVABILITÀ
@@ -262,7 +261,7 @@ Un **alert** automatico su una metrica che si discosta significativamente dal pr
 
 ## Esempio Pratico: Diagnosticare una Regressione da un Report di Test
 
-Immagina questo confronto tra due esecuzioni della test suite, prima e dopo aver aggiornato il prompt dell'Agente Analista (Lezione 6.4):
+Immagina questo confronto tra due esecuzioni della test suite, prima e dopo aver aggiornato il prompt dell'Agente Analista (Lezione 7.4):
 
 ```
 PRIMA della modifica al prompt:
@@ -296,7 +295,7 @@ Cosa puoi dedurre? La modifica al prompt **non ha risolto** il problema preesist
 
 2. Riprendi i tre rischi dell'LLM-as-judge nella Sezione 3. Quale di questi rischi ritieni più difficile da mitigare completamente, anche applicando le strategie suggerite, e perché?
 
-3. Nell'esempio pratico della Sezione finale, oltre a non procedere con il deploy, quale altra azione concreta suggeriresti, collegandola al principio di versionamento dei prompt visto nella Lezione 6.4?
+3. Nell'esempio pratico della Sezione finale, oltre a non procedere con il deploy, quale altra azione concreta suggeriresti, collegandola al principio di versionamento dei prompt visto nella Lezione 7.4?
 
 ---
 
@@ -330,7 +329,7 @@ Elenca i rischi principali dell'usare un LLM come "giudice" della qualità, e pe
 Rischi e mitigazioni:
 1. **Bias condivisi** (se il giudice usa lo stesso modello del sistema valutato) → usare criteri molto strutturati; affiancare verifica umana periodica.
 2. **Inconsistenza** tra valutazioni (natura probabilistica) → eseguire la valutazione **più volte** e controllarne la coerenza.
-3. **Ingannabilità** da output stilisticamente brillante ma sostanzialmente carente (plausibilità ≠ verità, Lezione 3.5) → rubriche specifiche e oggettive; non affidarsi *solo* al giudice per le decisioni critiche.
+3. **Ingannabilità** da output stilisticamente brillante ma sostanzialmente carente (plausibilità ≠ verità, Lezione 4.5) → rubriche specifiche e oggettive; non affidarsi *solo* al giudice per le decisioni critiche.
 
 Regola: l'LLM-as-judge è utile per valutare qualità non riducibile a numeri, ma non va mai usato come unica fonte di verità per decisioni ad alto impatto.
 
@@ -338,7 +337,7 @@ Regola: l'LLM-as-judge è utile per valutare qualità non riducibile a numeri, m
 
 ### Esercizio 3 — Diagnosi di una regressione 🔴 Avanzato
 
-Prima di una modifica al prompt: 9/10 test passano (fallisce `caso-007`). Dopo: 7/10 (falliscono `caso-007`, `caso-003`, `caso-009`). (a) Cosa deduci? (b) Cosa fai? (c) Come si collega al versionamento dei prompt (Lezione 6.4)?
+Prima di una modifica al prompt: 9/10 test passano (fallisce `caso-007`). Dopo: 7/10 (falliscono `caso-007`, `caso-003`, `caso-009`). (a) Cosa deduci? (b) Cosa fai? (c) Come si collega al versionamento dei prompt (Lezione 7.4)?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -347,7 +346,7 @@ Prima di una modifica al prompt: 9/10 test passano (fallisce `caso-007`). Dopo: 
 
 **(b) Azione:** **non procedere col deploy.** Investigare cosa, nel nuovo prompt, ha alterato il comportamento sui casi che prima funzionavano — un'indagine mirata, resa possibile solo dalla test suite.
 
-**(c) Collegamento al versionamento:** poiché i prompt sono versionati in git (Lezione 6.4), puoi fare il **diff** tra la versione precedente e quella nuova per vedere esattamente cosa è cambiato, e fare **rollback** alla versione che dava 9/10. Senza versionamento e regression testing, avresti deployato un peggioramento senza accorgertene. È il prerequisito che rende possibile l'auto-miglioramento del Capitolo 8.
+**(c) Collegamento al versionamento:** poiché i prompt sono versionati in git (Lezione 7.4), puoi fare il **diff** tra la versione precedente e quella nuova per vedere esattamente cosa è cambiato, e fare **rollback** alla versione che dava 9/10. Senza versionamento e regression testing, avresti deployato un peggioramento senza accorgertene. È il prerequisito che rende possibile l'auto-miglioramento del Capitolo 9.
 
 </details>
 
@@ -355,12 +354,12 @@ Prima di una modifica al prompt: 9/10 test passano (fallisce `caso-007`). Dopo: 
 
 ## Connessioni
 
-**Viene da:** Lezione 5.5 (Gestione degli Errori) — il logging strutturato lì introdotto è la materia prima per le metriche di questa lezione. Lezione 7.3 (Il Layer di Review) — le rubriche di valutazione si estendono qui a un sistema di misurazione completo.
+**Viene da:** Lezione 6.5 (Gestione degli Errori) — il logging strutturato lì introdotto è la materia prima per le metriche di questa lezione. Lezione 8.3 (Il Layer di Review) — le rubriche di valutazione si estendono qui a un sistema di misurazione completo.
 
-**Porta a:** Capitolo 8 (Sistemi Auto-Evolutivi) — la capacità di misurare oggettivamente le prestazioni, costruita in questa lezione, è il prerequisito indispensabile per qualsiasi sistema che pretenda di migliorarsi automaticamente nel tempo.
+**Porta a:** Capitolo 9 (Sistemi Auto-Evolutivi) — la capacità di misurare oggettivamente le prestazioni, costruita in questa lezione, è il prerequisito indispensabile per qualsiasi sistema che pretenda di migliorarsi automaticamente nel tempo.
 
-**Ritroverai questi concetti in:** Lezione 8.2 (Prompt Auto-Evolutivi) — il regression testing qui descritto è esattamente il meccanismo che permette di verificare se un prompt modificato automaticamente ha effettivamente migliorato le prestazioni. Lezione 8.4 (Governance) — le metriche e gli alert qui introdotti diventeranno parte del sistema di governance completo degli artefatti agentivi.
+**Ritroverai questi concetti in:** Lezione 9.2 (Prompt Auto-Evolutivi) — il regression testing qui descritto è esattamente il meccanismo che permette di verificare se un prompt modificato automaticamente ha effettivamente migliorato le prestazioni. Lezione 9.4 (Governance) — le metriche e gli alert qui introdotti diventeranno parte del sistema di governance completo degli artefatti agentivi.
 
 ---
 
-**CHIUSURA DEL CAPITOLO 7.** Con questa lezione si conclude l'intero ciclo di costruzione di un workflow multi-agente professionale: progettazione (7.1), implementazione tecnica con LangGraph (7.2), qualità tramite review automatico (7.3), supervisione umana strutturata (7.4), e infine la disciplina di valutazione che chiude il ciclo (7.5). Il Capitolo 8, l'ultimo del corso, affronta la frontiera più avanzata: sistemi che non si limitano a funzionare bene, ma che usano esattamente queste metriche e questa capacità di misurazione per migliorarsi autonomamente nel tempo.
+**CHIUSURA DEL CAPITOLO 8.** Con questa lezione si conclude l'intero ciclo di costruzione di un workflow multi-agente professionale: progettazione (8.1), implementazione tecnica con LangGraph (8.2), qualità tramite review automatico (8.3), supervisione umana strutturata (8.4), e infine la disciplina di valutazione che chiude il ciclo (8.5). Il Capitolo 9, l'ultimo del corso, affronta la frontiera più avanzata: sistemi che non si limitano a funzionare bene, ma che usano esattamente queste metriche e questa capacità di misurazione per migliorarsi autonomamente nel tempo.

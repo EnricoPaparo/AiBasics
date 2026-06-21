@@ -3,7 +3,6 @@ titolo: "Vibe Coding"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Vibe Coding
 
 Nel 2025, Andrej Karpathy (ex Tesla, ex OpenAI) ha coniato il termine "vibe coding" per descrivere un modo di programmare in cui dai istruzioni in linguaggio naturale a un AI e accetti il codice che genera, senza necessariamente capire ogni riga. Il termine ha catturato qualcosa di reale che stava già succedendo.

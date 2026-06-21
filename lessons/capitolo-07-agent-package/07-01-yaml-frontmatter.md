@@ -1,13 +1,13 @@
 ---
-id: "06-01"
+id: "07-01"
 titolo: "YAML e Frontmatter: il linguaggio dei metadati strutturati"
 sottotitolo: "Il primo mattone dell'ingegneria professionale degli agenti: come strutturare un documento misto"
-capitolo: 6
-capitolo_titolo: "L'Agent Package: Struttura, Contratti e Artefatti"
+capitolo: 7
+capitolo_titolo: "L'Agent Package"
 lezione: 1
 durata_stimata: "55 minuti"
 difficolta: "avanzato"
-prerequisiti: ["05-05", "01-05"]
+prerequisiti: ["06-05","01-05"]
 concetti_chiave:
   - YAML
   - frontmatter
@@ -22,7 +22,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # YAML e Frontmatter: il linguaggio dei metadati strutturati
 
 > **⚡ Setup richiesto**: il Capitolo 7 usa YAML e parsing Python. Librerie necessarie:
@@ -34,7 +33,7 @@ In questo capitolo trasformiamo gli agenti da prototipi funzionanti a sistemi pr
 
 ## Introduzione
 
-Con questa lezione entriamo nel Capitolo 6, il nucleo ingegneristico professionale di tutto il corso. Fino ad ora abbiamo costruito agenti come **codice**: funzioni Python, system prompt scritti come stringhe, strumenti definiti inline. Questo approccio funziona per esempi didattici e prototipi, ma non scala a un sistema reale, mantenuto da un team, che deve evolvere nel tempo senza che ogni modifica richieda di toccare il codice sorgente.
+Con questa lezione entriamo nel Capitolo 7, il nucleo ingegneristico professionale di tutto il corso. Fino ad ora abbiamo costruito agenti come **codice**: funzioni Python, system prompt scritti come stringhe, strumenti definiti inline. Questo approccio funziona per esempi didattici e prototipi, ma non scala a un sistema reale, mantenuto da un team, che deve evolvere nel tempo senza che ogni modifica richieda di toccare il codice sorgente.
 
 La soluzione a questo problema passa attraverso un concetto che abbiamo già incontrato più volte nel corso, ma mai analizzato in profondità: il **frontmatter** — un blocco YAML che precede un documento Markdown, e che useremo, da questa lezione in avanti, come formato standard per ogni artefatto di un sistema agentivo: agenti, prompt, contratti, handoff, skill. Non è un caso che tu stia leggendo, in questo momento, un file che usa esattamente questa struttura: ogni lezione di questo corso è già un esempio vivente di ciò che stiamo per studiare.
 
@@ -104,7 +103,7 @@ Il **frontmatter** è un blocco YAML, delimitato da tre trattini (`---`) prima e
 [CONTENUTO in Markdown: human-readable]
 ```
 
-Pensa a un singolo file che descrive un agente del tuo sistema. Da un lato, vuoi che un umano possa aprirlo e capire immediatamente di cosa si tratta, leggendo prosa normale. Dall'altro, vuoi che un programma — ad esempio, il tuo orchestratore (Lezione 5.3), o uno script che genera automaticamente un catalogo di tutti gli agenti disponibili — possa estrarre informazioni precise senza dover "interpretare" un testo discorsivo.
+Pensa a un singolo file che descrive un agente del tuo sistema. Da un lato, vuoi che un umano possa aprirlo e capire immediatamente di cosa si tratta, leggendo prosa normale. Dall'altro, vuoi che un programma — ad esempio, il tuo orchestratore (Lezione 6.3), o uno script che genera automaticamente un catalogo di tutti gli agenti disponibili — possa estrarre informazioni precise senza dover "interpretare" un testo discorsivo.
 
 ```markdown
 ---
@@ -130,9 +129,9 @@ osservate, lasciando l'interpretazione strategica
 al team umano.
 ```
 
-Un programma può leggere `versione`, `strumenti`, `stato` con un parsing immediato e affidabile (esattamente come nella Lezione 4.2, parsing di output strutturati). Un umano può leggere la sezione "Comportamento atteso" e capire immediatamente il contesto, senza dover decifrare una struttura puramente tecnica. **Nessuna delle due esigenze viene sacrificata per l'altra.**
+Un programma può leggere `versione`, `strumenti`, `stato` con un parsing immediato e affidabile (esattamente come nella Lezione 5.2, parsing di output strutturati). Un umano può leggere la sezione "Comportamento atteso" e capire immediatamente il contesto, senza dover decifrare una struttura puramente tecnica. **Nessuna delle due esigenze viene sacrificata per l'altra.**
 
-> **Perché questo non è un dettaglio estetico:** ricorda dalla Lezione 5.4 il problema della coerenza terminologica tra agenti. Se ogni agente del sistema dichiara i propri metadati (versione, strumenti, owner, stato) in un formato standardizzato e prevedibile, diventa possibile costruire strumenti automatici che verificano la coerenza dell'intero sistema — ad esempio, uno script che controlla se tutti gli agenti dichiarati "in produzione" hanno effettivamente una sezione di test associata. Senza una struttura standard, questo tipo di verifica automatica sarebbe impossibile.
+> **Perché questo non è un dettaglio estetico:** ricorda dalla Lezione 6.4 il problema della coerenza terminologica tra agenti. Se ogni agente del sistema dichiara i propri metadati (versione, strumenti, owner, stato) in un formato standardizzato e prevedibile, diventa possibile costruire strumenti automatici che verificano la coerenza dell'intero sistema — ad esempio, uno script che controlla se tutti gli agenti dichiarati "in produzione" hanno effettivamente una sezione di test associata. Senza una struttura standard, questo tipo di verifica automatica sarebbe impossibile.
 
 ---
 
@@ -199,25 +198,25 @@ Nota l'uso di `yaml.safe_load` invece di `yaml.load`: questa è una scelta di si
 
 ## 4. Convenzioni di naming per un sistema coerente
 
-Quando un intero sistema multi-agente (Lezione 5.4) adotta il frontmatter come standard, diventa essenziale stabilire **convenzioni condivise** su quali campi usare e con quali nomi — esattamente il problema di coerenza terminologica identificato nella Lezione 5.4, qui risolto a livello di metadati invece che di contenuto dei messaggi.
+Quando un intero sistema multi-agente (Lezione 6.4) adotta il frontmatter come standard, diventa essenziale stabilire **convenzioni condivise** su quali campi usare e con quali nomi — esattamente il problema di coerenza terminologica identificato nella Lezione 6.4, qui risolto a livello di metadati invece che di contenuto dei messaggi.
 
 ```yaml
 # CONVENZIONE CONSIGLIATA per un sistema di agenti
 
 ---
 id: "identificativo-univoco-kebab-case"    # sempre minuscolo, trattini
-versione: "1.0.0"                           # semantic versioning (Lezione 8.4)
+versione: "1.0.0"                           # semantic versioning (Lezione 9.4)
 tipo: "agente" | "skill" | "schema" | "handoff"  # categoria dell'artefatto
 modello: "claude-sonnet-4-6"                 # solo se rilevante
 strumenti: []                                # sempre una lista, anche se vuota
 prerequisiti: []                             # dipendenze da altri artefatti
 owner: "nome-team-o-persona"
-stato: "bozza" | "revisione" | "produzione"  # ciclo di vita (Lezione 8.4)
+stato: "bozza" | "revisione" | "produzione"  # ciclo di vita (Lezione 9.4)
 data_modifica: "2026-06-19"
 ---
 ```
 
-Questa convenzione — chiavi sempre in minuscolo, valori di stato vincolati a un insieme fisso di opzioni, versionamento semantico — non è arbitraria: è precisamente il tipo di disciplina che permette a strumenti automatici di validare l'intero sistema (ad esempio, rifiutando un file che dichiara uno `stato` non previsto tra le opzioni valide), e che renderà possibile, nella Lezione 6.5, costruire contratti formali che si basano esattamente su questi stessi principi di struttura prevedibile.
+Questa convenzione — chiavi sempre in minuscolo, valori di stato vincolati a un insieme fisso di opzioni, versionamento semantico — non è arbitraria: è precisamente il tipo di disciplina che permette a strumenti automatici di validare l'intero sistema (ad esempio, rifiutando un file che dichiara uno `stato` non previsto tra le opzioni valide), e che renderà possibile, nella Lezione 7.5, costruire contratti formali che si basano esattamente su questi stessi principi di struttura prevedibile.
 
 > **Nota di trasparenza pratica:** osserva che il frontmatter di questa stessa lezione, che puoi vedere in cima a questo file, segue esattamente questo tipo di convenzione — `id`, `versione`, `stato`, `prerequisiti`. Il corso che stai studiando è stato costruito, fin dall'inizio, secondo i principi che ti sta insegnando.
 
@@ -265,7 +264,7 @@ else:
     print("Catalogo coerente: nessun problema trovato.")
 ```
 
-Questo script, per quanto semplice, rappresenta un concetto che diventerà centrale nel resto del capitolo: la possibilità di **validare automaticamente** l'intero sistema, invece di affidarsi alla disciplina manuale di chi scrive ogni singolo agente — un principio di qualità ingegneristica che, nella Lezione 6.5, estenderemo dai semplici metadati ai contratti completi di input e output.
+Questo script, per quanto semplice, rappresenta un concetto che diventerà centrale nel resto del capitolo: la possibilità di **validare automaticamente** l'intero sistema, invece di affidarsi alla disciplina manuale di chi scrive ogni singolo agente — un principio di qualità ingegneristica che, nella Lezione 7.5, estenderemo dai semplici metadati ai contratti completi di input e output.
 
 ---
 
@@ -284,7 +283,7 @@ Questo script, per quanto semplice, rappresenta un concetto che diventerà centr
 
 2. Immagina che due agenti diversi del tuo sistema usino, nei rispettivi frontmatter, rispettivamente i campi `responsabile` e `owner` per indicare la stessa informazione (chi è responsabile dell'agente). Quale problema, già descritto in una lezione precedente, si manifesterebbe quando provi a costruire uno script di validazione automatica come quello della Sezione finale?
 
-3. Il frontmatter di questa stessa lezione include il campo `prerequisiti: ["05-05", "01-05"]`. In che modo un orchestratore (Lezione 5.3) o un sistema di gestione del corso potrebbe usare questa informazione in modo automatico, senza che un umano debba leggerla manualmente?
+3. Il frontmatter di questa stessa lezione include il campo `prerequisiti: ["05-05", "01-05"]`. In che modo un orchestratore (Lezione 6.3) o un sistema di gestione del corso potrebbe usare questa informazione in modo automatico, senza che un umano debba leggerla manualmente?
 
 ---
 
@@ -326,12 +325,12 @@ Questo YAML ha tre problemi. Trovali: `nome:Agente` / `versione: 1.0` (indentato
 
 ### Esercizio 3 — Convenzioni e automazione 🔴 Avanzato
 
-(a) Due agenti usano `responsabile` e `owner` per la stessa cosa. Che problema crea per la validazione automatica, e come si chiamava nella Lezione 5.4? (b) Il frontmatter di questa lezione ha `prerequisiti: ["05-05", "01-05"]`. Come potrebbe usarlo un programma, senza intervento umano?
+(a) Due agenti usano `responsabile` e `owner` per la stessa cosa. Che problema crea per la validazione automatica, e come si chiamava nella Lezione 6.4? (b) Il frontmatter di questa lezione ha `prerequisiti: ["05-05", "01-05"]`. Come potrebbe usarlo un programma, senza intervento umano?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
 
-**(a)** Uno script di validazione che cerca `owner` non troverebbe il campo nell'agente che usa `responsabile` → falsi allarmi o controlli che falliscono. È il problema di **coerenza terminologica** della Lezione 5.4, qui a livello di metadati. Soluzione: **convenzioni di naming condivise** (chiavi standard, valori di stato vincolati a un insieme fisso).
+**(a)** Uno script di validazione che cerca `owner` non troverebbe il campo nell'agente che usa `responsabile` → falsi allarmi o controlli che falliscono. È il problema di **coerenza terminologica** della Lezione 6.4, qui a livello di metadati. Soluzione: **convenzioni di naming condivise** (chiavi standard, valori di stato vincolati a un insieme fisso).
 
 **(b) Uso automatico di `prerequisiti`:** un programma può:
 - costruire automaticamente il **grafo delle dipendenze** del corso/sistema e verificare che non ci siano riferimenti rotti o cicli;
@@ -346,8 +345,8 @@ Tutto questo senza che un umano legga manualmente il campo — è il valore dei 
 
 ## Connessioni
 
-**Viene da:** Lezione 1.5 (Le API) — qui approfondiamo YAML, introdotto lì in contrapposizione a JSON. Lezione 5.4 (Single vs Multi-Agent) — il problema di coerenza terminologica trova qui una prima soluzione strutturale a livello di metadati.
+**Viene da:** Lezione 1.5 (Le API) — qui approfondiamo YAML, introdotto lì in contrapposizione a JSON. Lezione 6.4 (Single vs Multi-Agent) — il problema di coerenza terminologica trova qui una prima soluzione strutturale a livello di metadati.
 
-**Porta a:** Lezione 6.2 (L'Agent Package) — il frontmatter qui padroneggiato è il formato esatto con cui descriveremo ogni file della struttura di un agente professionale.
+**Porta a:** Lezione 7.2 (L'Agent Package) — il frontmatter qui padroneggiato è il formato esatto con cui descriveremo ogni file della struttura di un agente professionale.
 
-**Ritroverai questi concetti in:** Lezione 6.3 (Agent Card) — l'Agent Card è, essenzialmente, un frontmatter strutturato secondo uno standard ancora più preciso e completo. Lezione 8.4 (Governance e Versioning) — il campo `stato` e il versionamento semantico qui introdotti diventeranno il fondamento del ciclo di vita formale degli artefatti agentivi.
+**Ritroverai questi concetti in:** Lezione 7.3 (Agent Card) — l'Agent Card è, essenzialmente, un frontmatter strutturato secondo uno standard ancora più preciso e completo. Lezione 9.4 (Governance e Versioning) — il campo `stato` e il versionamento semantico qui introdotti diventeranno il fondamento del ciclo di vita formale degli artefatti agentivi.

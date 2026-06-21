@@ -3,7 +3,6 @@ titolo: "Async e Concorrenza negli Agenti"
 durata_stimata: "25 min"
 difficolta: "Avanzato"
 ---
-
 # Async e Concorrenza negli Agenti
 
 Un agente che chiama un LLM aspetta. Un agente che chiama 5 tool aspetta 5 volte. Se ogni chiamata richiede 2 secondi, un agente sequenziale impiega 10 secondi per completare quello che un agente concorrente fa in 2. In questa lezione impari a costruire agenti veloci usando `async/await` e la concorrenza in Python.

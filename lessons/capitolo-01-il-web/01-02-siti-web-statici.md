@@ -24,7 +24,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Siti Web Statici: HTML, CSS e il concetto di documento
 
 ## Introduzione
@@ -250,4 +249,4 @@ Conclusione: il confine non è "tutto statico o tutto dinamico". L'interfaccia �
 
 **Porta a:** Lezione 1.3 (Siti Web Dinamici) — vedremo cosa cambia quando il server inizia a costruire l'HTML al volo invece di leggerlo da un file fisso.
 
-**Ritroverai questi concetti in:** Lezione 6.5 (I File .md come Artefatti Operativi) — la stessa idea di "documento strutturato" alla base di HTML ritorna quando parleremo di Markdown con frontmatter come formato per gli artefatti dei workflow agentivi.
+**Ritroverai questi concetti in:** Lezione 7.5 (I File .md come Artefatti Operativi) — la stessa idea di "documento strutturato" alla base di HTML ritorna quando parleremo di Markdown con frontmatter come formato per gli artefatti dei workflow agentivi.

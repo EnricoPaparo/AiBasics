@@ -1,13 +1,13 @@
 ---
-id: "07-01"
+id: "08-01"
 titolo: "Progettare un Workflow Agentivo: dal problema al grafo"
 sottotitolo: "Il design thinking dell'AI engineering: pensare in nodi, archi e condizioni prima di scrivere codice"
-capitolo: 7
-capitolo_titolo: "Workflow Multi-Agente: Design e Implementazione"
+capitolo: 8
+capitolo_titolo: "Workflow Multi-Agente"
 lezione: 1
 durata_stimata: "70 minuti"
 difficolta: "avanzato"
-prerequisiti: ["06-07"]
+prerequisiti: ["07-07"]
 concetti_chiave:
   - workflow
   - pipeline vs workflow
@@ -23,7 +23,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Progettare un Workflow Agentivo: dal problema al grafo
 
 > **⚡ Setup richiesto**: il Capitolo 8 usa LangGraph per i workflow multi-agente. Librerie necessarie:
@@ -35,9 +34,9 @@ In questo capitolo portiamo i singoli agenti al livello successivo: sistemi mult
 
 ## Introduzione
 
-Con il Capitolo 6 abbiamo costruito tutti i mattoni: agent package completi (6.2), Agent Card per la discovery (6.3), prompt versionati (6.4), contratti che garantiscono coerenza (6.5), handoff che trasferiscono responsabilità (6.6), skill condivise (6.7). Questo capitolo li assembla in **workflow completi** — sistemi multi-agente reali, supervisionati, pronti per la produzione.
+Con il Capitolo 7 abbiamo costruito tutti i mattoni: agent package completi (7.2), Agent Card per la discovery (7.3), prompt versionati (7.4), contratti che garantiscono coerenza (7.5), handoff che trasferiscono responsabilità (7.6), skill condivise (7.7). Questo capitolo li assembla in **workflow completi** — sistemi multi-agente reali, supervisionati, pronti per la produzione.
 
-Ma prima di scrivere una sola riga di codice di implementazione (che affronteremo nella Lezione 7.2 con LangGraph), questa lezione insegna a **pensare** in termini di workflow — un'abilità progettuale che precede e guida ogni scelta tecnica successiva. Un workflow mal progettato sulla carta produce un sistema fragile, indipendentemente da quanto bene sia implementato il codice che lo realizza.
+Ma prima di scrivere una sola riga di codice di implementazione (che affronteremo nella Lezione 8.2 con LangGraph), questa lezione insegna a **pensare** in termini di workflow — un'abilità progettuale che precede e guida ogni scelta tecnica successiva. Un workflow mal progettato sulla carta produce un sistema fragile, indipendentemente da quanto bene sia implementato il codice che lo realizza.
 
 ---
 
@@ -54,7 +53,7 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Pipeline statica vs Workflow adattivo
 
-Avevamo già incontrato, nella Lezione 5.4, la distinzione tra pipeline sequenziale e architettura a grafo. Formalizziamo ora questa distinzione con il vocabolario specifico di "workflow", che useremo per il resto del capitolo.
+Avevamo già incontrato, nella Lezione 6.4, la distinzione tra pipeline sequenziale e architettura a grafo. Formalizziamo ora questa distinzione con il vocabolario specifico di "workflow", che useremo per il resto del capitolo.
 
 ```
 PIPELINE (statica)                     WORKFLOW (adattivo)
@@ -66,7 +65,7 @@ per ogni esecuzione                    può saltare passi, ripeterne
                                         diversi in base alle condizioni
 
 Esempio: estrai → analizza →           Esempio: estrai → SE i dati
-scrivi (Lezione 5.3)                   sono incompleti, richiedi
+scrivi (Lezione 6.3)                   sono incompleti, richiedi
                                         chiarimenti → altrimenti
                                         analizza → SE il revisore
                                         rileva un problema, torna
@@ -84,7 +83,7 @@ Il vocabolario tecnico di un workflow agentivo si fonda su tre elementi:
 
 ```
 NODO
-  Un'unità di lavoro: un agente (Capitolo 5), una funzione
+  Un'unità di lavoro: un agente (Capitolo 6), una funzione
   di trasformazione dati, o un punto di decisione
 
 ARCO
@@ -95,8 +94,8 @@ ARCO
 CHECKPOINT
   Un punto specifico nel grafo dove il processo si ferma
   per VERIFICARE qualcosa prima di continuare — può
-  coincidere con un nodo di revisione (Lezione 7.3) o
-  con un punto di intervento umano (Lezione 7.4)
+  coincidere con un nodo di revisione (Lezione 8.3) o
+  con un punto di intervento umano (Lezione 8.4)
 ```
 
 Applichiamo questo vocabolario al caso che hai in mente per il tuo progetto: un Requirement Analyst Agent che riceve una cartella di file misti e produce un handoff per un Architect Agent.
@@ -124,19 +123,19 @@ Applichiamo questo vocabolario al caso che hai in mente per il tuo progetto: un 
                               │
                               ▼
                     [CHECKPOINT: Revisione umana]
-                    (Lezione 7.4 — Human-in-the-Loop)
+                    (Lezione 8.4 — Human-in-the-Loop)
                               │
                               ▼
                     [Handoff verso Architect Agent]
 ```
 
-Questo diagramma **non è ancora codice**: è il design del processo, costruito prima di scegliere quale framework userai per implementarlo (Lezione 7.2). Disegnare questo grafo su carta, o in uno strumento di diagramming, prima di scrivere codice, è precisamente la disciplina di "design thinking" che questa lezione vuole trasmettere.
+Questo diagramma **non è ancora codice**: è il design del processo, costruito prima di scegliere quale framework userai per implementarlo (Lezione 8.2). Disegnare questo grafo su carta, o in uno strumento di diagramming, prima di scrivere codice, è precisamente la disciplina di "design thinking" che questa lezione vuole trasmettere.
 
 ---
 
 ## 3. Input, output e stato globale del workflow
 
-Esattamente come un singolo agente ha un contratto di input/output (Lezione 6.5), un intero workflow ha un proprio **stato globale** che si accumula e si trasforma man mano che il processo avanza attraverso i nodi.
+Esattamente come un singolo agente ha un contratto di input/output (Lezione 7.5), un intero workflow ha un proprio **stato globale** che si accumula e si trasforma man mano che il processo avanza attraverso i nodi.
 
 ```python
 from pydantic import BaseModel
@@ -155,7 +154,7 @@ class StatoWorkflowRequisiti(BaseModel):
     revisione_umana_completata: bool = False
 ```
 
-Ogni nodo del grafo della Sezione 2 **legge** una parte di questo stato e **scrive** un'altra parte, esattamente come abbiamo visto con i contratti di input/output nella Lezione 6.5 — ma qui applicato a un oggetto di stato condiviso che persiste attraverso l'intero workflow, non solo tra una singola coppia di agenti.
+Ogni nodo del grafo della Sezione 2 **legge** una parte di questo stato e **scrive** un'altra parte, esattamente come abbiamo visto con i contratti di input/output nella Lezione 7.5 — ma qui applicato a un oggetto di stato condiviso che persiste attraverso l'intero workflow, non solo tra una singola coppia di agenti.
 
 ---
 
@@ -177,7 +176,7 @@ PRINCIPIO 2: Prima di ogni AZIONE IRREVERSIBILE
   quel nodo è quasi sempre necessario
 
 PRINCIPIO 3: Ai confini di RESPONSABILITÀ
-  Quando un handoff (Lezione 6.6) trasferisce
+  Quando un handoff (Lezione 7.6) trasferisce
   responsabilità a un agente o un team diverso, un
   checkpoint a quel confine garantisce che il
   trasferimento avvenga solo con materiale verificato
@@ -189,10 +188,10 @@ Nel diagramma della Sezione 2, il checkpoint di revisione umana è posizionato p
 
 ## 5. Il protocollo A2A: interoperabilità tra agenti di sistemi diversi
 
-Concludiamo questa lezione di design con un concetto che estende, su scala più ampia, i principi di interoperabilità già visti nella Lezione 4.5 a proposito di MCP. **A2A** (Agent-to-Agent) è un protocollo, promosso da Google, pensato specificamente per la comunicazione **tra agenti appartenenti a sistemi diversi**, potenzialmente costruiti da organizzazioni diverse, con modelli diversi.
+Concludiamo questa lezione di design con un concetto che estende, su scala più ampia, i principi di interoperabilità già visti nella Lezione 5.5 a proposito di MCP. **A2A** (Agent-to-Agent) è un protocollo, promosso da Google, pensato specificamente per la comunicazione **tra agenti appartenenti a sistemi diversi**, potenzialmente costruiti da organizzazioni diverse, con modelli diversi.
 
 ```
-MCP (Lezione 4.5)                      A2A
+MCP (Lezione 5.5)                      A2A
 
 Standardizza la connessione tra        Standardizza la comunicazione
 UN AGENTE e RISORSE/STRUMENTI          tra AGENTI DIVERSI, anche
@@ -207,7 +206,7 @@ Google Drive                           comunica con un agente di
                                         infrastruttura
 ```
 
-A2A si basa su un principio che hai già incontrato: ogni agente esposto secondo questo protocollo pubblica una propria **Agent Card** (Lezione 6.3), permettendo a un sistema esterno di scoprire le sue capacità e interfacciarsi correttamente, senza dover conoscere nulla dell'implementazione interna. Questo è precisamente il principio di incapsulamento e discovery che abbiamo costruito con cura in tutto il Capitolo 6, qui esteso oltre i confini di un singolo sistema, verso un'interoperabilità tra organizzazioni diverse.
+A2A si basa su un principio che hai già incontrato: ogni agente esposto secondo questo protocollo pubblica una propria **Agent Card** (Lezione 7.3), permettendo a un sistema esterno di scoprire le sue capacità e interfacciarsi correttamente, senza dover conoscere nulla dell'implementazione interna. Questo è precisamente il principio di incapsulamento e discovery che abbiamo costruito con cura in tutto il Capitolo 7, qui esteso oltre i confini di un singolo sistema, verso un'interoperabilità tra organizzazioni diverse.
 
 ---
 
@@ -242,9 +241,9 @@ Completa tu stesso questo schema, identificando quali altri checkpoint, secondo 
 
 - Un **workflow** si distingue da una **pipeline statica** per la capacità di adattare il proprio percorso in base ai risultati intermedi, non solo eseguire una sequenza fissa.
 - Il vocabolario di progettazione si fonda su **nodi** (unità di lavoro), **archi** (transizioni, condizionate o incondizionate), e **checkpoint** (punti di verifica prima di procedere).
-- Lo **stato globale** del workflow, definito come un contratto esplicito (Pydantic, riprendendo la Lezione 6.5), accumula informazioni mentre il processo avanza attraverso i nodi.
-- I checkpoint vanno posizionati dopo nodi che introducono incertezza, prima di azioni irreversibili, e ai confini di trasferimento di responsabilità (handoff, Lezione 6.6).
-- Il protocollo **A2A** estende i principi di interoperabilità di MCP (Lezione 4.5) alla comunicazione tra agenti di sistemi e organizzazioni diverse, basandosi sulle Agent Card (Lezione 6.3) per la discovery.
+- Lo **stato globale** del workflow, definito come un contratto esplicito (Pydantic, riprendendo la Lezione 7.5), accumula informazioni mentre il processo avanza attraverso i nodi.
+- I checkpoint vanno posizionati dopo nodi che introducono incertezza, prima di azioni irreversibili, e ai confini di trasferimento di responsabilità (handoff, Lezione 7.6).
+- Il protocollo **A2A** estende i principi di interoperabilità di MCP (Lezione 5.5) alla comunicazione tra agenti di sistemi e organizzazioni diverse, basandosi sulle Agent Card (Lezione 7.3) per la discovery.
 
 ---
 
@@ -254,7 +253,7 @@ Completa tu stesso questo schema, identificando quali altri checkpoint, secondo 
 
 2. Applicando il Principio 2 della Sezione 4 (azioni irreversibili), in quale punto del workflow disegnato nell'Esempio Pratico aggiungeresti un checkpoint, anche se non esplicitamente indicato nello schema suggerito?
 
-3. Spiega, collegandolo alla Lezione 6.3, perché un agente esposto tramite il protocollo A2A deve necessariamente avere un'Agent Card ben progettata, con una sezione "NON_fa" chiara, prima di poter essere usato in modo sicuro da un sistema esterno mai incontrato prima.
+3. Spiega, collegandolo alla Lezione 7.3, perché un agente esposto tramite il protocollo A2A deve necessariamente avere un'Agent Card ben progettata, con una sezione "NON_fa" chiara, prima di poter essere usato in modo sicuro da un sistema esterno mai incontrato prima.
 
 ---
 
@@ -294,7 +293,7 @@ Nel workflow che invia un'email: un checkpoint **prima del nodo di invio**, seco
 
 ### Esercizio 3 — A2A e Agent Card 🔴 Avanzato
 
-(a) Che differenza c'è tra MCP (Lezione 4.5) e A2A? (b) Perché un agente esposto via A2A deve avere un'Agent Card ben fatta, con una sezione `NON_fa` chiara, prima di poter essere usato da un sistema esterno?
+(a) Che differenza c'è tra MCP (Lezione 5.5) e A2A? (b) Perché un agente esposto via A2A deve avere un'Agent Card ben fatta, con una sezione `NON_fa` chiara, prima di poter essere usato da un sistema esterno?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -303,7 +302,7 @@ Nel workflow che invia un'email: un checkpoint **prima del nodo di invio**, seco
 - **MCP** standardizza la connessione tra **un agente e risorse/strumenti** esterni (es. accedere a Google Drive).
 - **A2A** standardizza la comunicazione **tra agenti diversi**, anche di organizzazioni/sistemi diversi (es. un tuo agente che parla con l'agente di un fornitore).
 
-**(b) Perché serve l'Agent Card:** un sistema esterno **non conosce nulla** dell'implementazione interna dell'agente. L'unico modo per scoprire cosa fa e come interfacciarsi è la sua **Agent Card** (discovery, Lezione 6.3): capacità, schema di input/output e — cruciale — la sezione **`NON_fa`**. Senza confini chiari, il sistema esterno potrebbe delegargli compiti fuori dal suo dominio, con risultati scorretti. È il principio di incapsulamento e contratto pubblico esteso oltre i confini dell'organizzazione.
+**(b) Perché serve l'Agent Card:** un sistema esterno **non conosce nulla** dell'implementazione interna dell'agente. L'unico modo per scoprire cosa fa e come interfacciarsi è la sua **Agent Card** (discovery, Lezione 7.3): capacità, schema di input/output e — cruciale — la sezione **`NON_fa`**. Senza confini chiari, il sistema esterno potrebbe delegargli compiti fuori dal suo dominio, con risultati scorretti. È il principio di incapsulamento e contratto pubblico esteso oltre i confini dell'organizzazione.
 
 </details>
 
@@ -311,8 +310,8 @@ Nel workflow che invia un'email: un checkpoint **prima del nodo di invio**, seco
 
 ## Connessioni
 
-**Viene da:** L'intero Capitolo 6 — questa lezione assembla gli agent package in un processo coordinato. Lezione 5.4 (Single vs Multi-Agent) — qui formalizziamo con il vocabolario di "workflow" le topologie introdotte in quella lezione.
+**Viene da:** L'intero Capitolo 7 — questa lezione assembla gli agent package in un processo coordinato. Lezione 6.4 (Single vs Multi-Agent) — qui formalizziamo con il vocabolario di "workflow" le topologie introdotte in quella lezione.
 
-**Porta a:** Lezione 7.2 (LangGraph) — il grafo progettato concettualmente in questa lezione troverà un'implementazione tecnica precisa in quel framework.
+**Porta a:** Lezione 8.2 (LangGraph) — il grafo progettato concettualmente in questa lezione troverà un'implementazione tecnica precisa in quel framework.
 
-**Ritroverai questi concetti in:** Lezione 7.3 (Il Layer di Review) e Lezione 7.4 (Human-in-the-Loop) — i checkpoint qui posizionati concettualmente diventeranno nodi specifici e formalizzati in quelle lezioni, con particolare attenzione al checkpoint di revisione umana già anticipato nel diagramma della Sezione 2.
+**Ritroverai questi concetti in:** Lezione 8.3 (Il Layer di Review) e Lezione 8.4 (Human-in-the-Loop) — i checkpoint qui posizionati concettualmente diventeranno nodi specifici e formalizzati in quelle lezioni, con particolare attenzione al checkpoint di revisione umana già anticipato nel diagramma della Sezione 2.

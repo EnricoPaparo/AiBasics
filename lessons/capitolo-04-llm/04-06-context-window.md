@@ -3,7 +3,6 @@ titolo: "Il Context Window"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Il Context Window
 
 Hai mai notato che un modello AI, dopo una lunga conversazione, sembra "dimenticare" quello che hai detto all'inizio? Non è un bug — è il context window che si è riempito.
