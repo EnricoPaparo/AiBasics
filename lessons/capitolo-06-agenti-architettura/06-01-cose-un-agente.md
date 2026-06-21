@@ -58,11 +58,13 @@ Al termine di questa lezione sarai in grado di:
 
 Un **agente AI** è un sistema che, per raggiungere un obiettivo, esegue ripetutamente un ciclo di quattro fasi:
 
-```
-PERCEPISCE  →  RAGIONA  →  AGISCE  →  OSSERVA IL RISULTATO
-    ▲                                          │
-    └──────────────────────────────────────────┘
-              (e ricomincia, se necessario)
+```mermaid
+flowchart LR
+    P([Percepisce]) --> R([Ragiona])
+    R --> A([Agisce])
+    A --> O([Osserva il risultato])
+    O -->|obiettivo non ancora raggiunto| P
+    O -->|obiettivo raggiunto| F([Fine])
 ```
 
 - **Percepisce**: riceve informazioni sullo stato attuale — la richiesta dell'utente, il risultato di un'azione precedente, dati recuperati da uno strumento
@@ -80,28 +82,16 @@ La caratteristica che distingue radicalmente un agente da una singola chiamata A
 
 Scomponiamo la definizione operativa in componenti tecnici concreti, ciascuno dei quali corrisponde direttamente a qualcosa già costruito nel Capitolo 5:
 
-```
-┌─────────────────────────────────────────────────────┐
-│                      AGENTE                            │
-│                                                          │
-│  ┌─────────────┐  ┌─────────────┐  ┌──────────────┐  │
-│  │  LLM CORE     │  │   MEMORIA     │  │  STRUMENTI     │  │
-│  │ (Capitolo 4)  │  │ (Lezione 5.6) │  │ (Lezione 5.4)  │  │
-│  │               │  │               │  │                │  │
-│  │ Il "motore di │  │ Cosa l'agente │  │ Cosa l'agente  │  │
-│  │ ragionamento" │  │ ricorda dei   │  │ può FARE nel   │  │
-│  │ che decide    │  │ passi         │  │ mondo reale    │  │
-│  │ il prossimo   │  │ precedenti    │  │                │  │
-│  │ passo         │  │               │  │                │  │
-│  └─────────────┘  └─────────────┘  └──────────────┘  │
-│                                                          │
-│              ┌─────────────────┐                       │
-│              │     OBIETTIVO      │                       │
-│              │  Cosa l'agente sta │                       │
-│              │  cercando di        │                       │
-│              │  raggiungere        │                       │
-│              └─────────────────┘                       │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph AGENTE
+        direction LR
+        LLM[LLM Core · Cap. 4]
+        MEM[Memoria · Lez. 5.6]
+        TOOL[Strumenti · Lez. 5.4]
+    end
+    OB([Obiettivo persistente])
+    AGENTE --> OB
 ```
 
 Nessuno di questi quattro componenti è nuovo: li hai già costruiti, separatamente, nelle lezioni precedenti. Ciò che rende il sistema un "agente" è **l'organizzazione** di questi componenti secondo il loop descritto nella Sezione 1, con un obiettivo che persiste attraverso multiple iterazioni.

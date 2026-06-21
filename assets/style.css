@@ -960,6 +960,14 @@ body {
 .hljs-emphasis { font-style: italic; }
 .hljs-strong { font-weight: 700; }
 
+/* ── Diagrammi Mermaid ─────────────────────────────────────────── */
+.mermaid-diagram {
+  margin: 1.75rem 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid-diagram svg { max-width: 100%; height: auto; }
+
 .md-content table {
   width: 100%;
   border-collapse: collapse;

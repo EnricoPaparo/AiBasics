@@ -277,11 +277,13 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
   `;
   area.scrollTop = 0;
   enhanceCodeBlocks(area);
+  renderMermaid(area);
 }
 
 // ── Code blocks: syntax highlighting + bottone "Copia" ────────
 function enhanceCodeBlocks(root) {
   root.querySelectorAll('pre > code').forEach(code => {
+    if (/\blanguage-mermaid\b/.test(code.className)) return; // gestito da renderMermaid
     const pre = code.parentElement;
     // Evidenzia solo i blocchi con linguaggio esplicito (non i diagrammi ASCII)
     if (typeof hljs !== 'undefined' && /\blanguage-\w/.test(code.className)) {
@@ -311,6 +313,37 @@ function enhanceCodeBlocks(root) {
     });
     pre.appendChild(btn);
   });
+}
+
+// ── Diagrammi Mermaid (diagrammi-come-testo) ──────────────────
+function renderMermaid(root) {
+  if (typeof mermaid === 'undefined') return;
+  // Converte i blocchi ```mermaid in contenitori, conservando il sorgente
+  // (serve per ridisegnarli quando si cambia tema chiaro/scuro).
+  root.querySelectorAll('pre > code.language-mermaid').forEach(code => {
+    const div = document.createElement('div');
+    div.className = 'mermaid-diagram';
+    div.dataset.src = code.textContent;
+    code.parentElement.replaceWith(div);
+  });
+  drawMermaid(root);
+}
+
+function drawMermaid(root) {
+  if (typeof mermaid === 'undefined') return;
+  const nodes = (root || document).querySelectorAll('.mermaid-diagram');
+  if (!nodes.length) return;
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  try {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: isLight ? 'default' : 'dark',
+      securityLevel: 'strict',
+      fontFamily: "'Inter', system-ui, sans-serif",
+    });
+    nodes.forEach(n => { n.removeAttribute('data-processed'); n.textContent = n.dataset.src || n.textContent; });
+    mermaid.run({ nodes });
+  } catch (e) { /* se mermaid non è disponibile, resta visibile il sorgente */ }
 }
 
 // ── Roadmap ───────────────────────────────────────────────────
@@ -415,6 +448,7 @@ function setupThemeToggle() {
     else root.setAttribute('data-theme', 'light');
     try { localStorage.setItem('machina-theme', isLight ? 'dark' : 'light'); } catch (e) {}
     sync();
+    drawMermaid(document); // ridisegna i diagrammi col tema nuovo
   });
 }
 
