@@ -184,6 +184,18 @@ Questa combinazione di fattori — dati, calcolo, algoritmi — è esattamente l
 
 ---
 
+## 🧪 Prova Tu — Reti Più Profonde
+
+Su **TensorFlow Playground** (playground.tensorflow.org):
+1. Seleziona il dataset "Spiral" (il più complesso)
+2. Prova con 1 solo layer nascosto: riesce la rete ad imparare?
+3. Ora aggiungi 3-4 layer: cosa cambia?
+4. Osserva le "feature visualizations" nei neuroni intermedi
+
+Rifletti: *perché con dati più complessi servono più layer?*
+
+---
+
 ## Esempio Pratico: Visualizzare una Rete Neurale Minuscola
 
 Costruiamo, solo concettualmente, una rete minuscola per un problema giocattolo: decidere se portare l'ombrello, basandosi su due input: probabilità di pioggia (da 0 a 1) e quanto sei disposto a rischiare di bagnarti (da 0 a 1, dove 0 = odi bagnarti, 1 = non ti importa).
@@ -286,3 +298,11 @@ Spiega con parole tue, senza formule, i passi della backpropagation. Poi rispond
 **Porta a:** Lezione 2.4 (NLP) — vedremo come si può "dare in pasto" il testo, che non è fatto di numeri, a una rete neurale che lavora solo con numeri.
 
 **Ritroverai questi concetti in:** Lezione 2.5 (Transformer) — l'architettura che useremo per gli LLM è una particolare evoluzione, molto sofisticata, dei principi di strati e pesi visti qui. Lezione 3.1 (Cos'è un LLM) — i "miliardi di parametri" di cui si parla sempre, riferendosi ai modelli linguistici, sono esattamente i pesi descritti in questa lezione, su scala enormemente più grande.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+Il paper che nel 2017 ha ridefinito l'architettura di tutta l'intelligenza artificiale moderna, introducendo il meccanismo di attention che trovi alla base di ogni LLM → **"Attention is All You Need"** (Vaswani et al., 2017) (tipo: paper)
+
+Se preferisci un percorso pratico e visivo, costruendo reti neurali da zero in Python, il canale di Andrej Karpathy offre una delle spiegazioni più apprezzate dalla comunità tecnica mondiale → **"Neural Networks: Zero to Hero"** di Andrej Karpathy (tipo: video, YouTube)

@@ -54,6 +54,31 @@ In una conversazione semplice, 200k token bastano e avanzano. Ma in un sistema a
 
 Un agente che lavora su un progetto reale può consumare decine di migliaia di token in pochi minuti di esecuzione.
 
+### Quanto in fretta si riempie, in pratica?
+
+Immagina una context window da 128.000 token. Una conversazione media occupa ~500 token a turno. Dopo 50 scambi, sei già al 20% della finestra — sembra di avere tutto lo spazio del mondo. Ma in un'applicazione reale ci sono anche il system prompt (2.000–5.000 token), documenti iniettati da RAG (10.000–50.000 token), e i tool output di ogni ciclo. In pratica la finestra si riempie molto più in fretta di quanto sembri.
+
+Il grafico seguente mostra l'occupazione progressiva in uno scenario reale (agente su task documentale, context da 128k):
+
+| Componente                        | Token occupati | % della finestra |
+|-----------------------------------|---------------:|----------------:|
+| System prompt                     |          3.500 |             2,7% |
+| Documenti iniettati via RAG       |         35.000 |            27,3% |
+| Cronologia conversazione (50 turni)|        25.000 |            19,5% |
+| Tool calls + output intermedi     |         18.000 |            14,1% |
+| **Totale occupato**               |     **81.500** |        **63,7%** |
+| Spazio residuo                    |         46.500 |            36,3% |
+
+A quel punto il modello ha ancora spazio tecnico, ma i margini si stringono a ogni turno successivo.
+
+**Regola pratica:** quando il contesto supera il 60% della finestra disponibile, è il momento di intervenire attivamente. Le strategie sono tre, da applicare in ordine di complessità crescente:
+
+1. **Compressione del system prompt** — elimina ridondanze, passa a un prompt più denso e sintetico.
+2. **Summarizzazione progressiva** — riassumi la parte più vecchia della cronologia con una chiamata API dedicata; il riassunto compatto sostituisce i messaggi originali nel contesto.
+3. **Sliding window** — mantieni solo gli ultimi N turni in forma integrale, affidando a un riassunto tutto il pregresso.
+
+Aspettare di essere al 90% prima di agire significa gestire una crisi invece di prevenirla. I sistemi in produzione monitorano il contesto a ogni turno e applicano queste strategie in modo automatico.
+
 ## La Differenza tra Input e Output
 
 Il context window misura **l'input** — ciò che il modello riceve. Ma i modelli hanno anche un limite separato sull'**output**: quanti token possono generare in una singola risposta.

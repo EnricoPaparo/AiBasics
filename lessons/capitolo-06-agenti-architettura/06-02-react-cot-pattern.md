@@ -338,3 +338,9 @@ I due problemi:
 **Porta a:** Lezione 5.3 (L'Orchestratore) — vedremo come un sistema può coordinare più agenti, ciascuno potenzialmente basato sul pattern ReAct, per compiti che richiedono specializzazione.
 
 **Ritroverai questi concetti in:** Lezione 5.5 (Gestione degli Errori) — il problema del loop, qui solo identificato, riceverà soluzioni tecniche più sofisticate. Lezione 7.3 (Il Layer di Review) — la traccia di ragionamento esplicito prodotta da ReAct è precisamente il materiale che un agente critico (reviewer) può ispezionare per valutare la qualità del processo decisionale, non solo del risultato finale.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+Il paper che ha formalizzato il pattern ReAct, dimostrando sperimentalmente che alternare ragionamento esplicito e azione porta a prestazioni superiori rispetto all'uno o all'altro da soli → **"ReAct: Synergizing Reasoning and Acting in Language Models"** (Yao et al., 2022) (tipo: paper)

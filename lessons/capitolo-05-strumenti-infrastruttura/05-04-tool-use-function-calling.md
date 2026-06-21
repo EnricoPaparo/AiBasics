@@ -276,3 +276,9 @@ Concetto chiave: sicurezza per **costruzione** (il tool non esiste nel manifest)
 **Porta a:** Lezione 4.5 (MCP) — vedremo come standardizzare la connessione tra modelli e strumenti esterni.
 
 **Ritroverai questi concetti in:** Lezione 5.1 (Cos'è un Agente AI) — il ciclo modello-richiesta-esecuzione-risultato visto qui è uno dei quattro componenti fondamentali di un agente. Lezione 6.2 (L'Agent Package) — il tool manifest diventerà la cartella `tools/` esplicita di un agente professionale.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+La documentazione ufficiale Anthropic sul tool use, con esempi di codice aggiornati, spiegazione del ciclo di vita di una chiamata strumento e casi d'uso avanzati → **"Tool use (function calling)"** nella documentazione ufficiale Anthropic su docs.anthropic.com (tipo: documentazione)

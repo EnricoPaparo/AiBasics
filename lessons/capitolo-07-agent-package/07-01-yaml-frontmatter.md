@@ -133,7 +133,17 @@ Un programma può leggere `versione`, `strumenti`, `stato` con un parsing immedi
 
 ## 3. Implementazione pratica: un parser di frontmatter
 
+> **Nota per chi viene da Git**: il formato YAML che stai per vedere è lo stesso usato nei file `.github/workflows/` che hai visto in 02-04. Non è una coincidenza — YAML è lo standard de facto per la configurazione nei sistemi moderni. Quando scrivi un workflow di GitHub Actions e quando descrivi i metadati di un agente, stai usando la stessa sintassi per lo stesso scopo: dichiarare struttura e comportamento in modo leggibile sia da umani sia da macchine.
+
 Vediamo come si estrae programmaticamente il frontmatter da un file, separandolo dal contenuto Markdown — un'operazione che useremo costantemente da qui in avanti, ogni volta che un agente o un orchestratore deve "leggere" un artefatto del sistema.
+
+Prima di leggere il codice, è utile capire cosa fa il parser passo per passo:
+
+1. **Legge l'intero file** come stringa di testo.
+2. **Applica un'espressione regolare** che cerca il pattern `---\n...\n---\n` all'inizio del file. Se non lo trova, il file non è valido e lancia un errore chiaro. Se la regex ti sembra ostica, leggila così: "trova un `---`, cattura tutto quello che c'è fino al prossimo `---`, poi cattura il resto del file".
+3. **Separa i due pezzi**: il blocco YAML (tra i due `---`) e il contenuto Markdown (dopo il secondo `---`).
+4. **Interpreta il YAML** con `yaml.safe_load`, che trasforma la stringa in un dizionario Python con cui lavorare normalmente.
+5. **Restituisce entrambi**: metadati come dizionario, contenuto come stringa.
 
 ```python
 import yaml
@@ -147,7 +157,9 @@ def estrai_frontmatter(percorso_file: str) -> tuple[dict, str]:
     with open(percorso_file, "r", encoding="utf-8") as f:
         testo_completo = f.read()
 
-    # Il frontmatter è delimitato da --- all'inizio del file
+    # Il frontmatter è delimitato da --- all'inizio del file.
+    # re.DOTALL fa sì che il punto (.) corrisponda anche ai newline,
+    # permettendo alla (.*?) di catturare testo su più righe.
     pattern = r"^---\s*\n(.*?)\n---\s*\n(.*)$"
     corrispondenza = re.match(pattern, testo_completo, re.DOTALL)
 
@@ -175,6 +187,8 @@ if metadati["stato"] == "produzione" and not metadati.get("strumenti"):
 ```
 
 Nota l'uso di `yaml.safe_load` invece di `yaml.load`: questa è una scelta di sicurezza deliberata. `yaml.load` senza restrizioni può, in alcune circostanze, eseguire codice arbitrario se il file YAML contiene costrutti malevoli — un rischio reale se il sistema dovesse mai elaborare frontmatter provenienti da fonti non completamente fidate. `safe_load` si limita a interpretare strutture dati semplici (stringhe, numeri, liste, oggetti), eliminando questo rischio.
+
+> **Se questa sezione ti sembra complessa**, rileggi prima 02-01 su Git e torna qui: la comprensione di come un file di testo può contenere metadati strutturati accanto a contenuto narrativo è il prerequisito concettuale per capire perché il parser funziona come funziona.
 
 ---
 

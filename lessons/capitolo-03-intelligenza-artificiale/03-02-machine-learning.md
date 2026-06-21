@@ -192,6 +192,20 @@ Trovare il giusto equilibrio tra questi due estremi è uno dei compiti centrali 
 
 ---
 
+## 🧪 Prova Tu — Senza Scrivere Codice
+
+**TensorFlow Playground** (playground.tensorflow.org) è uno strumento gratuito nel browser che ti permette di vedere una rete neurale che apprende in tempo reale.
+
+Prova questo esperimento:
+1. Apri TensorFlow Playground nel browser
+2. Seleziona il dataset "Circle" (cerchio blu al centro, arancione intorno)
+3. Premi Play e osserva come la rete modifica i pesi ad ogni epoch
+4. Aggiungi un layer nascosto e osserva la differenza
+
+Domanda da tenere in mente mentre guardi: *dove avviene la "magia" dell'apprendimento?*
+
+---
+
 ## Esempio Pratico: Classificare un Problema secondo il Paradigma Giusto
 
 Prova a determinare quale dei tre paradigmi di apprendimento (supervisionato, non supervisionato, per rinforzo) sarebbe più adatto per ciascuno di questi scenari, e perché:

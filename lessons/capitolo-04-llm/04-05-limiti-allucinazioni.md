@@ -254,3 +254,9 @@ Spiega perché un modello può affermare con grande sicurezza un fatto completam
 ---
 
 **CHIUSURA DEL CAPITOLO 3.** Con questa lezione si conclude la prima grande sezione del corso: abbiamo costruito, capitolo dopo capitolo, una comprensione solida di come funziona il Web (Capitolo 1), cosa è l'intelligenza artificiale e come funzionano le reti neurali (Capitolo 2), e cosa sono esattamente i modelli linguistici, come si addestrano, come si usano, e quali sono i loro limiti (Capitolo 3). Dal Capitolo 4 in avanti, il corso cambia natura: smettiamo di "capire" e iniziamo a "costruire" — strumenti, memoria, agenti, e infine sistemi agentivi completi, supervisionati e capaci di evolvere nel tempo.
+
+---
+
+## 🌐 Per Approfondire in Inglese
+
+Un'analisi rigorosa che dimostra perché le allucinazioni non sono un bug risolvibile con più dati o modelli migliori, ma una conseguenza strutturale del modo in cui gli LLM funzionano → **"Hallucination is Inevitable: An Innate Limitation of Large Language Models"** (Xu et al., 2024) (tipo: paper)
