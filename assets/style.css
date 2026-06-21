@@ -893,34 +893,38 @@ body {
 
 /* ── Navigation Buttons ────────────────────────────────────── */
 .lesson-nav {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; justify-content: space-between; align-items: stretch;
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid var(--border);
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .nav-btn {
   display: flex; align-items: center; gap: .6rem;
+  flex: 1;
   font-family: 'Share Tech Mono', monospace;
   font-size: .8rem;
   color: var(--text-dim);
   cursor: pointer;
   border: 1px solid var(--border);
-  padding: .75rem 1.25rem;
+  padding: .85rem 1.25rem;
   border-radius: 2px;
   background: none;
   transition: all .2s;
   text-decoration: none;
   letter-spacing: .05em;
+  min-width: 0;
 }
+.nav-btn:last-child { justify-content: flex-end; text-align: right; }
 .nav-btn:hover {
   color: var(--green);
   border-color: var(--green);
   box-shadow: 0 0 12px rgba(0,255,65,.15);
 }
-.nav-btn-label { font-size: .65rem; color: var(--text-dim); }
+.nav-btn div { min-width: 0; overflow: hidden; }
+.nav-btn-label { font-size: .65rem; color: var(--text-dim); margin-bottom: .2rem; }
+.nav-btn div > :last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ── Welcome Screen ────────────────────────────────────────── */
 .welcome-screen {

@@ -1,7 +1,6 @@
 # ROADMAP — Piano Completo del Corso
 
 **Corso:** Intelligenza Artificiale Applicata — Dalla Teoria alla Costruzione di Agenti Professionali
-**Livello:** Principianti → Avanzato (livello ingegneristico professionale)
 **Struttura:** 9 Capitoli · 64 Lezioni
 
 ---

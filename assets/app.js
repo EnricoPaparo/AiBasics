@@ -182,7 +182,6 @@ function renderLesson(chapter, lesson, meta, body, chapterId, lessonId) {
     <div class="content-inner" id="content-inner">
       <div class="lesson-meta">
         <span class="meta-tag chapter">CAP. ${String(chapter.numero).padStart(2,'0')} — ${chapter.titolo}</span>
-        ${meta.durata_stimata ? `<span class="meta-tag duration">⏱ ${meta.durata_stimata}</span>` : ''}
         ${meta.difficolta ? `<span class="meta-tag difficulty">▲ ${meta.difficolta}</span>` : ''}
       </div>
       <div class="md-content">${html}</div>
