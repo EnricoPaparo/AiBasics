@@ -5,6 +5,20 @@
 
 ---
 
+---
+
+## CAPITOLO 0 — Prima di Iniziare
+
+**Obiettivo:** Agganciare e attrezzare. Prima il "perché" (cosa costruirai e perché vale la pena), poi il "come" (l'ambiente di sviluppo pronto in pochi minuti). È anche il punto in cui si introduce il **percorso Core** pensato per le superiori.
+
+### Benvenuto: cosa costruirai
+La "prima magia" da provare subito nel browser senza installare niente, gli obiettivi concreti del corso, il metodo di studio e un primo patto sull'uso responsabile dell'AI.
+
+### Ambiente di Sviluppo
+Python, ambiente virtuale, chiave API, file `.env`, primo "Hello, Claude" funzionante. La base per ogni lezione che contiene codice.
+
+---
+
 ## CAPITOLO 1 — Il Web come lo Conosciamo
 
 **Obiettivo:** Costruire una mappa mentale precisa di come funziona Internet e cosa significa "interagire con un sistema digitale". Senza questa mappa, i concetti dell'AI applicata galleggiano nel vuoto.
@@ -135,6 +149,9 @@ Anthropic SDK streaming, SSE, FastAPI backend, frontend JavaScript, streaming co
 ### Lezione 5.11 — Debugging e Osservabilità degli Agenti
 Logging strutturato LLM calls, LangSmith tracing, local trace system, prompt inspector, bug comuni e fix.
 
+### Lezione 5.12 — Come Testare un Agente
+Perché testare sistemi non deterministici, test di unità sui tool, mock dell'LLM, asserzioni su comportamento e tracce, soglie di qualità.
+
 ---
 
 ## CAPITOLO 6 — Agenti AI: Architettura e Ragionamento
@@ -248,6 +265,9 @@ Bias e fairness, GDPR, EU AI Act, disclosure AI, responsabilità professionale.
 
 ### Lezione 9.7 — Pubblicare e Monetizzare un Progetto AI
 PyPI, Streamlit/Gradio, API as a Service, plugin/extension. Freemium, pay-per-use, SaaS. Rate limiting, costi, compliance.
+
+### Lezione 9.8 — AI e Diritto in Italia
+Quadro normativo italiano ed europeo, EU AI Act, GDPR e dati personali, responsabilità e tutela del minore, uso dell'AI a scuola.
 
 ---
 

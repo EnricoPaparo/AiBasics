@@ -318,4 +318,4 @@ L'agente di estrazione produce `{"importo_totale": 1200000}` ma l'agente di anal
 
 **Porta a:** Lezione 6.5 (Gestione degli Errori) — vedremo come rendere robusti questi sistemi multi-agente contro fallimenti che, come visto, possono verificarsi a ogni singolo nodo della topologia.
 
-**Ritroverai questi concetti in:** Lezione 7.5 (Contratti tra Agenti) — il problema della coerenza terminologica, qui identificato, riceverà una soluzione tecnica precisa e formale. Lezione 8.1 e 7.2 (Progettare un Workflow, LangGraph) — l'architettura a grafo qui introdotta concettualmente diventerà un'implementazione tecnica completa con un framework dedicato.
+**Ritroverai questi concetti in:** Lezione 7.5 (Contratti tra Agenti) — il problema della coerenza terminologica, qui identificato, riceverà una soluzione tecnica precisa e formale. Lezione 8.1 e 8.2 (Progettare un Workflow, LangGraph) — l'architettura a grafo qui introdotta concettualmente diventerà un'implementazione tecnica completa con un framework dedicato.

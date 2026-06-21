@@ -110,7 +110,7 @@ Per il tuo caso d'uso specifico — un Requirement Analyst che produce un docume
 
 ## 3. Implementazione pratica: un checkpoint HITL in LangGraph
 
-Estendiamo il grafo delle Lezioni 8.2 e 7.3, implementando concretamente il nodo `"checkpoint_umano"` già referenziato nella funzione di routing della lezione precedente.
+Estendiamo il grafo delle Lezioni 8.2 e 8.3, implementando concretamente il nodo `"checkpoint_umano"` già referenziato nella funzione di routing della lezione precedente.
 
 ```python
 def nodo_checkpoint_umano(stato: StatoWorkflowRequisiti) -> dict:

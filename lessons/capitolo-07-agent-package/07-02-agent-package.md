@@ -26,7 +26,7 @@ versione: "1.0"
 
 ## Introduzione
 
-Questa è una delle lezioni più importanti dell'intero corso. Fino a ora, ogni agente che abbiamo costruito — nelle Lezioni 6.1, 5.2, 5.3 — viveva interamente dentro un singolo script Python: il system prompt era una stringa inline, gli strumenti erano funzioni definite nello stesso file, la configurazione era cablata direttamente nel codice. Questo approccio è perfetto per imparare e per prototipare velocemente, ma si rompe non appena un sistema reale deve essere mantenuto da un team, versionato nel tempo, e fatto evolvere senza il rischio costante di rompere qualcosa.
+Questa è una delle lezioni più importanti dell'intero corso. Fino a ora, ogni agente che abbiamo costruito — nelle Lezioni 6.1, 6.2, 6.3 — viveva interamente dentro un singolo script Python: il system prompt era una stringa inline, gli strumenti erano funzioni definite nello stesso file, la configurazione era cablata direttamente nel codice. Questo approccio è perfetto per imparare e per prototipare velocemente, ma si rompe non appena un sistema reale deve essere mantenuto da un team, versionato nel tempo, e fatto evolvere senza il rischio costante di rompere qualcosa.
 
 L'**agent package** è la risposta a questo problema: una struttura di file e cartelle standardizzata che trasforma un agente da "script che funziona sul mio computer" a **unità deployabile, testabile, e mantenibile** — esattamente come un progetto software professionale ha una struttura prevedibile (codice, test, configurazione, documentazione), invece di essere un singolo file disordinato.
 

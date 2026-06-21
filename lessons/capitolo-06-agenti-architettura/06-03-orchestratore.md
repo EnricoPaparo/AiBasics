@@ -346,7 +346,7 @@ Il pattern **ibrido** (piano di alto livello + adattamento) è il più comune ne
 
 ## Connessioni
 
-**Viene da:** Lezioni 6.1 e 5.2 — l'orchestratore coordina agenti costruiti esattamente secondo i pattern (loop agentivo, ReAct) visti in quelle lezioni.
+**Viene da:** Lezioni 6.1 e 6.2 — l'orchestratore coordina agenti costruiti esattamente secondo i pattern (loop agentivo, ReAct) visti in quelle lezioni.
 
 **Porta a:** Lezione 6.4 (Single vs Multi-Agent) — formalizzeremo con maggiore rigore le topologie di sistemi multi-agente, di cui l'orchestratore è il componente centrale.
 
