@@ -3,7 +3,7 @@
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "2.0",
   "anno": "2026",
-  "totale_lezioni": 62,
+  "totale_lezioni": 64,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -114,7 +114,8 @@
         { "id": "07-04-prompt-come-artefatti",   "titolo": "Prompt come Artefatti" },
         { "id": "07-05-contratti-tra-agenti",    "titolo": "Contratti tra Agenti" },
         { "id": "07-06-handoff",                 "titolo": "Gli Handoff" },
-        { "id": "07-07-skills-skill-library",    "titolo": "Skills e Skill Library" }
+        { "id": "07-07-skills-skill-library",    "titolo": "Skills e Skill Library" },
+        { "id": "07-08-prompt-versioning",        "titolo": "Prompt Versioning Pratico" }
       ]
     },
     {
@@ -145,7 +146,8 @@
         { "id": "09-03-riassorbimento-conoscenza", "titolo": "Riassorbimento della Conoscenza" },
         { "id": "09-04-governance-versioning",     "titolo": "Governance e Versioning" },
         { "id": "09-05-progetto-finale",           "titolo": "Progetto Finale" },
-        { "id": "09-06-etica-responsabilita",      "titolo": "Etica e Responsabilità nell'AI" }
+        { "id": "09-06-etica-responsabilita",      "titolo": "Etica e Responsabilità nell'AI" },
+        { "id": "09-07-pubblicare-monetizzare",    "titolo": "Pubblicare e Monetizzare un Progetto AI" }
       ]
     }
   ]
