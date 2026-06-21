@@ -6,6 +6,8 @@ difficolta: "Base"
 
 # Version Control e Git
 
+In questo capitolo imparerai a lavorare come un professionista: con strumenti che tracciano ogni modifica, permettono di collaborare senza conflitti e rendono il tuo lavoro reversibile in qualsiasi momento. Git e GitHub sono la spina dorsale di ogni progetto software moderno — compresi i sistemi AI che costruiremo nei capitoli successivi.
+
 Prima di scrivere codice, hai bisogno di uno strumento per non perderlo. Git è quello strumento — ed è probabilmente il software più usato da ogni sviluppatore al mondo, ogni giorno.
 
 ## Il Problema che Git Risolve

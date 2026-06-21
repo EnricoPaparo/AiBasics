@@ -31,6 +31,8 @@ versione: "1.0"
 
 # Come funziona Internet: client, server e il viaggio di una richiesta
 
+In questo capitolo costruiremo le fondamenta su cui poggia tutto il resto del corso: come funziona la rete, come comunicano i programmi tra loro, e cosa succede davvero quando un'applicazione chiama un servizio esterno. Capire questi meccanismi non è un prerequisito burocratico — è il vocabolario tecnico che ti permetterà di ragionare con precisione su ogni sistema AI che costruiremo.
+
 ## Introduzione
 
 Tutto ciò che studieremo in questo corso — API, modelli di intelligenza artificiale, agenti autonomi, workflow complessi — vive e comunica attraverso Internet. Prima ancora di scrivere una riga di codice o di capire cosa sia un Large Language Model, dobbiamo avere una mappa chiara di come funziona la rete su cui questi sistemi operano.

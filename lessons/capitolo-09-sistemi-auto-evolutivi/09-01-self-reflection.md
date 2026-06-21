@@ -25,6 +25,8 @@ versione: "1.0"
 
 # Self-Reflection e Self-Critique: l'agente che valuta sé stesso
 
+In questo capitolo — l'ultimo del corso — affrontiamo la frontiera più avanzata dei sistemi agentici: quelli che non si limitano ad agire, ma riflettono sul proprio operato, imparano dai propri errori e si auto-migliorano nel tempo. È qui che convergono tutti i concetti del corso, in sistemi che ambiscono a essere non solo funzionali, ma genuinamente adattativi.
+
 ## Introduzione
 
 Apriamo l'ultimo capitolo del corso con un concetto che, a prima vista, potrebbe sembrare già coperto: nella Lezione 7.3 abbiamo costruito il pattern Critic-Agent, dove un agente indipendente valuta l'output di un altro. La **self-reflection** è diversa, e la differenza è precisamente il punto di questa lezione: qui, è lo **stesso agente** che, dopo aver completato un'azione, si ferma a valutare criticamente il proprio operato, prima di procedere o di considerare il compito concluso.

@@ -25,6 +25,8 @@ versione: "1.0"
 
 # YAML e Frontmatter: il linguaggio dei metadati strutturati
 
+In questo capitolo trasformiamo gli agenti da prototipi funzionanti a sistemi professionali: versionati, documentati, testabili e mantenibili nel tempo. Imparerai a strutturare ogni artefatto — prompt, contratti, skill — come un oggetto di prima classe che può essere gestito, modificato e distribuito con la stessa cura del codice sorgente.
+
 ## Introduzione
 
 Con questa lezione entriamo nel Capitolo 6, il nucleo ingegneristico professionale di tutto il corso. Fino ad ora abbiamo costruito agenti come **codice**: funzioni Python, system prompt scritti come stringhe, strumenti definiti inline. Questo approccio funziona per esempi didattici e prototipi, ma non scala a un sistema reale, mantenuto da un team, che deve evolvere nel tempo senza che ogni modifica richieda di toccare il codice sorgente.

@@ -27,6 +27,8 @@ versione: "1.0"
 
 # Cos'è un LLM: previsione del token successivo come intelligenza emergente
 
+In questo capitolo arriveremo finalmente al cuore della materia: capire cosa sono davvero i modelli linguistici di grandi dimensioni, come funzionano internamente e perché producono output così sorprendenti. È il punto di convergenza di tutto ciò che abbiamo studiato finora, e la base tecnica imprescindibile per costruire sistemi AI competenti.
+
 ## Introduzione
 
 Siamo arrivati al momento in cui tutto il Capitolo 2 converge in una risposta precisa. Abbiamo visto le reti neurali (2.3), il problema di rappresentare il linguaggio con numeri (2.4), e l'architettura Transformer che risolve quel problema in modo scalabile (2.5). Un **LLM** — Large Language Model, modello linguistico di grandi dimensioni — è, in termini essenziali, un'architettura Transformer (tipicamente solo-decoder, come visto nella lezione precedente) addestrata su quantità di testo straordinariamente grandi, con un numero di parametri che si misura in miliardi.
