@@ -88,6 +88,14 @@ function buildSidebar() {
   roadmapBtn.addEventListener('click', () => { showRoadmap(); closeMobileSidebar(); });
   sidebarEl.appendChild(roadmapBtn);
 
+  // Glossario button
+  const glossarioBtn = document.createElement('div');
+  glossarioBtn.className = 'sidebar-roadmap-btn';
+  glossarioBtn.id = 'glossario-btn';
+  glossarioBtn.innerHTML = `<span>📖</span> GLOSSARIO`;
+  glossarioBtn.addEventListener('click', () => { showGlossario(); closeMobileSidebar(); });
+  sidebarEl.appendChild(glossarioBtn);
+
   // Chapters
   state.manifest.roadmap.forEach((chapter, ci) => {
     const item = document.createElement('div');
@@ -171,8 +179,9 @@ async function openLesson(chapterId, lessonId, pushHistory = true) {
     if (activeEl) activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }, 50);
 
-  // Update roadmap btn
+  // Update roadmap / glossario btn
   $('roadmap-btn')?.classList.remove('active');
+  $('glossario-btn')?.classList.remove('active');
 
   // Update breadcrumb
   const bc = $('breadcrumb');
@@ -311,6 +320,7 @@ function showRoadmap() {
 
   $$('.lesson-link').forEach(el => el.classList.remove('active'));
   $$('.chapter-header').forEach(el => el.classList.remove('active'));
+  $('glossario-btn')?.classList.remove('active');
   $('roadmap-btn')?.classList.add('active');
 
   const bc = $('breadcrumb');
@@ -326,6 +336,36 @@ function showRoadmap() {
   area.innerHTML = `
     <div class="content-inner">
       <div class="roadmap-content">${content}</div>
+    </div>
+  `;
+  area.scrollTop = 0;
+}
+
+// ── Glossario ─────────────────────────────────────────────────
+function showGlossario() {
+  state.current = { chapterId: null, lessonId: null };
+  history.pushState({}, '', '#glossario');
+
+  $$('.lesson-link').forEach(el => el.classList.remove('active'));
+  $$('.chapter-header').forEach(el => el.classList.remove('active'));
+  $('roadmap-btn')?.classList.remove('active');
+  $('glossario-btn')?.classList.add('active');
+
+  const bc = $('breadcrumb');
+  if (bc) bc.innerHTML = `<span>Glossario</span>`;
+
+  let content = '';
+  if (typeof GLOSSARIO_CONTENT !== 'undefined' && GLOSSARIO_CONTENT) {
+    const { body } = parseFrontmatter(GLOSSARIO_CONTENT);
+    content = typeof marked !== 'undefined' ? marked.parse(body) : `<pre>${escHtml(body)}</pre>`;
+  } else {
+    content = '<p>Glossario non disponibile.</p>';
+  }
+
+  const area = $('content-area');
+  area.innerHTML = `
+    <div class="content-inner">
+      <div class="md-content">${content}</div>
     </div>
   `;
   area.scrollTop = 0;
@@ -420,6 +460,7 @@ function escHtml(str) {
 // ── Routing ───────────────────────────────────────────────────
 function routeFromHash(hash) {
   if (hash === 'roadmap') { showRoadmap(); return; }
+  if (hash === 'glossario') { showGlossario(); return; }
   if (hash) {
     const [chId, lesId] = hash.split('/');
     if (chId && lesId) { openLesson(chId, lesId, false); return; }

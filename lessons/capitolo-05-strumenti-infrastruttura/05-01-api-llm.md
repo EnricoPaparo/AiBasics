@@ -24,6 +24,9 @@ versione: "1.0"
 ---
 # L'API degli LLM: come si usa un modello da un programma
 
+> 📌 **In breve** · ⏱ ~50 min · 🎯 Farai parlare un’AI dal tuo codice, non dal sito.
+> La prima vera chiamata: endpoint, autenticazione, messaggio, risposta. Da qui in poi costruisci, non usi soltanto.
+
 > **⚡ Setup richiesto**: questo capitolo contiene codice eseguibile. Prima di procedere, assicurati di aver completato la **Lezione 00-01 (Ambiente di Sviluppo)**: Python installato, `.env` con la chiave API, e `python hello.py` che risponde correttamente.
 >
 > Librerie necessarie per il Capitolo 5:

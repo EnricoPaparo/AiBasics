@@ -27,6 +27,9 @@ versione: "1.0"
 ---
 # Le API: il linguaggio universale tra sistemi
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Capirai come due programmi si parlano senza un browser di mezzo.
+> Le API sono il modo in cui il tuo codice chiederà servizi ad altri — incluse le AI: endpoint, richiesta, risposta in JSON, chiave d’accesso.
+
 ## Introduzione
 
 Questa è la lezione di chiusura del primo capitolo, e non per caso è anche una delle più importanti di tutto il corso. Tutto quello che abbiamo costruito finora — client e server, HTML statico, logica dinamica, frontend e backend separati — converge in un singolo concetto: l'**API**.

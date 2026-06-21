@@ -26,6 +26,9 @@ versione: "1.0"
 ---
 # Il Prompting: comunicare con un LLM in modo efficace
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Imparerai a parlare con un’AI per ottenere ciò che vuoi.
+> Zero-shot, few-shot, “ragiona passo per passo”: tecniche concrete per migliorare le risposte. La competenza più immediatamente utile del corso.
+
 ## Introduzione
 
 Fino a questa lezione, abbiamo costruito comprensione: cosa è un LLM, come viene addestrato, come è strutturato un prodotto che lo utilizza. Da qui in poi iniziamo a costruire **competenza pratica**: come comunicare efficacemente con un modello per ottenere il risultato che desideri.

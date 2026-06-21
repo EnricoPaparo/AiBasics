@@ -24,6 +24,9 @@ versione: "1.0"
 ---
 # Limiti, allucinazioni e confini degli LLM
 
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Saprai riconoscere quando un’AI sta sbagliando con sicurezza.
+> Allucinazioni, conoscenza ferma nel tempo, niente memoria, niente azione: i limiti veri degli LLM e perché conoscerli ti rende un utente più forte.
+
 ## Introduzione
 
 Chiudiamo il Capitolo 4 — e con esso la prima grande sezione concettuale del corso, dedicata a capire cosa sono davvero i modelli linguistici — con una lezione che ha un valore speciale. Conoscere i limiti di uno strumento è precisamente altrettanto professionale quanto conoscerne le capacità, forse anche di più: chi non conosce i limiti di uno strumento lo userà male, gli affiderà compiti sbagliati, e si stupirà nel modo peggiore quando lo strumento fallisce esattamente dove avrebbe dovuto aspettarselo.
