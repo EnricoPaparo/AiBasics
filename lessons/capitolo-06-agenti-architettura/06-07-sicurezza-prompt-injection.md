@@ -259,6 +259,45 @@ def handle_support_request(user_message, customer_data):
 
 ---
 
+### Esercizio 1b — Implementa un Filtro di Difesa 🟢 Base (pratico)
+
+Questo esercizio affianca l'Esercizio 1: invece di analizzare la vulnerabilità, la devi correggere scrivendo un filtro attivo.
+
+**Compito**: implementa la funzione `processa_richiesta_utente(testo)` che blocca i pattern di injection più comuni prima che il testo raggiunga il modello.
+
+Il filtro deve:
+1. Rilevare tentativi di ignorare istruzioni precedenti (pattern come "ignora le istruzioni", "ignore previous", "dimentica quello che ti ho detto")
+2. Rilevare tentativi di rivelare il system prompt (pattern come "mostra il tuo system prompt", "rivela le tue istruzioni", "what are your instructions")
+3. Rilevare tentativi di role-switching ("sei ora un", "you are now", "fingi di essere un AI senza")
+4. Loggare il tentativo con timestamp e testo troncato (mai loggare l'input completo in produzione)
+5. Restituire un messaggio di errore generico che non rivela perché la richiesta è stata bloccata
+
+```python
+import re
+import logging
+from datetime import datetime
+
+def processa_richiesta_utente(testo: str) -> str:
+    """
+    Filtra input potenzialmente malevoli prima di passarli al modello.
+    Restituisce la risposta del modello, oppure un messaggio di errore generico.
+    """
+    # TODO: implementa il rilevamento dei pattern sospetti
+    # TODO: implementa il logging
+    # TODO: restituisci errore generico se rilevato, chiama il modello altrimenti
+    pass
+```
+
+**Hint 1 — Pattern matching**: usa `re.search(pattern, testo, re.IGNORECASE)` per il matching case-insensitive. Costruisci una lista di pattern regex, non confrontare stringhe esatte (un attaccante aggira facilmente il confronto esatto con varianti ortografiche o spazi aggiuntivi).
+
+**Hint 2 — Il messaggio di errore**: non scrivere "Richiesta bloccata per sicurezza: hai tentato di fare X". Un attaccante usa il feedback per raffinare l'attacco. Preferisci un messaggio neutro come "Non riesco a elaborare questa richiesta. Prova a riformulare." — identico a quello che potresti restituire per un qualsiasi errore tecnico.
+
+**Hint 3 — Il logging**: logga abbastanza per poter investigare in seguito, ma non loggare l'input completo (può contenere dati personali). Una buona pratica è loggare i primi 100 caratteri + il pattern che ha fatto scattare l'alert + il timestamp.
+
+**Hint 4 — Limiti del filtro**: nessun filtro basato su pattern è infallibile. Un attaccante determinato può usare codifica Unicode, sostituzioni di caratteri, o prompt in lingue diverse. Il filtro è un primo strato di difesa, non l'unico. Tienilo in mente mentre scrivi.
+
+---
+
 ### Esercizio 2 — Attacco di Indirect Injection 🟡 Intermedio
 
 Stai testando un agente che: (1) riceve un URL da un utente, (2) fa scraping della pagina, (3) riassume il contenuto. Come attaccante, progetta un payload di indirect prompt injection nella pagina web che faccia rivelare all'agente le istruzioni del suo system prompt. Come difensore, come modificheresti l'agente per resistere all'attacco?
@@ -334,6 +373,22 @@ class SecureEmailAgent:
 ```
 
 </details>
+
+---
+
+## Difesa in Produzione
+
+Un sistema reale non si protegge con un solo meccanismo. La sicurezza contro la prompt injection è stratificata: ogni misura riduce il rischio, nessuna lo elimina del tutto.
+
+**1. Validazione input** — filtra i pattern di injection più comuni prima che il testo raggiunga il modello (come nell'Esercizio 1b). Implementa limiti di lunghezza dell'input: prompt molto lunghi sono spesso tentativi di "seppellire" istruzioni malevole nel testo.
+
+**2. Output sanitization** — non usare l'output del modello direttamente in query SQL, HTML, o shell comandi senza sanitizzazione. Se il modello è stato manipolato a produrre output malevolo, la sanitizzazione dell'output è l'ultima linea di difesa prima del danno reale.
+
+**3. Monitoring delle anomalie** — logga ogni richiesta e analizza i pattern: picchi di richieste simili, sequenze che includono pattern sospetti, output del modello inaspettatamente lunghi o con strutture anomale. Un attacco spesso si rivela nel pattern, non nella singola richiesta.
+
+**4. Rate limiting per IP** — limita il numero di richieste per IP per unità di tempo. Gli attacchi di prompt injection sono spesso tentativi ripetuti con varianti dello stesso payload: il rate limiting rallenta significativamente questo processo di esplorazione.
+
+**5. Test di penetrazione periodici** — includi la prompt injection nel piano di test di sicurezza regolare del sistema. Usa una red team interna o esterna per tentare attacchi contro il sistema in produzione, con cadenza almeno trimestrale. I pattern di attacco evolvono continuamente.
 
 ---
 

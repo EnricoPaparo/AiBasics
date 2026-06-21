@@ -90,7 +90,7 @@ Quando il retry esaurisce i propri tentativi senza successo, entra in gioco il *
 import time
 
 def chiama_strumento_con_resilienza(funzione_strumento, parametri,
-                                      tentativi_massimi=3,
+                                      tentativi_massimi=3,  # 3 tentativi è il punto dove il tempo di attesa totale (con backoff esponenziale: 1s + 2s + 4s = 7s) supera la soglia di tolleranza di un utente medio. Aumenta solo per operazioni batch non interattive.
                                       funzione_fallback=None):
     """
     Esegue uno strumento con retry automatico e fallback opzionale.

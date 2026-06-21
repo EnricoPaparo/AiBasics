@@ -41,7 +41,7 @@ Prima di scrivere una singola riga di logica per il tuo agente, apri un foglio d
 
 Questo esercizio ha un valore che va oltre il testing tecnico: ti costringe a precisare esattamente cosa vuoi che il tuo agente faccia, e ti aiuta a scoprire ambiguità nel requisito prima che diventino bug nel codice.
 
-**Quanti casi?** Cinque è il minimo per avere una copertura ragionevole dei casi tipici. Otto è un buon punto di partenza per includere anche casi limite (input vuoto, richiesta ambigua, caso estremo). Non servono cento casi per cominciare — quelli si aggiungono man mano che scopri problemi reali.
+**Quanti casi?** Cinque è il minimo per avere una copertura ragionevole dei casi tipici. Cinque casi coprono i percorsi principali (happy path, input vuoto, input ambiguo, errore atteso, edge case); sotto i cinque rischi di non trovare bug ovvi. Aumenta in proporzione alla complessità del dominio. Otto è un buon punto di partenza per includere anche casi limite (input vuoto, richiesta ambigua, caso estremo). Non servono cento casi per cominciare — quelli si aggiungono man mano che scopri problemi reali.
 
 ### Struttura di un caso di test
 

@@ -29,6 +29,8 @@ versione: "1.0"
 
 ## Introduzione
 
+> **📌 Ricordi?** In [Lezione 04-01] abbiamo detto che il modello che usi in Claude.ai è diverso dal modello base — quello che semplicemente completa testo in modo statisticamente plausibile, senza nessuna nozione di "essere un assistente utile". Questa lezione spiega perché quella distinzione è fondamentale, e il processo in tre fasi — pre-training, fine-tuning, RLHF — che trasforma un completatore di testo in un assistente sicuro, utile e allineato alle preferenze umane.
+
 Nella lezione precedente abbiamo capito cosa fa un LLM al livello più elementare: prevede il token successivo. Ma se ti fossi mai chiesto perché Claude risponde in modo utile, educato, e si attiene a delle istruzioni — invece di limitarsi a "completare" il tuo messaggio in modo grammaticalmente plausibile ma potenzialmente inutile o bizzarro — la risposta sta in questa lezione.
 
 Un modello che ha solo imparato a prevedere il token successivo da enormi quantità di testo grezzo di Internet non è, di per sé, un buon assistente. Potrebbe completare "Come faccio a..." con qualsiasi continuazione statisticamente plausibile trovata nei suoi dati di addestramento — non necessariamente la più utile, la più sicura, o la più pertinente al tuo reale bisogno. Questa lezione descrive il percorso, in più fasi distinte, attraverso cui un modello grezzo diventa un assistente affidabile.
