@@ -3,7 +3,7 @@
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "1.0",
   "anno": "2026",
-  "totale_lezioni": 46,
+  "totale_lezioni": 52,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -46,7 +46,8 @@
         { "id": "03-04-prompting",               "titolo": "Il Prompting" },
         { "id": "03-05-limiti-allucinazioni",    "titolo": "Limiti e Allucinazioni" },
         { "id": "03-06-context-window",          "titolo": "Il Context Window" },
-        { "id": "03-07-gestire-il-contesto",     "titolo": "Gestire il Contesto" }
+        { "id": "03-07-gestire-il-contesto",     "titolo": "Gestire il Contesto" },
+        { "id": "03-08-token-economics",         "titolo": "Token Economics e Costi" }
       ]
     },
     {
@@ -61,7 +62,8 @@
         { "id": "04-03-rag",                        "titolo": "RAG: Memoria Esterna" },
         { "id": "04-04-tool-use-function-calling",  "titolo": "Tool Use / Function Calling" },
         { "id": "04-05-mcp-model-context-protocol", "titolo": "MCP: Model Context Protocol" },
-        { "id": "04-06-memory",                     "titolo": "Memory nei Sistemi AI" }
+        { "id": "04-06-memory",                     "titolo": "Memory nei Sistemi AI" },
+        { "id": "04-07-vibe-coding",                "titolo": "Vibe Coding" }
       ]
     },
     {
@@ -76,7 +78,8 @@
         { "id": "05-03-orchestratore",               "titolo": "L'Orchestratore" },
         { "id": "05-04-single-vs-multi-agent",       "titolo": "Single vs Multi-Agent" },
         { "id": "05-05-errori-robustezza-osservabilita", "titolo": "Errori, Robustezza, Osservabilità" },
-        { "id": "05-06-harness",                     "titolo": "L'Harness" }
+        { "id": "05-06-harness",                     "titolo": "L'Harness" },
+        { "id": "05-07-sicurezza-prompt-injection",  "titolo": "Sicurezza e Prompt Injection" }
       ]
     },
     {
@@ -106,7 +109,9 @@
         { "id": "07-02-langgraph",               "titolo": "LangGraph" },
         { "id": "07-03-review-layer",            "titolo": "Il Layer di Review" },
         { "id": "07-04-human-in-the-loop",       "titolo": "Human-in-the-Loop" },
-        { "id": "07-05-valutazione-workflow",    "titolo": "Valutazione dei Workflow" }
+        { "id": "07-05-valutazione-workflow",    "titolo": "Valutazione dei Workflow" },
+        { "id": "07-06-testing-evals",           "titolo": "Testing e Valutazione degli LLM" },
+        { "id": "07-07-deployment",              "titolo": "Deployment e Ambienti" }
       ]
     },
     {
@@ -119,8 +124,9 @@
         { "id": "08-01-self-reflection",           "titolo": "Self-Reflection e Self-Critique" },
         { "id": "08-02-prompt-auto-evolutivi",     "titolo": "Prompt Auto-Evolutivi" },
         { "id": "08-03-riassorbimento-conoscenza", "titolo": "Riassorbimento della Conoscenza" },
-        { "id": "08-04-governance-versioning",     "titolo": "Governance e Versioning" },
-        { "id": "08-05-progetto-finale",           "titolo": "Progetto Finale" }
+        { "id": "08-04-governance-versioning",       "titolo": "Governance e Versioning" },
+        { "id": "08-05-progetto-finale",           "titolo": "Progetto Finale" },
+        { "id": "08-06-etica-responsabilita",      "titolo": "Etica e Responsabilità nell'AI" }
       ]
     }
   ]

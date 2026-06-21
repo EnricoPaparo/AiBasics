@@ -3,7 +3,7 @@ const MANIFEST_DATA = {
   "sottotitolo": "Dalla Teoria alla Costruzione di Agenti Professionali",
   "versione": "1.0",
   "anno": "2026",
-  "totale_lezioni": 46,
+  "totale_lezioni": 52,
   "roadmap": [
     {
       "id": "capitolo-01-il-web",
@@ -97,6 +97,10 @@ const MANIFEST_DATA = {
         {
           "id": "03-07-gestire-il-contesto",
           "titolo": "Gestire il Contesto"
+        },
+        {
+          "id": "03-08-token-economics",
+          "titolo": "Token Economics e Costi"
         }
       ]
     },
@@ -130,6 +134,10 @@ const MANIFEST_DATA = {
         {
           "id": "04-06-memory",
           "titolo": "Memory nei Sistemi AI"
+        },
+        {
+          "id": "04-07-vibe-coding",
+          "titolo": "Vibe Coding"
         }
       ]
     },
@@ -163,6 +171,10 @@ const MANIFEST_DATA = {
         {
           "id": "05-06-harness",
           "titolo": "L'Harness"
+        },
+        {
+          "id": "05-07-sicurezza-prompt-injection",
+          "titolo": "Sicurezza e Prompt Injection"
         }
       ]
     },
@@ -229,6 +241,14 @@ const MANIFEST_DATA = {
         {
           "id": "07-05-valutazione-workflow",
           "titolo": "Valutazione dei Workflow"
+        },
+        {
+          "id": "07-06-testing-evals",
+          "titolo": "Testing e Valutazione degli LLM"
+        },
+        {
+          "id": "07-07-deployment",
+          "titolo": "Deployment e Ambienti"
         }
       ]
     },
@@ -258,6 +278,10 @@ const MANIFEST_DATA = {
         {
           "id": "08-05-progetto-finale",
           "titolo": "Progetto Finale"
+        },
+        {
+          "id": "08-06-etica-responsabilita",
+          "titolo": "Etica e Responsabilità nell'AI"
         }
       ]
     }
