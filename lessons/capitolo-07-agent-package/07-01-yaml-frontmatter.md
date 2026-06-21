@@ -25,6 +25,11 @@ versione: "1.0"
 
 # YAML e Frontmatter: il linguaggio dei metadati strutturati
 
+> **⚡ Setup richiesto**: il Capitolo 7 usa YAML e parsing Python. Librerie necessarie:
+> ```bash
+> pip install pyyaml python-frontmatter
+> ```
+
 In questo capitolo trasformiamo gli agenti da prototipi funzionanti a sistemi professionali: versionati, documentati, testabili e mantenibili nel tempo. Imparerai a strutturare ogni artefatto — prompt, contratti, skill — come un oggetto di prima classe che può essere gestito, modificato e distribuito con la stessa cura del codice sorgente.
 
 ## Introduzione

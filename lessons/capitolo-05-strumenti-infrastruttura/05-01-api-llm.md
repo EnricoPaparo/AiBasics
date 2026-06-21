@@ -25,6 +25,13 @@ versione: "1.0"
 
 # L'API degli LLM: come si usa un modello da un programma
 
+> **⚡ Setup richiesto**: questo capitolo contiene codice eseguibile. Prima di procedere, assicurati di aver completato la **Lezione 00-01 (Ambiente di Sviluppo)**: Python installato, `.env` con la chiave API, e `python hello.py` che risponde correttamente.
+>
+> Librerie necessarie per il Capitolo 5:
+> ```bash
+> pip install anthropic python-dotenv pydantic chromadb
+> ```
+
 In questo capitolo il corso cambia marcia: passiamo dalla comprensione alla costruzione. Imparerai a usare un modello linguistico da un programma reale, a strutturare dati per farlo ragionare in modo affidabile, e ad aggiungergli strumenti e memoria — i mattoni con cui si costruisce qualsiasi sistema AI professionale.
 
 ## Da limitazioni a soluzioni

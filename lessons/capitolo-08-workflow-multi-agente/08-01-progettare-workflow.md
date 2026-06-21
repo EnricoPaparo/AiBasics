@@ -26,6 +26,11 @@ versione: "1.0"
 
 # Progettare un Workflow Agentivo: dal problema al grafo
 
+> **⚡ Setup richiesto**: il Capitolo 8 usa LangGraph per i workflow multi-agente. Librerie necessarie:
+> ```bash
+> pip install langgraph anthropic python-dotenv pydantic
+> ```
+
 In questo capitolo portiamo i singoli agenti al livello successivo: sistemi multi-agente coordinati, supervisionati e pronti per la produzione. Imparerai a pensare in termini di workflow prima ancora di scrivere codice — perché un'architettura ben progettata su carta è la differenza tra un sistema robusto e uno che crolla al primo caso limite.
 
 ## Introduzione
