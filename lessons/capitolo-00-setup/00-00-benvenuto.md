@@ -74,6 +74,18 @@ E c'è una ragione in più, meno ovvia: capire come funziona davvero un'AI ti re
 
 ---
 
+## Un patto sull'uso responsabile (da subito, non alla fine)
+
+L'etica dell'AI non è un capitolo da rimandare a "quando sarai bravo". È parte del mestiere fin dal primo giorno, e te la porti dietro per tutto il corso. Tre principi da tenere a mente da ora:
+
+- **L'AI può sbagliare con sicurezza.** Inventa fatti, cita fonti che non esistono, sembra convinta anche quando ha torto. **Verifica sempre** ciò che conta, soprattutto a scuola o quando lo dai ad altri come vero.
+- **Quello che scrivi all'AI può non restare privato.** Non incollare dati personali tuoi o altrui (nomi, foto, informazioni sensibili) in servizi che non controlli. Tornerà come tema serio quando parleremo di privacy e dati.
+- **La responsabilità resta tua.** Se usi l'AI per un compito, un testo, un progetto, la firma — e le conseguenze — sono tue, non sue. Usarla per imparare di più è potenziarsi; usarla per non imparare è derubarsi.
+
+> Questo è solo il nucleo. La trattazione completa — bias, GDPR, EU AI Act, diritto in Italia, responsabilità professionale — arriva nelle lezioni **Etica e Responsabilità nell'AI** e **AI e Diritto in Italia** (Capitolo 9). Ma i tre principi qui sopra valgono già da questa lezione.
+
+---
+
 ## Come è fatto questo corso (e come affrontarlo)
 
 - **Si parte da zero.** Ogni concetto è costruito sul precedente. Nessuno nasce "capace": si diventa capaci un pezzo alla volta.

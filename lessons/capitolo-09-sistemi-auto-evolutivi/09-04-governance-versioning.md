@@ -171,7 +171,7 @@ Notare il campo `fonte_modifica`: distinguere esplicitamente se una modifica è 
 
 ## 4. Semantic Versioning applicato a tutti gli artefatti
 
-Il **semantic versioning**, già menzionato più volte nel corso (Lezioni 7.1, 6.3), segue una convenzione precisa: `MAGGIORE.MINORE.PATCH` (es. `2.1.0`).
+Il **semantic versioning**, già menzionato più volte nel corso (Lezioni 7.1, 7.3), segue una convenzione precisa: `MAGGIORE.MINORE.PATCH` (es. `2.1.0`).
 
 ```
 PATCH (es. 2.1.0 → 2.1.1)

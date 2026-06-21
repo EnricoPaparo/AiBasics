@@ -94,7 +94,7 @@ Analizziamo ogni componente, collegandolo esplicitamente a concetti già visti:
 - **`api_key`** — l'autenticazione vista nella Lezione 1.5: identifica chi sta facendo la richiesta, per fatturazione e sicurezza
 - **`model`** — specifica esattamente quale modello (Lezione 4.1) deve elaborare la richiesta: i provider offrono tipicamente più modelli, con compromessi diversi tra velocità, costo, e capacità
 - **`max_tokens`** — il limite massimo di token (Lezione 4.1) che il modello può generare in **questa** risposta, un parametro di controllo del costo e della lunghezza, distinto dal context window totale visto nella Lezione 4.3
-- **`system`** — le istruzioni di comportamento stabile viste nella Lezione 4.3 e 3.4
+- **`system`** — le istruzioni di comportamento stabile viste nella Lezione 4.3 e 4.4
 - **`messages`** — la cronologia della conversazione, con la struttura a ruoli vista nella Lezione 4.3
 
 La risposta che si riceve (semplificando la struttura JSON completa già vista nella Lezione 1.5) contiene il testo generato dal modello, insieme a metadati come il motivo per cui la generazione si è interrotta (`stop_reason`) e il conteggio dei token usati — informazione cruciale, come vedremo, per gestire costi e context window.

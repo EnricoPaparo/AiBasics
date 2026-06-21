@@ -108,7 +108,7 @@ Dal punto di vista di chi sviluppa e mantiene un agente, avere accesso al PENSIE
 
 ## 3. Implementazione pratica: ReAct nel loop agentivo
 
-Estendiamo il codice della Lezione 6.1, aggiungendo l'istruzione che richiede al modello di esplicitare il proprio ragionamento. La modifica principale riguarda il **system prompt** (Lezione 4.3 e 3.4) fornito all'agente:
+Estendiamo il codice della Lezione 6.1, aggiungendo l'istruzione che richiede al modello di esplicitare il proprio ragionamento. La modifica principale riguarda il **system prompt** (Lezione 4.3 e 4.4) fornito all'agente:
 
 ```python
 SYSTEM_PROMPT_REACT = """
@@ -223,7 +223,7 @@ Il parametro `max_iterazioni`, introdotto nella Lezione 6.1 come precauzione sem
 
 Un rischio più sottile: il modello può produrre un PENSIERO che **sembra** una valida giustificazione logica, ma che in realtà non fa avanzare la comprensione del problema — una forma di razionalizzazione plausibile a posteriori, piuttosto che un ragionamento che guida effettivamente la decisione. Questo è collegato direttamente al limite delle allucinazioni visto nella Lezione 4.5: il modello genera testo statisticamente plausibile nel ruolo di "pensiero", che non garantisce automaticamente di essere un ragionamento corretto o utile.
 
-> **Implicazione pratica:** la presenza di un PENSIERO esplicito migliora l'osservabilità e spesso la qualità delle decisioni, ma non è una garanzia assoluta di correttezza. Un agente ReAct va comunque sottoposto a verifica e supervisione — temi che affronteremo nelle Lezioni 6.5, 7.3 e 7.4.
+> **Implicazione pratica:** la presenza di un PENSIERO esplicito migliora l'osservabilità e spesso la qualità delle decisioni, ma non è una garanzia assoluta di correttezza. Un agente ReAct va comunque sottoposto a verifica e supervisione — temi che affronteremo nelle Lezioni 6.5, 8.3 e 8.4.
 
 ---
 

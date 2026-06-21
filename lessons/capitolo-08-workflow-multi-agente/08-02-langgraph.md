@@ -30,7 +30,7 @@ versione: "1.0"
 
 Nella lezione precedente abbiamo progettato un workflow interamente su "carta": diagrammi, principi di posizionamento dei checkpoint, vocabolario di nodi e archi. Questa lezione trasforma quel design in codice eseguibile, usando **LangGraph**, il framework oggi più diffuso per costruire esattamente questo tipo di sistema.
 
-È importante affrontare LangGraph con la giusta prospettiva: non è uno strumento che introduce concetti nuovi rispetto a quanto già costruito nel corso — è un framework che **formalizza e rende robusta** l'implementazione di pattern che, fino a questa lezione, abbiamo scritto a mano con cicli `for` e funzioni Python (Lezioni 6.1, 5.3, 5.4). Tutto quello che LangGraph fa, lo hai già fatto tu stesso, in forma più semplice, nelle lezioni precedenti — qui ne vediamo la versione professionale e scalabile.
+È importante affrontare LangGraph con la giusta prospettiva: non è uno strumento che introduce concetti nuovi rispetto a quanto già costruito nel corso — è un framework che **formalizza e rende robusta** l'implementazione di pattern che, fino a questa lezione, abbiamo scritto a mano con cicli `for` e funzioni Python (Lezioni 6.1, 6.3, 6.4). Tutto quello che LangGraph fa, lo hai già fatto tu stesso, in forma più semplice, nelle lezioni precedenti — qui ne vediamo la versione professionale e scalabile.
 
 ---
 

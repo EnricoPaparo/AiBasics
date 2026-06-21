@@ -246,7 +246,7 @@ Questa distinzione tra prompt stabili (system) e prompt dinamici (task) è la ba
 
 ## Connessioni
 
-**Viene da:** Lezioni 4.1 e 3.2 — qui vediamo, concretamente, come il modello istruito descritto in quelle lezioni viene effettivamente utilizzato all'interno di un prodotto reale.
+**Viene da:** Lezioni 4.1 e 4.2 — qui vediamo, concretamente, come il modello istruito descritto in quelle lezioni viene effettivamente utilizzato all'interno di un prodotto reale.
 
 **Porta a:** Lezione 4.4 (Il Prompting) — avendo capito i ruoli system/user/assistant, siamo pronti ad approfondire come formulare efficacemente le istruzioni in ciascuno di questi ruoli.
 

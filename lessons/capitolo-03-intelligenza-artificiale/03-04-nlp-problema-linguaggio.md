@@ -110,7 +110,7 @@ In questo spazio (immaginario, semplificato), "gatto" e "cane" sono vicini perch
 
 ### Come si ottengono questi numeri
 
-Gli embedding non sono assegnati a mano da un linguista: sono **appresi** da una rete neurale, esposta a quantità enormi di testo, attraverso lo stesso principio generale visto nella Lezione 3.2 e 2.3 — il modello viene addestrato a prevedere parole nel contesto di altre parole (ad esempio, "indovina questa parola mancante, dato il resto della frase"), e nel processo di diventare bravo in questo compito, sviluppa internamente una rappresentazione numerica che cattura relazioni di significato.
+Gli embedding non sono assegnati a mano da un linguista: sono **appresi** da una rete neurale, esposta a quantità enormi di testo, attraverso lo stesso principio generale visto nella Lezione 3.2 e 3.3 — il modello viene addestrato a prevedere parole nel contesto di altre parole (ad esempio, "indovina questa parola mancante, dato il resto della frase"), e nel processo di diventare bravo in questo compito, sviluppa internamente una rappresentazione numerica che cattura relazioni di significato.
 
 Questo è importante da capire: **nessuno ha programmato esplicitamente "gatto è simile a cane"**. Questa relazione emerge automaticamente perché, statisticamente, "gatto" e "cane" tendono ad apparire in contesti linguistici simili (frasi su animali domestici, veterinari, cibo per animali) — e il modello, ottimizzato per prevedere bene il contesto, finisce per posizionarli vicini nello spazio degli embedding.
 
