@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Agent Factory — Corso</title>
-  <meta name="description" content="Intelligenza Artificiale Applicata: dalla teoria alla costruzione di agenti professionali. 8 capitoli, 43 lezioni.">
+  <title>MACHINA — Intelligenza Artificiale Applicata</title>
+  <meta name="description" content="Intelligenza Artificiale Applicata: dalla teoria alla costruzione di agenti professionali. 9 capitoli, 64 lezioni.">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* Landing-only extras */
@@ -72,20 +72,6 @@
     .orb-2 { width: 400px; height: 400px; background: var(--purple);  bottom: -100px; right: -50px; }
     .orb-3 { width: 300px; height: 300px; background: var(--green);   top: 40%; left: 40%; }
 
-    /* Typing effect */
-    .typing {
-      overflow: hidden;
-      border-right: 2px solid var(--green);
-      white-space: nowrap;
-      animation: typing 2.5s steps(40,end) 1s both, blink .75s step-end infinite;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: .9rem;
-      color: var(--green);
-      max-width: fit-content;
-      margin: 0 auto 1rem;
-    }
-    @keyframes typing { from { max-width: 0; } to { max-width: 100%; } }
-
     /* Feature card delays */
     .feature-card:nth-child(1) { animation-delay: .1s; }
     .feature-card:nth-child(2) { animation-delay: .2s; }
@@ -124,9 +110,7 @@
   <div class="corner corner-bl"></div>
   <div class="corner corner-br"></div>
 
-  <div class="hero-badge">AISchool · Prodotto da Enrico Paparo · 2026</div>
-
-  <div class="typing">$ inizializzazione corso... completata.</div>
+  <div class="hero-badge">MACHINA · Prodotto da Enrico Paparo · 2026</div>
 
   <h1 class="hero-title" data-text="Intelligenza Artificiale Applicata">
     <span class="accent">Intelligenza</span><br>Artificiale Applicata
@@ -134,7 +118,7 @@
 
   <p class="hero-sub">
     Dalla teoria alla costruzione di <em>agenti autonomi professionali</em>.<br>
-    8 capitoli · 43 lezioni · dal fondamento all'auto-miglioramento.
+    9 capitoli · 64 lezioni · dal fondamento all'auto-miglioramento.
   </p>
 
   <div class="hero-cta">
@@ -151,11 +135,11 @@
 <!-- ══ STATS ════════════════════════════════════════════════════ -->
 <div class="stats-bar reveal">
   <div class="stat">
-    <span class="stat-num" data-target="8">0</span>
+    <span class="stat-num" data-target="9">0</span>
     <span class="stat-label">Capitoli</span>
   </div>
   <div class="stat">
-    <span class="stat-num" data-target="43">0</span>
+    <span class="stat-num" data-target="64">0</span>
     <span class="stat-label">Lezioni</span>
   </div>
   <div class="stat">
@@ -225,7 +209,7 @@
 
 <!-- ══ FOOTER ═══════════════════════════════════════════════════ -->
 <footer class="site-footer">
-  <div class="logo-text">AI AGENT FACTORY</div>
+  <div class="logo-text">MACHINA</div>
   <div style="margin-top:.5rem">Intelligenza Artificiale Applicata · 2026</div>
   <div style="margin-top:.25rem;font-size:.7rem;color:var(--text-dim)">Prodotto da Enrico Paparo</div>
 </footer>
@@ -277,20 +261,22 @@
     roadmap: [
       { id:'capitolo-01-il-web', numero:1, titolo:'Il Web come lo Conosciamo', icona:'⬡', colore:'#00ff41',
         lezioni: [{titolo:'Come funziona Internet'},{titolo:'Siti Web Statici'},{titolo:'Siti Web Dinamici'},{titolo:'Web Application'},{titolo:'Le API'}] },
-      { id:'capitolo-02-intelligenza-artificiale', numero:2, titolo:"L'Intelligenza Artificiale", icona:'◈', colore:'#00d4ff',
-        lezioni: [{titolo:'AI: Storia e Definizioni'},{titolo:'Machine Learning'},{titolo:'Reti Neurali e Deep Learning'},{titolo:'NLP e il Linguaggio'},{titolo:'L\'architettura Transformer'}] },
-      { id:'capitolo-03-llm', numero:3, titolo:'I Modelli Linguistici (LLM)', icona:'◉', colore:'#ff0080',
-        lezioni: [{titolo:"Cos'è un LLM"},{titolo:'Training, Fine-tuning e RLHF'},{titolo:'Anatomia di un Prodotto AI'},{titolo:'Il Prompting'},{titolo:'Limiti e Allucinazioni'}] },
-      { id:'capitolo-04-strumenti-infrastruttura', numero:4, titolo:'Strumenti e Infrastruttura AI', icona:'⬢', colore:'#ffd700',
-        lezioni: [{titolo:"L'API degli LLM"},{titolo:'Output Strutturati'},{titolo:'RAG: Memoria Esterna'},{titolo:'Tool Use / Function Calling'},{titolo:'MCP Protocol'},{titolo:'Memory nei Sistemi AI'}] },
-      { id:'capitolo-05-agenti-architettura', numero:5, titolo:'Agenti AI: Architettura', icona:'★', colore:'#ff6b00',
-        lezioni: [{titolo:"Cos'è un Agente AI"},{titolo:'ReAct e Chain-of-Thought'},{titolo:"L'Orchestratore"},{titolo:'Single vs Multi-Agent'},{titolo:'Errori e Robustezza'}] },
-      { id:'capitolo-06-agent-package', numero:6, titolo:"L'Agent Package", icona:'◆', colore:'#7700ff',
-        lezioni: [{titolo:'YAML e Frontmatter'},{titolo:"L'Agent Package"},{titolo:'Agent Card'},{titolo:'Prompt come Artefatti'},{titolo:'Contratti tra Agenti'},{titolo:'Gli Handoff'},{titolo:'Skills e Skill Library'}] },
-      { id:'capitolo-07-workflow-multi-agente', numero:7, titolo:'Workflow Multi-Agente', icona:'⬣', colore:'#00ffcc',
-        lezioni: [{titolo:'Progettare un Workflow'},{titolo:'LangGraph'},{titolo:'Il Layer di Review'},{titolo:'Human-in-the-Loop'},{titolo:'Valutazione dei Workflow'}] },
-      { id:'capitolo-08-sistemi-auto-evolutivi', numero:8, titolo:'Sistemi Auto-Evolutivi', icona:'∞', colore:'#ff00ff',
-        lezioni: [{titolo:'Self-Reflection'},{titolo:'Prompt Auto-Evolutivi'},{titolo:'Riassorbimento Conoscenza'},{titolo:'Governance e Versioning'},{titolo:'Progetto Finale'}] },
+      { id:'capitolo-02-git-github', numero:2, titolo:'Git e GitHub', icona:'◎', colore:'#f05033',
+        lezioni: [{titolo:'Version Control e Git'},{titolo:'Branch, Merge e Conflitti'},{titolo:'GitHub e Lavoro Collaborativo'},{titolo:'GitHub Actions e CI/CD'}] },
+      { id:'capitolo-03-intelligenza-artificiale', numero:3, titolo:"L'Intelligenza Artificiale: Cosa È Davvero", icona:'◈', colore:'#00d4ff',
+        lezioni: [{titolo:'AI: Storia e Definizioni'},{titolo:'Machine Learning'},{titolo:'Reti Neurali e Deep Learning'},{titolo:'NLP e il Problema del Linguaggio'},{titolo:"L'architettura Transformer"}] },
+      { id:'capitolo-04-llm', numero:4, titolo:'I Modelli Linguistici (LLM)', icona:'◉', colore:'#ff0080',
+        lezioni: [{titolo:"Cos'è un LLM"},{titolo:'Training, Fine-tuning e RLHF'},{titolo:'Anatomia di un Prodotto AI'},{titolo:'Il Prompting'},{titolo:'Limiti e Allucinazioni'},{titolo:'Il Context Window'},{titolo:'Gestire il Contesto'},{titolo:'Token Economics e Costi'},{titolo:'Fine-Tuning: Quando e Come'}] },
+      { id:'capitolo-05-strumenti-infrastruttura', numero:5, titolo:'Strumenti e Infrastruttura AI', icona:'⬢', colore:'#ffd700',
+        lezioni: [{titolo:"L'API degli LLM"},{titolo:'Output Strutturati e Parser'},{titolo:'RAG: Memoria Esterna'},{titolo:'Tool Use / Function Calling'},{titolo:'MCP: Model Context Protocol'},{titolo:'Memory nei Sistemi AI'},{titolo:'Vibe Coding'},{titolo:'Embeddings e Vector Database'},{titolo:'Struttura di un Progetto Python Reale'},{titolo:'Streaming e UX Real-Time'},{titolo:'Debugging e Osservabilità degli Agenti'}] },
+      { id:'capitolo-06-agenti-architettura', numero:6, titolo:'Agenti AI: Architettura e Ragionamento', icona:'★', colore:'#ff6b00',
+        lezioni: [{titolo:"Cos'è un Agente AI"},{titolo:'ReAct e Chain-of-Thought'},{titolo:"L'Orchestratore"},{titolo:'Single vs Multi-Agent'},{titolo:'Errori, Robustezza, Osservabilità'},{titolo:"L'Harness"},{titolo:'Sicurezza e Prompt Injection'},{titolo:'Async e Concorrenza negli Agenti'}] },
+      { id:'capitolo-07-agent-package', numero:7, titolo:"L'Agent Package", icona:'◆', colore:'#7700ff',
+        lezioni: [{titolo:'YAML e Frontmatter'},{titolo:"L'Agent Package"},{titolo:'Agent Card'},{titolo:'Prompt come Artefatti'},{titolo:'Contratti tra Agenti'},{titolo:'Gli Handoff'},{titolo:'Skills e Skill Library'},{titolo:'Prompt Versioning Pratico'}] },
+      { id:'capitolo-08-workflow-multi-agente', numero:8, titolo:'Workflow Multi-Agente', icona:'⬣', colore:'#00ffcc',
+        lezioni: [{titolo:'Progettare un Workflow'},{titolo:'LangGraph'},{titolo:'Il Layer di Review'},{titolo:'Human-in-the-Loop'},{titolo:'Valutazione dei Workflow'},{titolo:'Testing e Valutazione degli LLM'},{titolo:'Deployment e Ambienti'}] },
+      { id:'capitolo-09-sistemi-auto-evolutivi', numero:9, titolo:'Sistemi Auto-Evolutivi', icona:'∞', colore:'#ff00ff',
+        lezioni: [{titolo:'Self-Reflection e Self-Critique'},{titolo:'Prompt Auto-Evolutivi'},{titolo:'Riassorbimento della Conoscenza'},{titolo:'Governance e Versioning'},{titolo:'Progetto Finale'},{titolo:"Etica e Responsabilità nell'AI"},{titolo:'Pubblicare e Monetizzare un Progetto AI'}] },
     ]
   };
 
