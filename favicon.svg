@@ -1,0 +1,28 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="32" height="32" rx="5" fill="#07090d"/>
+
+  <!-- M circuit traces -->
+  <g filter="url(#glow)" stroke="#00ff41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <polyline points="6,26 6,6 16,18 26,6 26,26"/>
+  </g>
+
+  <!-- Nodes -->
+  <g filter="url(#glow)" fill="#00ff41">
+    <circle cx="6"  cy="6"  r="2.2"/>
+    <circle cx="26" cy="6"  r="2.2"/>
+    <circle cx="16" cy="18" r="2.2"/>
+    <circle cx="6"  cy="26" r="2.2"/>
+    <circle cx="26" cy="26" r="2.2"/>
+  </g>
+</svg>
