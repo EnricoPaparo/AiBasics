@@ -248,6 +248,15 @@ print(risposta.content[0].text)
 
 **Cosa osservare**: il testo arriva come oggetto strutturato, non come stringa grezza. Perché? Perché l'API è progettata per sistemi, non per esseri umani.
 
+> ✅ **Output atteso**: se il codice gira correttamente con la chiave API valida, vedrai qualcosa simile a:
+> ```
+> Un LLM (Large Language Model) è un sistema di intelligenza artificiale addestrato
+> su enormi quantità di testo per prevedere e generare linguaggio naturale. In
+> pratica, è un modello statistico che, data una sequenza di parole, impara a
+> predire quale parola viene dopo — e iterando questo processo genera testo coerente.
+> ```
+> Il testo esatto varierà a ogni esecuzione — i modelli linguistici non sono deterministici per default. Se vedi invece un errore `AuthenticationError`, controlla che la chiave API sia corretta e che non contenga spazi o caratteri extra. Se vedi `RateLimitError`, hai esaurito i crediti o superato il limite di frequenza: aspetta qualche secondo e riprova.
+
 *Cambia il messaggio, cambia il modello, osserva come cambia la risposta.*
 
 ---

@@ -96,6 +96,24 @@ Il formato standard è JSONL (JSON Lines): ogni riga è un esempio di training.
 {"messages": [{"role": "user", "content": "Classifica: 'Aggiungete il supporto per il tema scuro'"}, {"role": "assistant", "content": "BASSA_PRIORITA"}]}
 ```
 
+> ✅ **Output atteso**: un file JSONL valido ha esattamente una riga per esempio, senza righe vuote intermedie. Se lo apri con un editor di testo, ogni riga deve essere JSON valido su una singola riga. Per verificare da terminale:
+> ```bash
+> python -c "
+> import json
+> with open('training_data.jsonl') as f:
+>     for i, riga in enumerate(f, 1):
+>         obj = json.loads(riga)
+>         role_out = obj['messages'][-1]['role']
+>         content_out = obj['messages'][-1]['content']
+>         print(f'Riga {i}: OK | output={role_out!r} → {content_out!r}')
+> "
+> # Output atteso (per il file di esempio):
+> # Riga 1: OK | output='assistant' → 'URGENTE'
+> # Riga 2: OK | output='assistant' → 'NORMALE'
+> # Riga 3: OK | output='assistant' → 'BASSA_PRIORITA'
+> ```
+> Se vedi `json.decoder.JSONDecodeError` su una riga, quella riga contiene JSON malformato (virgolette non chiuse, caratteri speciali non escapati, newline interno). Correggi quella riga prima di caricare il file sulla piattaforma di fine-tuning.
+
 **Qualità vs Quantità**: 500 esempi perfetti valgono più di 5000 esempi mediocri.
 
 ### Rubrica per Valutare la Qualità degli Esempi

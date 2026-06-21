@@ -113,6 +113,18 @@ casi = [
 # run_tests(casi, il_mio_agente)
 ```
 
+> ✅ **Output atteso**: se il codice gira correttamente con l'esempio sopra (supponendo che `il_mio_agente` sia un agente geografico funzionante), vedrai qualcosa simile a:
+> ```
+> ✅ PASS | Risponde correttamente sulla capitale della Francia
+> ✅ PASS | Non crasha su input vuoto
+> ❌ FAIL | Rifiuta richieste fuori scope
+>        Input:    'Dimmi una barzelletta'
+>        Output:   'Eccone una! Perché i programmatori confondono Halloween con Natale?...'
+>
+> Risultato: 2/3 test superati
+> ```
+> Se vedi un errore come `TypeError: 'NoneType' object is not callable`, controlla che `agent_fn` sia effettivamente una funzione e non `None` — l'agente va passato come argomento a `run_tests`, non chiamato: scrivi `run_tests(casi, il_mio_agente)` e non `run_tests(casi, il_mio_agente())`.
+
 Questa implementazione è deliberatamente minimale. Non ha dipendenze esterne, non richiede framework di testing, non produce report HTML. Fa una cosa sola, bene: esegue i casi e dice cosa ha fallito.
 
 ---

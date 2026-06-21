@@ -215,6 +215,22 @@ def carica_conversazione(session_id: str) -> list[dict]:
 
 Se preferisci evitare SQLite, un file JSON è l'alternativa più semplice: `json.dump(messaggi, open(f"{session_id}.json", "w"))` per salvare, `json.load(open(...))` per ricaricare. È meno robusto (niente transazioni, niente query), ma sufficiente per prototipare.
 
+> ✅ **Output atteso**: se esegui `salva_conversazione` e poi `carica_conversazione` con lo stesso `session_id`, il round-trip deve restituire la lista originale invariata. Un test minimo:
+> ```python
+> messaggi_test = [
+>     {"role": "user", "content": "Ciao, sono Marco"},
+>     {"role": "assistant", "content": "Ciao Marco, come posso aiutarti?"}
+> ]
+> salva_conversazione("sessione_001", messaggi_test)
+> recuperati = carica_conversazione("sessione_001")
+> print(recuperati)
+> # Output atteso:
+> # [{'role': 'user', 'content': 'Ciao, sono Marco'},
+> #  {'role': 'assistant', 'content': 'Ciao Marco, come posso aiutarti?'}]
+> print(recuperati == messaggi_test)  # True
+> ```
+> Nella stessa directory troverai il file `memoria.db` creato da SQLite. Se vedi `json.decoder.JSONDecodeError`, il campo `messaggi` nel database è corrotto — cancella `memoria.db` e ricomincia. Se `carica_conversazione` restituisce `[]` invece dei messaggi salvati, controlla che il `session_id` passato alle due funzioni sia identico (maiuscole/minuscole incluse).
+
 ### Limitazione pratica importante: non puoi rimandare tutta la cronologia
 
 Ricaricare e rispedire all'intero la cronologia di sessioni passate è quasi sempre un errore: dopo poche sessioni accumuli migliaia di token, si esaurisce rapidamente la finestra di contesto (Lezione 04-06), e i costi API aumentano a ogni chiamata. La soluzione corretta è non spedire tutta la cronologia, ma un **riassunto** di essa.
