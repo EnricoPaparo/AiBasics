@@ -717,6 +717,7 @@ body {
   color: var(--text-dim);
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 }
 .core-filter input { accent-color: var(--gold); cursor: pointer; }
 .core-filter .core-star { color: var(--gold); }
@@ -747,6 +748,11 @@ body {
   transition: background .2s, color .2s;
   font-family: 'Share Tech Mono', monospace;
   letter-spacing: .05em;
+}
+/* Due bottoni adiacenti (Roadmap + Glossario): niente gap né bordo doppio */
+.sidebar-roadmap-btn + .sidebar-roadmap-btn {
+  border-top: none;
+  margin-top: -.5rem;
 }
 .sidebar-roadmap-btn:hover { background: rgba(255,0,128,.04); color: var(--pink); }
 .sidebar-roadmap-btn.active { color: var(--pink); background: rgba(255,0,128,.06); }

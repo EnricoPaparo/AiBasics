@@ -48,7 +48,7 @@ function buildSidebar() {
   searchWrap.innerHTML = `
     <input type="text" id="lesson-search" placeholder="🔍 Cerca lezione..." autocomplete="off">
     <label class="core-filter" title="Mostra solo il percorso essenziale per le superiori">
-      <input type="checkbox" id="core-toggle"> Solo percorso Core <span class="core-star">★</span>
+      <input type="checkbox" id="core-toggle"> Solo core <span class="core-star">★</span>
     </label>`;
   sidebarEl.appendChild(searchWrap);
 
