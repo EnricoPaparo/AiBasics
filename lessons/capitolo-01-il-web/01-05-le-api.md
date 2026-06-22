@@ -25,14 +25,16 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Le API: il linguaggio universale tra sistemi
+
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Capirai come due programmi si parlano senza un browser di mezzo.
+> Le API sono il modo in cui il tuo codice chiederà servizi ad altri — incluse le AI: endpoint, richiesta, risposta in JSON, chiave d’accesso.
 
 ## Introduzione
 
 Questa è la lezione di chiusura del primo capitolo, e non per caso è anche una delle più importanti di tutto il corso. Tutto quello che abbiamo costruito finora — client e server, HTML statico, logica dinamica, frontend e backend separati — converge in un singolo concetto: l'**API**.
 
-Da qui in avanti, ogni volta che il nostro futuro agente AI "chiamerà un modello", "interrogherà un database vettoriale", "userà uno strumento esterno", starà facendo esattamente quello che descriviamo in questa lezione: una richiesta HTTP strutturata secondo regole precise, verso un endpoint specifico, con un formato di risposta prevedibile. Se questa lezione è chiara, tutto il Capitolo 4 risulterà una naturale estensione di concetti già posseduti, non materiale nuovo da imparare da zero.
+Da qui in avanti, ogni volta che il nostro futuro agente AI "chiamerà un modello", "interrogherà un database vettoriale", "userà uno strumento esterno", starà facendo esattamente quello che descriviamo in questa lezione: una richiesta HTTP strutturata secondo regole precise, verso un endpoint specifico, con un formato di risposta prevedibile. Se questa lezione è chiara, tutto il Capitolo 5 risulterà una naturale estensione di concetti già posseduti, non materiale nuovo da imparare da zero.
 
 ---
 
@@ -177,7 +179,7 @@ Stesso identico contenuto del JSON sopra, ma più leggibile a colpo d'occhio, se
 ### Quando si usa l'uno e quando l'altro
 
 - **JSON** domina nelle **comunicazioni API**: è il formato che viaggia nelle richieste e risposte HTTP, perché deve essere generato e letto velocemente da codice.
-- **YAML** domina nei **file di configurazione** che un essere umano scrive e modifica a mano: file di setup, definizioni di comportamento, e — anticipiamo qui un concetto che ritroveremo in profondità nel Capitolo 6 — il **frontmatter** dei file Markdown che useremo per descrivere lezioni, agenti, e contratti nei workflow agentivi.
+- **YAML** domina nei **file di configurazione** che un essere umano scrive e modifica a mano: file di setup, definizioni di comportamento, e — anticipiamo qui un concetto che ritroveremo in profondità nel Capitolo 7 — il **frontmatter** dei file Markdown che useremo per descrivere lezioni, agenti, e contratti nei workflow agentivi.
 
 > Non è un caso che il file che stai leggendo ora abbia, in cima, un blocco YAML tra `---`. È esattamente l'applicazione pratica di questa distinzione: i metadati (capitolo, prerequisiti, difficoltà) sono scritti in YAML perché un umano li deve poter leggere e modificare comodamente; se questa lezione venisse scambiata tra due programmi via API, probabilmente viaggerebbe invece in JSON.
 
@@ -346,6 +348,6 @@ Regola da ricordare: **JSON per parlare tra programmi, YAML per i file che scriv
 
 **Viene da:** Lezioni 1.1–1.4 — questa lezione è la sintesi naturale di client/server, HTTP, logica dinamica e separazione frontend/backend, tutti applicati al caso specifico della comunicazione programma-programma.
 
-**Porta a:** Capitolo 2 (L'Intelligenza Artificiale) — da qui in avanti smettiamo di parlare del Web in generale e iniziamo a costruire la comprensione di cosa sia, internamente, il sistema che risponde dall'altra parte di quelle chiamate API.
+**Porta a:** Capitolo 3 (L'Intelligenza Artificiale) — da qui in avanti smettiamo di parlare del Web in generale e iniziamo a costruire la comprensione di cosa sia, internamente, il sistema che risponde dall'altra parte di quelle chiamate API.
 
-**Ritroverai questi concetti in:** Lezione 4.1 (L'API degli LLM) — useremo esattamente questo schema (endpoint, header, autenticazione, corpo JSON) per chiamare un modello linguistico. Lezione 6.1 (YAML e Frontmatter) — approfondiremo perché YAML è lo standard per gli artefatti dei workflow agentivi. Lezione 6.5 (Contratti tra Agenti) — il concetto di "contratto" accennato nella domanda di verifica diventerà centrale quando parleremo di schemi di input/output tra agenti.
+**Ritroverai questi concetti in:** Lezione 5.1 (L'API degli LLM) — useremo esattamente questo schema (endpoint, header, autenticazione, corpo JSON) per chiamare un modello linguistico. Lezione 7.1 (YAML e Frontmatter) — approfondiremo perché YAML è lo standard per gli artefatti dei workflow agentivi. Lezione 7.5 (Contratti tra Agenti) — il concetto di "contratto" accennato nella domanda di verifica diventerà centrale quando parleremo di schemi di input/output tra agenti.

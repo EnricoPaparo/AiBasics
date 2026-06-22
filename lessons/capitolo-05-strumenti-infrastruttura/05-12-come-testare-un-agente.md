@@ -20,7 +20,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Come testare un agente AI: il metodo minimo che funziona
 
 ## Perché testare prima di costruire di più

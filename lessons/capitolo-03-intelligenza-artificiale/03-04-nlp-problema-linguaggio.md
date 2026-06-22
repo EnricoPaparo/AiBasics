@@ -1,13 +1,13 @@
 ---
-id: "02-04"
+id: "03-04"
 titolo: "NLP e il problema del linguaggio: perché il testo è difficile per le macchine"
 sottotitolo: "Come si trasforma una parola in un numero senza perdere il significato"
-capitolo: 2
+capitolo: 3
 capitolo_titolo: "L'Intelligenza Artificiale: Cosa È Davvero"
 lezione: 4
 durata_stimata: "55 minuti"
 difficolta: "base"
-prerequisiti: ["02-03"]
+prerequisiti: ["03-03"]
 concetti_chiave:
   - NLP
   - bag of words
@@ -23,7 +23,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # NLP e il problema del linguaggio: perché il testo è difficile per le macchine
 
 ## Introduzione
@@ -111,7 +110,7 @@ In questo spazio (immaginario, semplificato), "gatto" e "cane" sono vicini perch
 
 ### Come si ottengono questi numeri
 
-Gli embedding non sono assegnati a mano da un linguista: sono **appresi** da una rete neurale, esposta a quantità enormi di testo, attraverso lo stesso principio generale visto nella Lezione 2.2 e 2.3 — il modello viene addestrato a prevedere parole nel contesto di altre parole (ad esempio, "indovina questa parola mancante, dato il resto della frase"), e nel processo di diventare bravo in questo compito, sviluppa internamente una rappresentazione numerica che cattura relazioni di significato.
+Gli embedding non sono assegnati a mano da un linguista: sono **appresi** da una rete neurale, esposta a quantità enormi di testo, attraverso lo stesso principio generale visto nella Lezione 3.2 e 3.3 — il modello viene addestrato a prevedere parole nel contesto di altre parole (ad esempio, "indovina questa parola mancante, dato il resto della frase"), e nel processo di diventare bravo in questo compito, sviluppa internamente una rappresentazione numerica che cattura relazioni di significato.
 
 Questo è importante da capire: **nessuno ha programmato esplicitamente "gatto è simile a cane"**. Questa relazione emerge automaticamente perché, statisticamente, "gatto" e "cane" tendono ad apparire in contesti linguistici simili (frasi su animali domestici, veterinari, cibo per animali) — e il modello, ottimizzato per prevedere bene il contesto, finisce per posizionarli vicini nello spazio degli embedding.
 
@@ -129,7 +128,7 @@ Cosa significa questa equazione, in termini intuitivi? Il vettore che rappresent
 
 Questo non è un trucco o una coincidenza isolata: è una conseguenza naturale del fatto che gli embedding catturano relazioni semantiche multiple e sovrapposte (regalità, genere, e molte altre dimensioni che non hanno un nome umano intuitivo) in un unico spazio numerico continuo, dove le relazioni si comportano in modo sorprendentemente coerente con operazioni aritmetiche.
 
-> **Perché questo conta enormemente per il resto del corso:** quando parleremo di RAG (Retrieval-Augmented Generation) nella Lezione 4.3, il meccanismo per "trovare il documento più rilevante per una domanda" funzionerà esattamente così: trasformare sia la domanda sia tutti i documenti disponibili in embedding, e cercare quali documenti sono geometricamente più vicini alla domanda nello spazio degli embedding. È la stessa identica idea spiegata qui, applicata alla ricerca di informazioni invece che a singole parole.
+> **Perché questo conta enormemente per il resto del corso:** quando parleremo di RAG (Retrieval-Augmented Generation) nella Lezione 5.3, il meccanismo per "trovare il documento più rilevante per una domanda" funzionerà esattamente così: trasformare sia la domanda sia tutti i documenti disponibili in embedding, e cercare quali documenti sono geometricamente più vicini alla domanda nello spazio degli embedding. È la stessa identica idea spiegata qui, applicata alla ricerca di informazioni invece che a singole parole.
 
 ---
 
@@ -220,9 +219,9 @@ La parola "banca" significa cose diverse in "mi siedo sulla banca del fiume" e "
 
 **Il problema dell'embedding fisso:** Word2Vec assegna a "banca" **un solo vettore**, uguale in ogni frase. Ma "banca" finanziaria e "banca" del fiume hanno significati opposti: comprimere entrambi in un unico punto dello spazio è una media insoddisfacente che non rappresenta bene nessuno dei due sensi.
 
-**Collegamento al Transformer:** i modelli moderni non usano un vettore fisso per parola. Calcolano una rappresentazione **dinamica**, che cambia in base a *tutto il resto della frase*, grazie al meccanismo di **attenzione** (Lezione 2.5). Così "banca" vicino a "fiume" e "banca" vicino a "contanti" ricevono rappresentazioni diverse.
+**Collegamento al Transformer:** i modelli moderni non usano un vettore fisso per parola. Calcolano una rappresentazione **dinamica**, che cambia in base a *tutto il resto della frase*, grazie al meccanismo di **attenzione** (Lezione 3.5). Così "banca" vicino a "fiume" e "banca" vicino a "contanti" ricevono rappresentazioni diverse.
 
-**Collegamento al RAG (Lezione 4.3):** la stessa idea di "vicinanza nello spazio degli embedding" che qui mette vicine parole simili, là serve a trovare i documenti più rilevanti per una domanda — anche quando domanda e documento non condividono nessuna parola esatta. La vicinanza è **semantica**, non testuale.
+**Collegamento al RAG (Lezione 5.3):** la stessa idea di "vicinanza nello spazio degli embedding" che qui mette vicine parole simili, là serve a trovare i documenti più rilevanti per una domanda — anche quando domanda e documento non condividono nessuna parola esatta. La vicinanza è **semantica**, non testuale.
 
 </details>
 
@@ -230,8 +229,8 @@ La parola "banca" significa cose diverse in "mi siedo sulla banca del fiume" e "
 
 ## Connessioni
 
-**Viene da:** Lezione 2.3 — qui applichiamo la rete neurale, vista in astratto, al problema specifico di rappresentare il linguaggio.
+**Viene da:** Lezione 3.3 — qui applichiamo la rete neurale, vista in astratto, al problema specifico di rappresentare il linguaggio.
 
-**Porta a:** Lezione 2.5 (Architettura Transformer) — vedremo il meccanismo di attenzione, che risolve esattamente il limite del "vettore fisso per parola" discusso in chiusura di questa lezione.
+**Porta a:** Lezione 3.5 (Architettura Transformer) — vedremo il meccanismo di attenzione, che risolve esattamente il limite del "vettore fisso per parola" discusso in chiusura di questa lezione.
 
-**Ritroverai questi concetti in:** Lezione 4.3 (RAG) — la ricerca per similarità semantica tra una domanda e un insieme di documenti, usando esattamente il principio di distanza nello spazio degli embedding spiegato qui. Lezione 3.1 (Cos'è un LLM) — i token che un modello linguistico elabora sono, alla base, rappresentati internamente come embedding.
+**Ritroverai questi concetti in:** Lezione 5.3 (RAG) — la ricerca per similarità semantica tra una domanda e un insieme di documenti, usando esattamente il principio di distanza nello spazio degli embedding spiegato qui. Lezione 4.1 (Cos'è un LLM) — i token che un modello linguistico elabora sono, alla base, rappresentati internamente come embedding.

@@ -1,13 +1,13 @@
 ---
-id: "06-03"
+id: "07-03"
 titolo: "Agent Card: il documento di identità di un agente"
 sottotitolo: "Dal config interno all'interfaccia pubblica: come un agente si presenta al resto del mondo"
-capitolo: 6
-capitolo_titolo: "L'Agent Package: Struttura, Contratti e Artefatti"
+capitolo: 7
+capitolo_titolo: "L'Agent Package"
 lezione: 3
 durata_stimata: "65 minuti"
 difficolta: "avanzato"
-prerequisiti: ["06-02"]
+prerequisiti: ["07-02"]
 concetti_chiave:
   - agent card
   - interoperabilità
@@ -22,14 +22,13 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Agent Card: il documento di identità di un agente
 
 ## Introduzione
 
 Nella lezione precedente abbiamo costruito `agent.yaml`: il file di configurazione **interno** di un agente, che dichiara modello, parametri, e riferimenti a prompt e strumenti. Questo file risponde a una domanda specifica: "come si configura ed esegue questo agente?" — una domanda rilevante per chi **mantiene** l'agente.
 
-Questa lezione introduce un documento diverso, con uno scopo diverso: l'**Agent Card**. Risponde a una domanda altrettanto importante ma distinta: "**cosa fa** questo agente, e come posso usarlo, senza dover conoscere nulla della sua implementazione interna?" — una domanda rilevante per chi **usa** l'agente, che potrebbe essere un orchestratore (Lezione 5.3), un altro agente in un sistema multi-agente (Lezione 5.4), o persino un sistema costruito da un'organizzazione completamente diversa.
+Questa lezione introduce un documento diverso, con uno scopo diverso: l'**Agent Card**. Risponde a una domanda altrettanto importante ma distinta: "**cosa fa** questo agente, e come posso usarlo, senza dover conoscere nulla della sua implementazione interna?" — una domanda rilevante per chi **usa** l'agente, che potrebbe essere un orchestratore (Lezione 6.3), un altro agente in un sistema multi-agente (Lezione 6.4), o persino un sistema costruito da un'organizzazione completamente diversa.
 
 ---
 
@@ -46,10 +45,10 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Configurazione interna vs interfaccia pubblica
 
-Riprendiamo il principio di incapsulamento introdotto nella Lezione 5.3, parlando dell'orchestratore: "vede i risultati, non i meccanismi interni". L'Agent Card è precisamente l'applicazione concreta e formale di questo principio.
+Riprendiamo il principio di incapsulamento introdotto nella Lezione 6.3, parlando dell'orchestratore: "vede i risultati, non i meccanismi interni". L'Agent Card è precisamente l'applicazione concreta e formale di questo principio.
 
 ```
-AGENT.YAML (Lezione 6.2)              AGENT CARD (questa lezione)
+AGENT.YAML (Lezione 7.2)              AGENT CARD (questa lezione)
 
 Risponde a: "come funziona            Risponde a: "cosa fa questo
 QUESTO agente, internamente?"          agente, e come ci si interfaccia
@@ -124,7 +123,7 @@ ultima_modifica: "2026-06-01"
 
 Nota la sezione **`NON_fa`**: dichiarare esplicitamente cosa un agente *non* fa è altrettanto importante, per chi deve decidere se usarlo, quanto dichiarare cosa fa. Questo previene un errore comune nei sistemi multi-agente: un orchestratore (o uno sviluppatore umano) che assume erroneamente che un agente possa gestire un compito fuori dal suo dominio dichiarato, semplicemente perché nessuno lo ha esplicitamente escluso.
 
-> **Perché questo richiama direttamente la Lezione 4.4:** ricorda l'importanza della `description` di uno strumento nel Function Calling — un testo vago produce un uso scorretto dello strumento. La stessa identica logica si applica, su scala più ampia, alla descrizione delle capacità di un intero agente nella sua Agent Card.
+> **Perché questo richiama direttamente la Lezione 5.4:** ricorda l'importanza della `description` di uno strumento nel Function Calling — un testo vago produce un uso scorretto dello strumento. La stessa identica logica si applica, su scala più ampia, alla descrizione delle capacità di un intero agente nella sua Agent Card.
 
 ---
 
@@ -164,14 +163,14 @@ def trova_agente_adatto(cards: list[dict], dominio_richiesto: str) -> dict | Non
 def orchestratore_con_discovery(richiesta_utente: str, cartella_agenti: str) -> str:
     """
     Un orchestratore che, invece di avere agenti cablati
-    direttamente nel codice (come nella Lezione 5.3), li
+    direttamente nel codice (come nella Lezione 6.3), li
     SCOPRE dinamicamente leggendo le loro Agent Card.
     """
     cards_disponibili = carica_tutte_le_agent_card(cartella_agenti)
 
     # In un caso reale, questa classificazione del dominio
     # richiesto sarebbe essa stessa una chiamata al modello
-    # (Lezione 4.1), qui semplificata per chiarezza
+    # (Lezione 5.1), qui semplificata per chiarezza
     dominio = "analisi dati di vendita"
 
     agente_scelto = trova_agente_adatto(cards_disponibili, dominio)
@@ -182,7 +181,7 @@ def orchestratore_con_discovery(richiesta_utente: str, cartella_agenti: str) -> 
     return f"Richiesta delegata a: {agente_scelto['identita']['nome']}"
 ```
 
-Questa è una versione semplificata, ma il principio è esattamente quello usato in sistemi multi-agente professionali su scala più ampia: invece di un orchestratore che "conosce" staticamente ogni singolo agente disponibile (come nell'esempio della Lezione 5.3, dove gli agenti erano funzioni Python importate direttamente), un orchestratore con discovery può adattarsi dinamicamente a un catalogo di agenti che **cresce nel tempo**, senza richiedere modifiche al codice dell'orchestratore stesso ogni volta che un nuovo agente viene aggiunto al sistema.
+Questa è una versione semplificata, ma il principio è esattamente quello usato in sistemi multi-agente professionali su scala più ampia: invece di un orchestratore che "conosce" staticamente ogni singolo agente disponibile (come nell'esempio della Lezione 6.3, dove gli agenti erano funzioni Python importate direttamente), un orchestratore con discovery può adattarsi dinamicamente a un catalogo di agenti che **cresce nel tempo**, senza richiedere modifiche al codice dell'orchestratore stesso ogni volta che un nuovo agente viene aggiunto al sistema.
 
 ---
 
@@ -204,7 +203,7 @@ nella versione 1.3.0, SENZA preavviso
   difficili da diagnosticare
 ```
 
-Questo scenario motiva direttamente perché il versionamento (già introdotto nella Lezione 6.1, e approfondito con maggiore rigore nella Lezione 8.4) sia così importante per le Agent Card: una modifica che rompe la compatibilità con l'interfaccia pubblica dichiarata dovrebbe sempre corrispondere a un cambiamento di versione esplicito (tipicamente, nel semantic versioning, un incremento del numero "maggiore" — da `1.x.x` a `2.0.0`), permettendo a chi dipende dall'agente di sapere, semplicemente guardando il numero di versione, se un aggiornamento potrebbe richiedere modifiche dal proprio lato.
+Questo scenario motiva direttamente perché il versionamento (già introdotto nella Lezione 7.1, e approfondito con maggiore rigore nella Lezione 9.4) sia così importante per le Agent Card: una modifica che rompe la compatibilità con l'interfaccia pubblica dichiarata dovrebbe sempre corrispondere a un cambiamento di versione esplicito (tipicamente, nel semantic versioning, un incremento del numero "maggiore" — da `1.x.x` a `2.0.0`), permettendo a chi dipende dall'agente di sapere, semplicemente guardando il numero di versione, se un aggiornamento potrebbe richiedere modifiche dal proprio lato.
 
 ---
 
@@ -269,7 +268,7 @@ Domanda guida: "questo serve a chi *mantiene* l'agente o a chi lo *usa* dall'est
 <details>
 <summary>💡 Mostra soluzione</summary>
 
-**(a) `NON_fa`:** previene l'errore comune di assumere che un agente gestisca un compito fuori dal suo dominio solo perché nessuno lo ha escluso. È la stessa logica della `description` di uno strumento (Lezione 4.4): l'ambiguità porta a usi scorretti. Dichiarare i confini protegge il sistema.
+**(a) `NON_fa`:** previene l'errore comune di assumere che un agente gestisca un compito fuori dal suo dominio solo perché nessuno lo ha escluso. È la stessa logica della `description` di uno strumento (Lezione 5.4): l'ambiguità porta a usi scorretti. Dichiarare i confini protegge il sistema.
 
 **(b) Discovery:** è il processo con cui un orchestratore **sceglie dinamicamente** l'agente adatto leggendo le Agent Card disponibili, invece di avere ogni agente importato/cablato staticamente. Vantaggio: il catalogo di agenti può **crescere nel tempo** senza modificare il codice dell'orchestratore — basta aggiungere un nuovo agente con la sua Agent Card.
 
@@ -294,8 +293,8 @@ Il team rinomina nello schema di output `percentuale_variazione` in `variazione_
 
 ## Connessioni
 
-**Viene da:** Lezione 6.2 (L'Agent Package) — l'Agent Card è un componente specifico, con uno scopo distinto da `agent.yaml`, di quella stessa struttura. Lezione 5.3 (L'Orchestratore) — il principio di incapsulamento introdotto lì trova qui una formalizzazione completa.
+**Viene da:** Lezione 7.2 (L'Agent Package) — l'Agent Card è un componente specifico, con uno scopo distinto da `agent.yaml`, di quella stessa struttura. Lezione 6.3 (L'Orchestratore) — il principio di incapsulamento introdotto lì trova qui una formalizzazione completa.
 
-**Porta a:** Lezione 6.5 (Contratti tra Agenti) — gli schemi di input/output referenziati nell'Agent Card riceveranno qui un trattamento tecnico completo e rigoroso.
+**Porta a:** Lezione 7.5 (Contratti tra Agenti) — gli schemi di input/output referenziati nell'Agent Card riceveranno qui un trattamento tecnico completo e rigoroso.
 
-**Ritroverai questi concetti in:** Lezione 7.1 (Progettare un Workflow Agentivo) — il protocollo A2A menzionerà esplicitamente le Agent Card come meccanismo di interoperabilità tra agenti di sistemi diversi. Lezione 8.4 (Governance e Versioning) — il ciclo di vita e il versionamento delle Agent Card, qui solo introdotti, riceveranno un trattamento formale completo.
+**Ritroverai questi concetti in:** Lezione 8.1 (Progettare un Workflow Agentivo) — il protocollo A2A menzionerà esplicitamente le Agent Card come meccanismo di interoperabilità tra agenti di sistemi diversi. Lezione 9.4 (Governance e Versioning) — il ciclo di vita e il versionamento delle Agent Card, qui solo introdotti, riceveranno un trattamento formale completo.

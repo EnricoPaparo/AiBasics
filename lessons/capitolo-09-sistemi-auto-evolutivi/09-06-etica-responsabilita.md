@@ -3,8 +3,10 @@ titolo: "Etica e Responsabilità nell'AI"
 durata_stimata: "25 min"
 difficolta: "Intermedio"
 ---
-
 # Etica e Responsabilità nell'AI
+
+> 📌 **In breve** · ⏱ ~40 min · 🎯 Saprai usare e costruire AI in modo responsabile e legale.
+> Bias, privacy/GDPR, EU AI Act, trasparenza, responsabilità: il completamento del “patto sull’uso responsabile” iniziato alla primissima lezione.
 
 Costruire un sistema AI che funziona tecnicamente è necessario ma non sufficiente. Come professionista, sei responsabile non solo del codice che scrivi, ma delle conseguenze che produce nel mondo reale.
 

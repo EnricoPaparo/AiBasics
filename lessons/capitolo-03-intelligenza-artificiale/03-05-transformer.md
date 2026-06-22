@@ -1,13 +1,13 @@
 ---
-id: "02-05"
+id: "03-05"
 titolo: "L'architettura Transformer: la rivoluzione che ha reso possibile gli LLM"
 sottotitolo: "Come un modello decide, parola per parola, cosa è rilevante nel contesto"
-capitolo: 2
+capitolo: 3
 capitolo_titolo: "L'Intelligenza Artificiale: Cosa È Davvero"
 lezione: 5
 durata_stimata: "65 minuti"
 difficolta: "base"
-prerequisiti: ["02-04"]
+prerequisiti: ["03-04"]
 concetti_chiave:
   - Transformer
   - attention
@@ -24,12 +24,11 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # L'architettura Transformer: la rivoluzione che ha reso possibile gli LLM
 
 ## Introduzione
 
-Questa è l'ultima lezione del Capitolo 2, e in un certo senso la più importante: tutto ciò che abbiamo costruito finora — reti neurali, strati, embedding, similarità semantica — converge in un'unica architettura che ha cambiato il corso dell'intelligenza artificiale a partire dal 2017. Il Transformer non è semplicemente "un'altra rete neurale": è l'architettura specifica che rende possibile, tecnicamente ed economicamente, addestrare modelli linguistici della scala di Claude o GPT.
+Questa è l'ultima lezione del Capitolo 3, e in un certo senso la più importante: tutto ciò che abbiamo costruito finora — reti neurali, strati, embedding, similarità semantica — converge in un'unica architettura che ha cambiato il corso dell'intelligenza artificiale a partire dal 2017. Il Transformer non è semplicemente "un'altra rete neurale": è l'architettura specifica che rende possibile, tecnicamente ed economicamente, addestrare modelli linguistici della scala di Claude o GPT.
 
 Avevamo lasciato un problema aperto alla fine della lezione precedente: i primi sistemi di embedding assegnavano un vettore fisso a ogni parola, incapace di adattarsi al contesto specifico in cui quella parola appariva. Questa lezione risolve esattamente quel problema, introducendo il meccanismo che permette a un modello di "guardare" dinamicamente tutte le altre parole della frase per decidere cosa è rilevante, in quel momento, per interpretare correttamente ciascuna parola.
 
@@ -66,7 +65,7 @@ Questo approccio sequenziale ha due problemi gravi, che lo rendevano inadatto a 
 
 ### Problema 1: la memoria si degrada con la distanza
 
-Pensa a leggere una frase molto lunga: "Il libro che mio nonno, che ha vissuto per anni in Sud America prima di tornare in Europa subito dopo la guerra, mi aveva regalato per il mio decimo compleanno, **era** rovinato." Per interpretare correttamente il verbo "era" (singolare, riferito a "libro"), il sistema deve "ricordare" un'informazione fornita molto prima nella frase, attraverso una catena lunghissima di stati intermedi. Nelle RNN, questa informazione tende a **diluirsi** progressivamente, esattamente come un sussurro che si distorce passando attraverso troppe persone in una catena — la stessa immagine usata per la backpropagation nella Lezione 2.3, qui applicata a un problema diverso ma concettualmente affine.
+Pensa a leggere una frase molto lunga: "Il libro che mio nonno, che ha vissuto per anni in Sud America prima di tornare in Europa subito dopo la guerra, mi aveva regalato per il mio decimo compleanno, **era** rovinato." Per interpretare correttamente il verbo "era" (singolare, riferito a "libro"), il sistema deve "ricordare" un'informazione fornita molto prima nella frase, attraverso una catena lunghissima di stati intermedi. Nelle RNN, questa informazione tende a **diluirsi** progressivamente, esattamente come un sussurro che si distorce passando attraverso troppe persone in una catena — la stessa immagine usata per la backpropagation nella Lezione 3.3, qui applicata a un problema diverso ma concettualmente affine.
 
 ### Problema 2: l'elaborazione sequenziale non si parallelizza
 
@@ -106,7 +105,7 @@ Calcolando l'attention per la parola "banca":
   provenienti da "siedo", "vicino" e "fiume"
 ```
 
-Questo risolve esattamente il limite di fine Lezione 2.4: "banca" non ha più un singolo embedding fisso, ma una rappresentazione che **cambia dinamicamente** in base a quali altre parole sono presenti nel contesto specifico. Nella frase "vado in banca a ritirare contanti", lo stesso meccanismo darebbe punteggi alti a "vado", "ritirare", "contanti", producendo una rappresentazione completamente diversa per la stessa parola "banca".
+Questo risolve esattamente il limite di fine Lezione 3.4: "banca" non ha più un singolo embedding fisso, ma una rappresentazione che **cambia dinamicamente** in base a quali altre parole sono presenti nel contesto specifico. Nella frase "vado in banca a ritirare contanti", lo stesso meccanismo darebbe punteggi alti a "vado", "ritirare", "contanti", producendo una rappresentazione completamente diversa per la stessa parola "banca".
 
 ### Perché questo risolve anche il problema della distanza
 
@@ -123,7 +122,7 @@ Calcolare questi punteggi di rilevanza per tutte le coppie di parole di una fras
 L'architettura Transformer originale era composta da due blocchi distinti, ciascuno con un ruolo specifico — una distinzione che vale la pena conoscere, anche se i moderni modelli linguistici di tipo "chat" come Claude usano principalmente una variante basata sul solo decoder.
 
 - **Encoder**: riceve il testo in input e costruisce una rappresentazione ricca, contestuale, di ogni parola, usando l'attention per "guardare" tutta la frase contemporaneamente (sia le parole precedenti sia quelle successive). È adatto a compiti come comprendere un testo, classificarlo, tradurlo
-- **Decoder**: genera testo **una parola alla volta**, ma può guardare (tramite attention) solo le parole già generate finora, non quelle future — per la semplice ragione che, al momento della generazione, le parole future non esistono ancora. È esattamente il meccanismo alla base della generazione di testo nei modelli linguistici, che vedremo nella Lezione 3.1
+- **Decoder**: genera testo **una parola alla volta**, ma può guardare (tramite attention) solo le parole già generate finora, non quelle future — per la semplice ragione che, al momento della generazione, le parole future non esistono ancora. È esattamente il meccanismo alla base della generazione di testo nei modelli linguistici, che vedremo nella Lezione 4.1
 
 ```
 ENCODER                              DECODER
@@ -140,7 +139,7 @@ I modelli della famiglia GPT e Claude sono, semplificando, architetture "solo de
 
 ## 5. Perché i Transformer scalano così bene
 
-Riassumendo i vantaggi rispetto alle RNN, e collegandoli a ciò che abbiamo visto nella Lezione 2.3 sui fattori della rivoluzione del Deep Learning (dati, calcolo, algoritmi):
+Riassumendo i vantaggi rispetto alle RNN, e collegandoli a ciò che abbiamo visto nella Lezione 3.3 sui fattori della rivoluzione del Deep Learning (dati, calcolo, algoritmi):
 
 - **Parallelizzazione massiccia**: l'attention può essere calcolata simultaneamente per intere sequenze, sfruttando pienamente le GPU (e i chip specializzati come le TPU)
 - **Gestione efficace di dipendenze a lunga distanza**: nessun degrado dell'informazione lungo sequenze lunghe, a differenza delle RNN
@@ -224,7 +223,7 @@ Un decoder, durante la generazione, può guardare (via attention) solo le parole
 
 **Se potesse "guardare avanti":** durante l'addestramento sarebbe un imbroglio — il modello vedrebbe la risposta che deve predire. Imparerebbe a "copiare" il token successivo invece di predirlo davvero, e a generazione reale (dove il futuro non c'è) crollerebbe. Per questo il decoder è "causale": ogni token dipende solo dal passato.
 
-**Parallelizzazione e scala:** poiché l'attention si calcola con moltiplicazioni di matrici eseguibili simultaneamente su tutta la sequenza, l'addestramento sfrutta a pieno GPU/TPU. Questo ha reso praticabile addestrare su quantità enormi di testo, e si è osservato empiricamente che **aumentando parametri e dati le prestazioni continuano a migliorare in modo prevedibile** — la "scalabilità" che ha giustificato gli investimenti negli LLM giganti del Capitolo 3.
+**Parallelizzazione e scala:** poiché l'attention si calcola con moltiplicazioni di matrici eseguibili simultaneamente su tutta la sequenza, l'addestramento sfrutta a pieno GPU/TPU. Questo ha reso praticabile addestrare su quantità enormi di testo, e si è osservato empiricamente che **aumentando parametri e dati le prestazioni continuano a migliorare in modo prevedibile** — la "scalabilità" che ha giustificato gli investimenti negli LLM giganti del Capitolo 4.
 
 </details>
 
@@ -232,11 +231,11 @@ Un decoder, durante la generazione, può guardare (via attention) solo le parole
 
 ## Connessioni
 
-**Viene da:** Lezione 2.4 — qui risolviamo esplicitamente il limite del vettore fisso per parola, lasciato aperto in chiusura della lezione precedente.
+**Viene da:** Lezione 3.4 — qui risolviamo esplicitamente il limite del vettore fisso per parola, lasciato aperto in chiusura della lezione precedente.
 
-**Porta a:** Capitolo 3 (I Modelli Linguistici di Grandi Dimensioni) — il Transformer, in particolare l'architettura solo-decoder, è il fondamento tecnico esatto su cui sono costruiti Claude, GPT, e tutti gli LLM moderni. La Lezione 3.1 inizierà esattamente da dove questa lezione finisce.
+**Porta a:** Capitolo 4 (I Modelli Linguistici di Grandi Dimensioni) — il Transformer, in particolare l'architettura solo-decoder, è il fondamento tecnico esatto su cui sono costruiti Claude, GPT, e tutti gli LLM moderni. La Lezione 4.1 inizierà esattamente da dove questa lezione finisce.
 
-**Ritroverai questi concetti in:** Lezione 5.2 (ReAct e Pattern di Ragionamento) — il meccanismo di attention sul contesto pregresso è ciò che permette a un agente di "ricordare" i passi precedenti del proprio ragionamento all'interno di una stessa sessione. Lezione 4.6 (Memory) — i limiti del context window, che affronteremo lì, sono diretta conseguenza di come l'attention deve calcolare relazioni tra tutte le coppie di token nella sequenza.
+**Ritroverai questi concetti in:** Lezione 6.2 (ReAct e Pattern di Ragionamento) — il meccanismo di attention sul contesto pregresso è ciò che permette a un agente di "ricordare" i passi precedenti del proprio ragionamento all'interno di una stessa sessione. Lezione 5.6 (Memory) — i limiti del context window, che affronteremo lì, sono diretta conseguenza di come l'attention deve calcolare relazioni tra tutte le coppie di token nella sequenza.
 
 ---
 

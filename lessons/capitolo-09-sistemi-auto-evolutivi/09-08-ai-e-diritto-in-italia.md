@@ -23,7 +23,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # AI e diritto in Italia: GDPR, EU AI Act e responsabilità per chi sviluppa
 
 ## Introduzione: perché il diritto conta per uno sviluppatore AI

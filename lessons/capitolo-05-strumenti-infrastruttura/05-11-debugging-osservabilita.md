@@ -3,7 +3,6 @@ titolo: "Debugging e Osservabilità degli Agenti"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Debugging e Osservabilità degli Agenti
 
 Un agente AI non è un programma tradizionale: il suo comportamento è parzialmente non deterministico, il percorso di esecuzione dipende dall'output del modello, e i bug possono manifestarsi come "risposte strane" invece di eccezioni esplicite. Senza gli strumenti giusti, debuggare un agente è come cercare un ago in un pagliaio al buio.

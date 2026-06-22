@@ -1,13 +1,13 @@
 ---
-id: "07-02"
+id: "08-02"
 titolo: "LangGraph: costruire workflow come grafi orientati con stato"
 sottotitolo: "Dal diagramma su carta al codice funzionante: lo strumento standard per workflow agentivi"
-capitolo: 7
-capitolo_titolo: "Workflow Multi-Agente: Design e Implementazione"
+capitolo: 8
+capitolo_titolo: "Workflow Multi-Agente"
 lezione: 2
 durata_stimata: "80 minuti"
 difficolta: "avanzato"
-prerequisiti: ["07-01", "04-05"]
+prerequisiti: ["08-01","05-05"]
 concetti_chiave:
   - LangGraph
   - StateGraph
@@ -22,7 +22,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # LangGraph: costruire workflow come grafi orientati con stato
 
 ## Introduzione
@@ -31,7 +30,7 @@ versione: "1.0"
 
 Nella lezione precedente abbiamo progettato un workflow interamente su "carta": diagrammi, principi di posizionamento dei checkpoint, vocabolario di nodi e archi. Questa lezione trasforma quel design in codice eseguibile, usando **LangGraph**, il framework oggi più diffuso per costruire esattamente questo tipo di sistema.
 
-È importante affrontare LangGraph con la giusta prospettiva: non è uno strumento che introduce concetti nuovi rispetto a quanto già costruito nel corso — è un framework che **formalizza e rende robusta** l'implementazione di pattern che, fino a questa lezione, abbiamo scritto a mano con cicli `for` e funzioni Python (Lezioni 5.1, 5.3, 5.4). Tutto quello che LangGraph fa, lo hai già fatto tu stesso, in forma più semplice, nelle lezioni precedenti — qui ne vediamo la versione professionale e scalabile.
+È importante affrontare LangGraph con la giusta prospettiva: non è uno strumento che introduce concetti nuovi rispetto a quanto già costruito nel corso — è un framework che **formalizza e rende robusta** l'implementazione di pattern che, fino a questa lezione, abbiamo scritto a mano con cicli `for` e funzioni Python (Lezioni 6.1, 6.3, 6.4). Tutto quello che LangGraph fa, lo hai già fatto tu stesso, in forma più semplice, nelle lezioni precedenti — qui ne vediamo la versione professionale e scalabile.
 
 ---
 
@@ -48,13 +47,13 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Perché LangGraph, e non solo cicli Python
 
-Negli esempi del Capitolo 5 (in particolare la Lezione 5.4), abbiamo costruito pipeline con cicli `for` e chiamate di funzione sequenziali. Questo approccio funziona bene per workflow semplici, ma incontra limiti concreti quando il grafo progettato nella Lezione 7.1 diventa più complesso:
+Negli esempi del Capitolo 6 (in particolare la Lezione 6.4), abbiamo costruito pipeline con cicli `for` e chiamate di funzione sequenziali. Questo approccio funziona bene per workflow semplici, ma incontra limiti concreti quando il grafo progettato nella Lezione 8.1 diventa più complesso:
 
 ```
 LIMITI DEL CODICE PYTHON "FATTO A MANO"
 
 - Gestire archi condizionali multipli (Sezione 2 della
-  Lezione 7.1) con semplici if/else diventa rapidamente
+  Lezione 8.1) con semplici if/else diventa rapidamente
   illeggibile quando le condizioni si moltiplicano
 
 - Implementare cicli controllati (tornare a un nodo
@@ -76,7 +75,7 @@ LangGraph risolve questi tre problemi fornendo un'API dedicata per dichiarare no
 
 ## 2. Il concetto di StateGraph
 
-Un `StateGraph` è, letteralmente, l'implementazione tecnica del grafo progettato nella Lezione 7.1: un insieme di nodi, ciascuno dei quali legge e scrive su uno **stato condiviso**, esattamente come il `StatoWorkflowRequisiti` definito in quella lezione.
+Un `StateGraph` è, letteralmente, l'implementazione tecnica del grafo progettato nella Lezione 8.1: un insieme di nodi, ciascuno dei quali legge e scrive su uno **stato condiviso**, esattamente come il `StatoWorkflowRequisiti` definito in quella lezione.
 
 ```python
 from langgraph.graph import StateGraph, END
@@ -84,7 +83,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class StatoWorkflowRequisiti(BaseModel):
-    """Lo stesso stato definito nella Lezione 7.1."""
+    """Lo stesso stato definito nella Lezione 8.1."""
     cartella_input: str
     testo_estratto: Optional[str] = None
     requisiti_identificati: Optional[dict] = None
@@ -96,7 +95,7 @@ def nodo_estrazione(stato: StatoWorkflowRequisiti) -> dict:
     """
     Un NODO del grafo: riceve lo stato attuale, esegue
     il proprio lavoro (qui useremmo l'agente di estrazione,
-    Lezione 5.1), e restituisce gli AGGIORNAMENTI allo stato.
+    Lezione 6.1), e restituisce gli AGGIORNAMENTI allo stato.
     """
     testo = f"Testo estratto dalla cartella {stato.cartella_input}"
     return {"testo_estratto": testo}
@@ -116,7 +115,7 @@ def decidi_se_richiedere_chiarimento(stato: StatoWorkflowRequisiti) -> str:
     """
     Una FUNZIONE DI ROUTING: decide quale arco seguire,
     implementando il checkpoint "Ambiguità rilevata?"
-    della Lezione 7.1.
+    della Lezione 8.1.
     """
     if stato.ambiguita_rilevate:
         return "richiedi_chiarimento"
@@ -134,7 +133,7 @@ grafo.add_node("costruisci_handoff", lambda s: {"handoff_pronto": True})
 grafo.set_entry_point("estrazione")
 grafo.add_edge("estrazione", "analisi")
 
-# ARCO CONDIZIONALE: implementa il checkpoint della Lezione 7.1
+# ARCO CONDIZIONALE: implementa il checkpoint della Lezione 8.1
 grafo.add_conditional_edges(
     "analisi",
     decidi_se_richiedere_chiarimento,
@@ -155,7 +154,7 @@ risultato = workflow_compilato.invoke(
 )
 ```
 
-Confronta questo codice con il diagramma della Lezione 7.1: `add_node` corrisponde esattamente ai nodi disegnati, `add_conditional_edges` implementa precisamente il checkpoint "Ambiguità rilevata?" con la sua diramazione condizionale. **Il design ha preceduto l'implementazione**, e l'implementazione la rispetta fedelmente — questo è precisamente il valore della disciplina di progettazione insegnata nella lezione precedente.
+Confronta questo codice con il diagramma della Lezione 8.1: `add_node` corrisponde esattamente ai nodi disegnati, `add_conditional_edges` implementa precisamente il checkpoint "Ambiguità rilevata?" con la sua diramazione condizionale. **Il design ha preceduto l'implementazione**, e l'implementazione la rispetta fedelmente — questo è precisamente il valore della disciplina di progettazione insegnata nella lezione precedente.
 
 ---
 
@@ -195,7 +194,7 @@ Questo pattern è esattamente ciò che serve per il tuo caso d'uso: una cartella
 
 ## 4. Persistenza dello stato: il checkpointing di LangGraph
 
-Torniamo a un limite identificato nella Sezione 1: cosa succede se il workflow deve **fermarsi** (ad esempio, al checkpoint di revisione umana che affronteremo nella Lezione 7.4) e riprendere solo dopo che un umano ha fornito un feedback, potenzialmente ore o giorni dopo?
+Torniamo a un limite identificato nella Sezione 1: cosa succede se il workflow deve **fermarsi** (ad esempio, al checkpoint di revisione umana che affronteremo nella Lezione 8.4) e riprendere solo dopo che un umano ha fornito un feedback, potenzialmente ore o giorni dopo?
 
 ```python
 from langgraph.checkpoint.memory import MemorySaver
@@ -224,7 +223,7 @@ risultato_finale = workflow_compilato.invoke(
 )
 ```
 
-Questo meccanismo di persistenza è precisamente ciò che rende possibile, in modo robusto e senza dover implementare manualmente serializzazione e ripristino, il pattern di **handoff asincrono** introdotto nella Lezione 6.6: il workflow può fermarsi per un tempo arbitrariamente lungo, in attesa di un intervento esterno, senza perdere il lavoro già svolto.
+Questo meccanismo di persistenza è precisamente ciò che rende possibile, in modo robusto e senza dover implementare manualmente serializzazione e ripristino, il pattern di **handoff asincrono** introdotto nella Lezione 7.6: il workflow può fermarsi per un tempo arbitrariamente lungo, in attesa di un intervento esterno, senza perdere il lavoro già svolto.
 
 ---
 
@@ -261,8 +260,8 @@ Questa traccia rende esplicito un punto importante: il **codice del grafo non de
 
 ## Riepilogo
 
-- **LangGraph** non introduce concetti nuovi rispetto al Capitolo 5, ma fornisce un'implementazione robusta e leggibile per pattern (cicli, archi condizionali, persistenza) che diventano difficili da gestire correttamente a mano quando il workflow cresce in complessità.
-- Un **StateGraph** dichiara nodi (funzioni che leggono e scrivono sullo stato) e archi (incondizionati o condizionali tramite funzioni di routing dedicate), implementando fedelmente il design concettuale della Lezione 7.1.
+- **LangGraph** non introduce concetti nuovi rispetto al Capitolo 6, ma fornisce un'implementazione robusta e leggibile per pattern (cicli, archi condizionali, persistenza) che diventano difficili da gestire correttamente a mano quando il workflow cresce in complessità.
+- Un **StateGraph** dichiara nodi (funzioni che leggono e scrivono sullo stato) e archi (incondizionati o condizionali tramite funzioni di routing dedicate), implementando fedelmente il design concettuale della Lezione 8.1.
 - I **nodi paralleli** permettono di eseguire più agenti contemporaneamente su parti indipendenti dello stato, un guadagno significativo per casi come l'elaborazione di cartelle con file di tipo misto.
 - Il **checkpointing** garantisce la persistenza dello stato tra esecuzioni separate, rendendo possibile, in modo robusto, l'interruzione del workflow per un intervento umano che potrebbe avvenire molto tempo dopo.
 
@@ -284,7 +283,7 @@ Questa traccia rende esplicito un punto importante: il **codice del grafo non de
 
 ### Esercizio 1 — Perché LangGraph 🟢 Base
 
-LangGraph non introduce concetti nuovi rispetto al Capitolo 5. Quali tre problemi del codice Python "fatto a mano" risolve quando il workflow cresce?
+LangGraph non introduce concetti nuovi rispetto al Capitolo 6. Quali tre problemi del codice Python "fatto a mano" risolve quando il workflow cresce?
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -329,11 +328,11 @@ Criterio: si può parallelizzare solo ciò che è **indipendente nei dati**. Se 
 
 ## Connessioni
 
-**Viene da:** Lezione 7.1 (Progettare un Workflow Agentivo) — questa lezione implementa fedelmente il grafo progettato concettualmente in quella lezione. Lezione 5.4 (Single vs Multi-Agent) — l'architettura a grafo introdotta lì trova qui un'implementazione tecnica completa.
+**Viene da:** Lezione 8.1 (Progettare un Workflow Agentivo) — questa lezione implementa fedelmente il grafo progettato concettualmente in quella lezione. Lezione 6.4 (Single vs Multi-Agent) — l'architettura a grafo introdotta lì trova qui un'implementazione tecnica completa.
 
-**Porta a:** Lezione 7.3 (Il Layer di Review) — vedremo come implementare un nodo di revisione come parte specifica e formalizzata del grafo LangGraph.
+**Porta a:** Lezione 8.3 (Il Layer di Review) — vedremo come implementare un nodo di revisione come parte specifica e formalizzata del grafo LangGraph.
 
-**Ritroverai questi concetti in:** Lezione 7.4 (Human-in-the-Loop) — il checkpointing qui introdotto è il meccanismo tecnico esatto che rende possibile l'interruzione del workflow per attesa di feedback umano. Lezione 8.3 (Riassorbimento della Conoscenza) — la persistenza dello stato tra esecuzioni, qui vista per un singolo workflow, anticipa il problema più ampio di come un sistema accumula esperienza nel tempo.
+**Ritroverai questi concetti in:** Lezione 8.4 (Human-in-the-Loop) — il checkpointing qui introdotto è il meccanismo tecnico esatto che rende possibile l'interruzione del workflow per attesa di feedback umano. Lezione 9.3 (Riassorbimento della Conoscenza) — la persistenza dello stato tra esecuzioni, qui vista per un singolo workflow, anticipa il problema più ampio di come un sistema accumula esperienza nel tempo.
 
 ---
 

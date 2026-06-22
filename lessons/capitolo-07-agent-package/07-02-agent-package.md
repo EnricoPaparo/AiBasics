@@ -1,13 +1,13 @@
 ---
-id: "06-02"
+id: "07-02"
 titolo: "L'Agent Package: struttura di file e directory di un agente professionale"
 sottotitolo: "Dall'agente come script all'agente come unità deployabile e mantenibile"
-capitolo: 6
-capitolo_titolo: "L'Agent Package: Struttura, Contratti e Artefatti"
+capitolo: 7
+capitolo_titolo: "L'Agent Package"
 lezione: 2
 durata_stimata: "75 minuti"
 difficolta: "avanzato"
-prerequisiti: ["06-01"]
+prerequisiti: ["07-01"]
 concetti_chiave:
   - agent package
   - agent.yaml
@@ -22,12 +22,11 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # L'Agent Package: struttura di file e directory di un agente professionale
 
 ## Introduzione
 
-Questa è una delle lezioni più importanti dell'intero corso. Fino a ora, ogni agente che abbiamo costruito — nelle Lezioni 5.1, 5.2, 5.3 — viveva interamente dentro un singolo script Python: il system prompt era una stringa inline, gli strumenti erano funzioni definite nello stesso file, la configurazione era cablata direttamente nel codice. Questo approccio è perfetto per imparare e per prototipare velocemente, ma si rompe non appena un sistema reale deve essere mantenuto da un team, versionato nel tempo, e fatto evolvere senza il rischio costante di rompere qualcosa.
+Questa è una delle lezioni più importanti dell'intero corso. Fino a ora, ogni agente che abbiamo costruito — nelle Lezioni 6.1, 6.2, 6.3 — viveva interamente dentro un singolo script Python: il system prompt era una stringa inline, gli strumenti erano funzioni definite nello stesso file, la configurazione era cablata direttamente nel codice. Questo approccio è perfetto per imparare e per prototipare velocemente, ma si rompe non appena un sistema reale deve essere mantenuto da un team, versionato nel tempo, e fatto evolvere senza il rischio costante di rompere qualcosa.
 
 L'**agent package** è la risposta a questo problema: una struttura di file e cartelle standardizzata che trasforma un agente da "script che funziona sul mio computer" a **unità deployabile, testabile, e mantenibile** — esattamente come un progetto software professionale ha una struttura prevedibile (codice, test, configurazione, documentazione), invece di essere un singolo file disordinato.
 
@@ -46,10 +45,10 @@ Al termine di questa lezione sarai in grado di:
 
 ## 1. Il problema: cosa succede quando un agente "script" cresce
 
-Riprendiamo l'agente Analista della Lezione 5.3, e immaginiamo la sua evoluzione naturale in un contesto professionale reale: il team vuole aggiungere nuovi strumenti, vuole poter testare il comportamento dell'agente prima di ogni modifica, vuole che un collega possa capire rapidamente cosa fa l'agente senza leggere tutto il codice Python riga per riga, e vuole poter aggiornare il prompt senza dover modificare (e potenzialmente rompere) la logica di esecuzione.
+Riprendiamo l'agente Analista della Lezione 6.3, e immaginiamo la sua evoluzione naturale in un contesto professionale reale: il team vuole aggiungere nuovi strumenti, vuole poter testare il comportamento dell'agente prima di ogni modifica, vuole che un collega possa capire rapidamente cosa fa l'agente senza leggere tutto il codice Python riga per riga, e vuole poter aggiornare il prompt senza dover modificare (e potenzialmente rompere) la logica di esecuzione.
 
 ```
-AGENTE "SCRIPT" (come nelle Lezioni 5.1-5.5)
+AGENTE "SCRIPT" (come nelle Lezioni 6.1-5.5)
 
 agente_analista.py
 ├── system prompt cablato come stringa
@@ -79,20 +78,20 @@ L'agent package risolve ciascuno di questi problemi separando, in file e cartell
 ├── agent.yaml              ← configurazione e identità dell'agente
 ├── README.md               ← documentazione per gli umani
 ├── prompts/
-│   ├── system.md            ← il prompt di sistema (Lezione 3.4)
-│   └── esempi_few_shot.md   ← esempi per few-shot prompting (Lezione 3.4)
+│   ├── system.md            ← il prompt di sistema (Lezione 4.4)
+│   └── esempi_few_shot.md   ← esempi per few-shot prompting (Lezione 4.4)
 ├── tools/
 │   ├── query_database.py    ← implementazione dello strumento
-│   └── manifest.yaml        ← tool manifest (Lezione 4.4)
+│   └── manifest.yaml        ← tool manifest (Lezione 5.4)
 ├── skills/
-│   └── analisi_trend.md     ← competenza riutilizzabile (Lezione 6.7)
+│   └── analisi_trend.md     ← competenza riutilizzabile (Lezione 7.7)
 ├── schemas/
-│   ├── input_schema.json    ← contratto di input (Lezione 6.5)
-│   └── output_schema.json   ← contratto di output (Lezione 6.5)
+│   ├── input_schema.json    ← contratto di input (Lezione 7.5)
+│   └── output_schema.json   ← contratto di output (Lezione 7.5)
 ├── memory/
-│   └── config.yaml          ← configurazione memoria (Lezione 4.6)
+│   └── config.yaml          ← configurazione memoria (Lezione 5.6)
 └── evals/
-    └── casi_test.yaml        ← test e valutazione (Lezione 7.5)
+    └── casi_test.yaml        ← test e valutazione (Lezione 8.5)
 ```
 
 Esaminiamo il ruolo specifico di ciascun componente.
@@ -109,7 +108,7 @@ descrizione: >
 modello: "claude-sonnet-4-6"
 parametri:
   max_tokens: 1024
-  temperature: 0.2  # bassa: precisione richiesta (Lezione 3.4)
+  temperature: 0.2  # bassa: precisione richiesta (Lezione 4.4)
 prompt_sistema: "prompts/system.md"
 strumenti:
   - "tools/manifest.yaml"
@@ -119,7 +118,7 @@ owner: "team-data-engineering"
 stato: "produzione"
 ```
 
-Questo file, scritto secondo le convenzioni YAML viste nella Lezione 6.1, è il **punto di ingresso unico**: chiunque (un collega, un orchestratore, uno script di deploy automatico) può leggere `agent.yaml` e capire immediatamente identità, configurazione, e dove trovare ogni altro componente dell'agente — senza dover esplorare manualmente l'intera struttura di cartelle.
+Questo file, scritto secondo le convenzioni YAML viste nella Lezione 7.1, è il **punto di ingresso unico**: chiunque (un collega, un orchestratore, uno script di deploy automatico) può leggere `agent.yaml` e capire immediatamente identità, configurazione, e dove trovare ogni altro componente dell'agente — senza dover esplorare manualmente l'intera struttura di cartelle.
 
 ### `prompts/`: i prompt come file separati e versionabili
 
@@ -139,12 +138,12 @@ Rispondi sempre con numeri precisi e percentuali, evitando
 linguaggio vago come "buono" o "non ottimale".
 ```
 
-Separare il prompt in un file dedicato, con il proprio frontmatter (Lezione 6.1) e il proprio numero di versione, è esattamente ciò che permette a un membro del team di **modificare e migliorare il comportamento dell'agente senza toccare una sola riga di codice Python**. Approfondiremo questo principio con grande rigore nella Lezione 6.4.
+Separare il prompt in un file dedicato, con il proprio frontmatter (Lezione 7.1) e il proprio numero di versione, è esattamente ciò che permette a un membro del team di **modificare e migliorare il comportamento dell'agente senza toccare una sola riga di codice Python**. Approfondiremo questo principio con grande rigore nella Lezione 7.4.
 
 ### `tools/`: implementazione e manifest degli strumenti
 
 ```yaml
-# tools/manifest.yaml — il tool manifest, già anticipato nella Lezione 4.4
+# tools/manifest.yaml — il tool manifest, già anticipato nella Lezione 5.4
 
 strumenti:
   - nome: "query_database"
@@ -159,13 +158,13 @@ strumenti:
 
 ### `skills/`, `schemas/`, `memory/`, `evals/`: anticipazioni delle prossime lezioni
 
-Le restanti cartelle corrispondono a concetti che approfondiremo singolarmente: `skills/` conterrà competenze riutilizzabili (Lezione 6.7), `schemas/` i contratti formali di input e output (Lezione 6.5), `memory/` la configurazione della memoria persistente (estendendo la Lezione 4.6), `evals/` i casi di test per la valutazione (anticipando la Lezione 7.5). In questa lezione ci concentriamo sulla **struttura complessiva**; il contenuto specifico di ciascuna cartella sarà oggetto delle lezioni successive.
+Le restanti cartelle corrispondono a concetti che approfondiremo singolarmente: `skills/` conterrà competenze riutilizzabili (Lezione 7.7), `schemas/` i contratti formali di input e output (Lezione 7.5), `memory/` la configurazione della memoria persistente (estendendo la Lezione 5.6), `evals/` i casi di test per la valutazione (anticipando la Lezione 8.5). In questa lezione ci concentriamo sulla **struttura complessiva**; il contenuto specifico di ciascuna cartella sarà oggetto delle lezioni successive.
 
 ---
 
 ## 3. Implementazione pratica: caricare un Agent Package in codice
 
-Vediamo ora come un programma può **leggere** questa struttura e costruire, a partire da essa, un agente effettivamente eseguibile — collegando l'organizzazione su file vista sopra al codice degli agenti costruito nel Capitolo 5.
+Vediamo ora come un programma può **leggere** questa struttura e costruire, a partire da essa, un agente effettivamente eseguibile — collegando l'organizzazione su file vista sopra al codice degli agenti costruito nel Capitolo 6.
 
 ```python
 import yaml
@@ -183,7 +182,7 @@ def carica_agent_package(percorso_cartella: str) -> dict:
         config = yaml.safe_load(f)
 
     # 2. Leggi il prompt di sistema (riusando il parser
-    #    di frontmatter della Lezione 6.1)
+    #    di frontmatter della Lezione 7.1)
     percorso_prompt = os.path.join(percorso_cartella, config["prompt_sistema"])
     _, system_prompt = estrai_frontmatter(percorso_prompt)
 
@@ -211,7 +210,7 @@ def carica_agent_package(percorso_cartella: str) -> dict:
 def esegui_da_package(percorso_cartella: str, obiettivo: str) -> str:
     """
     Esegue un agente costruito interamente a partire dal
-    suo agent package, riusando il loop della Lezione 5.1.
+    suo agent package, riusando il loop della Lezione 6.1.
     """
     agente = carica_agent_package(percorso_cartella)
     client = anthropic.Anthropic()
@@ -235,7 +234,7 @@ risultato = esegui_da_package(
 )
 ```
 
-Osserva la trasformazione concettuale rispetto al codice della Lezione 5.1: **nessuna informazione di configurazione è più scritta direttamente nel codice Python**. Il modello da usare, i parametri di generazione, il prompt di sistema, gli strumenti disponibili — tutto viene letto dinamicamente dalla struttura di file dell'agent package. Questo significa che modificare il comportamento dell'agente (cambiare il prompt, aggiungere uno strumento, aggiustare la temperature) non richiede più toccare `esegui_da_package`, ma solo modificare i file di configurazione appropriati.
+Osserva la trasformazione concettuale rispetto al codice della Lezione 6.1: **nessuna informazione di configurazione è più scritta direttamente nel codice Python**. Il modello da usare, i parametri di generazione, il prompt di sistema, gli strumenti disponibili — tutto viene letto dinamicamente dalla struttura di file dell'agent package. Questo significa che modificare il comportamento dell'agente (cambiare il prompt, aggiungere uno strumento, aggiustare la temperature) non richiede più toccare `esegui_da_package`, ma solo modificare i file di configurazione appropriati.
 
 ---
 
@@ -270,10 +269,10 @@ le modifiche         cambia a ogni             (prompt, schema,
 
 ## Esempio Pratico: Da Script a Package, una Migrazione Concreta
 
-Confrontiamo direttamente l'agente Analista della Lezione 5.3 (uno script) con la sua trasformazione in agent package:
+Confrontiamo direttamente l'agente Analista della Lezione 6.3 (uno script) con la sua trasformazione in agent package:
 
 ```
-PRIMA (Lezione 5.3, script):
+PRIMA (Lezione 6.3, script):
 
 def agente_analista(dati_richiesta: str) -> str:
     client = anthropic.Anthropic()
@@ -298,7 +297,7 @@ agenti/agente-analista-vendite/
   solo per l'Analista Vendite
 ```
 
-Il punto cruciale: `esegui_da_package` non contiene **nulla** di specifico sull'Analista Vendite. È una funzione generica, riutilizzabile per qualsiasi agent package ben strutturato — un vantaggio impossibile da ottenere con l'approccio a script della Lezione 5.3, dove ogni agente richiedeva la propria funzione dedicata con configurazione cablata internamente.
+Il punto cruciale: `esegui_da_package` non contiene **nulla** di specifico sull'Analista Vendite. È una funzione generica, riutilizzabile per qualsiasi agent package ben strutturato — un vantaggio impossibile da ottenere con l'approccio a script della Lezione 6.3, dove ogni agente richiedeva la propria funzione dedicata con configurazione cablata internamente.
 
 ---
 
@@ -366,7 +365,7 @@ Restano **completamente intoccati** il codice Python di esecuzione (`carica_agen
 - **Versionamento:** nello script ogni modifica cambia l'intero `.py`, difficile isolare *cosa* è cambiato; nel package ogni componente (prompt, schema, tool) è versionato indipendentemente.
 - **Esecuzione generica:** una funzione come `esegui_da_package()` funziona per *qualsiasi* package ben strutturato, mentre lo script richiede una funzione dedicata per ogni agente con config cablata.
 
-**(b) Evitare la duplicazione:** mettere `query_database` in una posizione **condivisa** (es. una cartella `tools/` comune o una libreria di strumenti riutilizzabili) e fare in modo che entrambi gli agent package vi facciano **riferimento** dal proprio manifest, invece di copiare il codice. È lo stesso principio del tool registry (Lezione 4.4) e anticipa la skill library (Lezione 6.7): centralizzare ciò che è condiviso, non duplicarlo.
+**(b) Evitare la duplicazione:** mettere `query_database` in una posizione **condivisa** (es. una cartella `tools/` comune o una libreria di strumenti riutilizzabili) e fare in modo che entrambi gli agent package vi facciano **riferimento** dal proprio manifest, invece di copiare il codice. È lo stesso principio del tool registry (Lezione 5.4) e anticipa la skill library (Lezione 7.7): centralizzare ciò che è condiviso, non duplicarlo.
 
 </details>
 
@@ -374,8 +373,8 @@ Restano **completamente intoccati** il codice Python di esecuzione (`carica_agen
 
 ## Connessioni
 
-**Viene da:** Lezione 6.1 (YAML e Frontmatter) — il formato usato per ogni file di configurazione di questa lezione. Capitolo 5 (tutti gli agenti costruiti come script) — questa lezione ne mostra l'evoluzione naturale verso una forma professionale.
+**Viene da:** Lezione 7.1 (YAML e Frontmatter) — il formato usato per ogni file di configurazione di questa lezione. Capitolo 6 (tutti gli agenti costruiti come script) — questa lezione ne mostra l'evoluzione naturale verso una forma professionale.
 
-**Porta a:** Lezione 6.3 (Agent Card) — vedremo come dichiarare l'identità di un agente in modo standardizzato e interoperabile, oltre il semplice `agent.yaml` interno. Lezione 6.4 (I Prompt come Artefatti) — approfondiremo con grande precisione la cartella `prompts/` qui solo introdotta.
+**Porta a:** Lezione 7.3 (Agent Card) — vedremo come dichiarare l'identità di un agente in modo standardizzato e interoperabile, oltre il semplice `agent.yaml` interno. Lezione 7.4 (I Prompt come Artefatti) — approfondiremo con grande precisione la cartella `prompts/` qui solo introdotta.
 
-**Ritroverai questi concetti in:** Lezione 6.5 (Contratti tra Agenti) — la cartella `schemas/` qui anticipata riceverà un trattamento completo. Lezione 7.1 (Progettare un Workflow) — un workflow multi-agente professionale è, essenzialmente, una collezione di agent package come quello costruito in questa lezione, coordinati da un orchestratore.
+**Ritroverai questi concetti in:** Lezione 7.5 (Contratti tra Agenti) — la cartella `schemas/` qui anticipata riceverà un trattamento completo. Lezione 8.1 (Progettare un Workflow) — un workflow multi-agente professionale è, essenzialmente, una collezione di agent package come quello costruito in questa lezione, coordinati da un orchestratore.

@@ -28,8 +28,10 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Come funziona Internet: client, server e il viaggio di una richiesta
+
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Saprai spiegare cosa succede quando “chiedi qualcosa” alla rete.
+> Il viaggio di una richiesta — client, server, DNS, HTTP — perché è lo stesso meccanismo con cui, più avanti, il tuo programma “chiamerà” un’AI.
 
 In questo capitolo costruiremo le fondamenta su cui poggia tutto il resto del corso: come funziona la rete, come comunicano i programmi tra loro, e cosa succede davvero quando un'applicazione chiama un servizio esterno. Capire questi meccanismi non è un prerequisito burocratico — è il vocabolario tecnico che ti permetterà di ragionare con precisione su ogni sistema AI che costruiremo.
 
@@ -73,13 +75,13 @@ Il principio organizzativo fondamentale di quasi tutto ciò che succede in rete 
 - Il **client** è il dispositivo o programma che fa la richiesta. Il tuo browser è un client. La tua applicazione Python che chiama un'API è un client. Il tuo telefono che scarica la posta è un client.
 - Il **server** è il dispositivo o programma che riceve la richiesta, la elabora, e restituisce una risposta. Il computer di Google che ti manda la pagina di ricerca è un server. Il sistema di Anthropic che elabora la tua domanda e genera una risposta è un server.
 
-```
-CLIENT                          SERVER
-  │                                │
-  │──── richiesta ────────────────►│
-  │                                │  (elaborazione)
-  │◄─── risposta ──────────────────│
-  │                                │
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: richiesta
+    Note right of S: elaborazione
+    S-->>C: risposta
 ```
 
 Questa struttura — richiesta e risposta — è il pattern che vedrai ovunque nel corso. Quando un agente AI usa uno strumento esterno, sta facendo una richiesta a un server. Quando riceve il risultato, sta ricevendo una risposta. Quando il tuo workflow chiama un LLM, il tuo programma è il client e il datacenter di Anthropic o OpenAI è il server.
@@ -320,7 +322,7 @@ Il tuo programma chiama `https://api.anthropic.com/v1/messages`. Descrivi i 7 pa
 4. **Richiesta HTTP:** qui cambia tutto — non è un `GET` di una pagina, ma un `POST` con header di autenticazione (`x-api-key`) e un **corpo JSON** (model, messages, max_tokens).
 5. **Elaborazione:** il server non cerca un file HTML, ma esegue il modello per generare la risposta token per token.
 6. **Risposta HTTP:** `200 OK` con `Content-Type: application/json` e un corpo **JSON**, non HTML.
-7. **Rendering → NON avviene.** Non c'è browser. Al suo posto, il tuo programma **fa il parsing del JSON** (Lezione 4.2) ed estrae il testo per usarlo nel codice.
+7. **Rendering → NON avviene.** Non c'è browser. Al suo posto, il tuo programma **fa il parsing del JSON** (Lezione 5.2) ed estrae il testo per usarlo nel codice.
 
 La differenza fondamentale: il browser è uno strumento per umani; l'API è lo strumento per programmi. Stesso protocollo HTTP, payload e destinatario diversi.
 
@@ -334,4 +336,4 @@ La differenza fondamentale: il browser è uno strumento per umani; l'API è lo s
 
 **Porta a:** Lezione 1.5 (Le API) — il meccanismo richiesta/risposta HTTP è identico, cambia solo il formato del contenuto (da HTML a JSON) e chi fa la richiesta (da browser a programma).
 
-**Ritroverai questi concetti in:** Lezione 4.1 (L'API degli LLM) — dove chiameremo server AI esattamente come descritto qui, e in Lezione 5.5 (Osservabilità degli Agenti) — dove i codici di stato HTTP saranno fondamentali per diagnosticare errori nel sistema.
+**Ritroverai questi concetti in:** Lezione 5.1 (L'API degli LLM) — dove chiameremo server AI esattamente come descritto qui, e in Lezione 6.5 (Osservabilità degli Agenti) — dove i codici di stato HTTP saranno fondamentali per diagnosticare errori nel sistema.

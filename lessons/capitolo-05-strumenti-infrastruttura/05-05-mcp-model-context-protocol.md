@@ -1,13 +1,13 @@
 ---
-id: "04-05"
+id: "05-05"
 titolo: "MCP — Model Context Protocol: lo standard per connettere agenti a risorse esterne"
 sottotitolo: "Dal Function Calling 'fatto in casa' a un protocollo universale e interoperabile"
-capitolo: 4
-capitolo_titolo: "Strumenti e Infrastruttura per Sistemi AI"
+capitolo: 5
+capitolo_titolo: "Strumenti e Infrastruttura AI"
 lezione: 5
 durata_stimata: "60 minuti"
 difficolta: "intermedio"
-prerequisiti: ["04-04"]
+prerequisiti: ["05-04"]
 concetti_chiave:
   - MCP
   - Model Context Protocol
@@ -23,7 +23,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # MCP — Model Context Protocol: lo standard per connettere agenti a risorse esterne
 
 ## Introduzione
@@ -192,8 +191,8 @@ Senza uno standard, ogni combinazione di progetto × risorsa richiede un'integra
 
 ## Connessioni
 
-**Viene da:** Lezione 4.4 (Tool Use e Function Calling) — MCP standardizza esattamente il meccanismo costruito a mano in quella lezione.
+**Viene da:** Lezione 5.4 (Tool Use e Function Calling) — MCP standardizza esattamente il meccanismo costruito a mano in quella lezione.
 
-**Porta a:** Lezione 4.6 (Memory) — anche la gestione della memoria può beneficiare di pattern standardizzati di accesso a risorse esterne.
+**Porta a:** Lezione 5.6 (Memory) — anche la gestione della memoria può beneficiare di pattern standardizzati di accesso a risorse esterne.
 
-**Ritroverai questi concetti in:** Lezione 6.2 (L'Agent Package) — la cartella `tools/` di un agente professionale può fare riferimento sia a strumenti custom sia a server MCP esterni.
+**Ritroverai questi concetti in:** Lezione 7.2 (L'Agent Package) — la cartella `tools/` di un agente professionale può fare riferimento sia a strumenti custom sia a server MCP esterni.

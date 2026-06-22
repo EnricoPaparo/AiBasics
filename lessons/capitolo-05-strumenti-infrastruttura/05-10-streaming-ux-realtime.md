@@ -3,7 +3,6 @@ titolo: "Streaming e UX Real-Time"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Streaming e UX Real-Time
 
 Ogni chatbot AI che hai usato — ChatGPT, Claude, Gemini — mostra le parole mentre vengono generate. Non aspetta che la risposta sia completa per mostrarla tutta insieme. Questo si chiama **streaming** ed è oggi lo standard per qualsiasi interfaccia AI. In questa lezione impari come implementarlo.

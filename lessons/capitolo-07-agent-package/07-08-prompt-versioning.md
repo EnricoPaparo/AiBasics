@@ -3,7 +3,6 @@ titolo: "Prompt Versioning Pratico"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Prompt Versioning Pratico
 
 Un prompt è codice. Come il codice, cambia nel tempo, può rompersi, e ha bisogno di essere tracciato. Eppure la maggior parte dei team gestisce i prompt come testi incollati ovunque — nel codice, in Notion, in email. Questa lezione mostra come trattare i prompt come artefatti di prima classe con version control, test di regressione e deployment controllato.

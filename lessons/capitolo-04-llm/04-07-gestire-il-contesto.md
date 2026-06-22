@@ -3,7 +3,6 @@ titolo: "Gestire il Contesto"
 durata_stimata: "25 min"
 difficolta: "Avanzato"
 ---
-
 # Gestire il Contesto
 
 Conoscere il context window è il primo passo. Saperlo gestire in un sistema reale è ciò che separa un prototipo da un prodotto.

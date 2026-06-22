@@ -24,7 +24,6 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Web Application: quando il browser diventa un'interfaccia
 
 ## Introduzione
@@ -84,7 +83,7 @@ Nuova pagina mostrata                la parte di pagina che
 
 Quando usi Gmail e clicchi su un'email diversa, non stai generando una richiesta per una pagina HTML completa: il JavaScript già presente nel browser richiede solo il contenuto di quella email (tipicamente in formato JSON, come vedremo nella prossima lezione) e aggiorna esclusivamente la porzione di schermo necessaria. Il resto dell'interfaccia — la barra laterale, l'intestazione, i menu — resta esattamente com'era, senza nessun lampo di ricaricamento.
 
-> **Perché questo è rilevante per il corso:** l'interfaccia di ChatGPT o di Claude.ai funziona esattamente così. Quando scrivi un messaggio e premi invio, il browser non ricarica la pagina: il JavaScript invia i tuoi dati a un'API, riceve la risposta (spesso pezzo per pezzo, come vedremo parlando di streaming nella Lezione 4.1), e aggiorna dinamicamente solo l'area della conversazione.
+> **Perché questo è rilevante per il corso:** l'interfaccia di ChatGPT o di Claude.ai funziona esattamente così. Quando scrivi un messaggio e premi invio, il browser non ricarica la pagina: il JavaScript invia i tuoi dati a un'API, riceve la risposta (spesso pezzo per pezzo, come vedremo parlando di streaming nella Lezione 5.1), e aggiorna dinamicamente solo l'area della conversazione.
 
 ---
 
@@ -236,4 +235,4 @@ Principio chiave: tutto ciò che è **segreto o persistente** vive nel backend; 
 
 **Porta a:** Lezione 1.5 (Le API) — abbiamo accennato più volte a "chiamate API che restituiscono dati": è il momento di trattare questo meccanismo in profondità, capendo esattamente come è strutturata una richiesta e una risposta API.
 
-**Ritroverai questi concetti in:** Lezione 3.3 (Anatomia di un prodotto AI) — vedremo che ChatGPT e Claude.ai sono Web Application costruite esattamente secondo questo modello, con un frontend che gestisce la conversazione e un backend che orchestra le chiamate al modello AI sottostante.
+**Ritroverai questi concetti in:** Lezione 4.3 (Anatomia di un prodotto AI) — vedremo che ChatGPT e Claude.ai sono Web Application costruite esattamente secondo questo modello, con un frontend che gestisce la conversazione e un backend che orchestra le chiamate al modello AI sottostante.

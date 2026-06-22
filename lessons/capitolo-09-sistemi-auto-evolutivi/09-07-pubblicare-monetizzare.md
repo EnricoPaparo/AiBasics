@@ -3,7 +3,6 @@ titolo: "Pubblicare e Monetizzare un Progetto AI"
 durata_stimata: "20 min"
 difficolta: "Intermedio"
 ---
-
 # Pubblicare e Monetizzare un Progetto AI
 
 Sai costruire agenti AI. Sai deployarli. Ma come trasformi un progetto tecnico in qualcosa che le persone usano — e magari pagano? Questa lezione copre le opzioni concrete per portare un progetto AI dal tuo computer al mondo, dalle piattaforme di distribuzione ai modelli di monetizzazione più comuni nel 2026.

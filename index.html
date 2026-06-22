@@ -4,41 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MACHINA — Intelligenza Artificiale Applicata</title>
-  <meta name="description" content="Intelligenza Artificiale Applicata: dalla teoria alla costruzione di agenti professionali. 9 capitoli, 64 lezioni.">
+  <meta name="description" content="Intelligenza Artificiale Applicata: dalla teoria alla costruzione di agenti professionali. 10 capitoli, 68 lezioni.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* Landing-only extras */
-    .landing-nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 52px;
-      background: rgba(7, 9, 13, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 255, 65, 0.08);
-    }
-    .landing-nav-logo { height: 28px; width: auto; }
-    .landing-nav-cta {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: .75rem;
-      letter-spacing: .1em;
-      color: var(--green);
-      text-decoration: none;
-      border: 1px solid rgba(0, 255, 65, 0.35);
-      padding: .35rem .9rem;
-      border-radius: 3px;
-      transition: background .2s, box-shadow .2s;
-    }
-    .landing-nav-cta:hover {
-      background: rgba(0, 255, 65, 0.08);
-      box-shadow: var(--glow-green);
-    }
     .hero-scroll-hint {
       position: absolute;
       bottom: 2rem;
@@ -127,12 +97,6 @@
 </head>
 <body>
 
-<!-- ══ TOP NAV ══════════════════════════════════════════════════ -->
-<nav class="landing-nav">
-  <img src="assets/logo.svg" alt="MACHINA" class="landing-nav-logo">
-  <a href="corso.html" class="landing-nav-cta">Inizia il Corso →</a>
-</nav>
-
 <!-- Background layers -->
 <div class="grid-bg"></div>
 <div class="orb orb-1"></div>
@@ -155,7 +119,7 @@
 
   <p class="hero-sub">
     Dalla teoria alla costruzione di <em>agenti autonomi professionali</em>.<br>
-    10 capitoli · 67 lezioni · dal fondamento all'auto-miglioramento.
+    10 capitoli · 68 lezioni · dal fondamento all'auto-miglioramento.
   </p>
 
   <div class="hero-cta">
@@ -176,7 +140,7 @@
     <span class="stat-label">Capitoli</span>
   </div>
   <div class="stat">
-    <span class="stat-num" data-target="67">0</span>
+    <span class="stat-num" data-target="68">0</span>
     <span class="stat-label">Lezioni</span>
   </div>
   <div class="stat">
@@ -302,7 +266,7 @@
   const MANIFEST_DATA = {
     roadmap: [
       { id:'capitolo-00-setup', numero:0, titolo:'Prima di Iniziare', icona:'⚡', colore:'#00ff41',
-        lezioni: [{titolo:'Ambiente di Sviluppo'}] },
+        lezioni: [{titolo:'Benvenuto: cosa costruirai'},{titolo:'Ambiente di Sviluppo'}] },
       { id:'capitolo-01-il-web', numero:1, titolo:'Il Web come lo Conosciamo', icona:'⬡', colore:'#00ff41',
         lezioni: [{titolo:'Come funziona Internet'},{titolo:'Siti Web Statici'},{titolo:'Siti Web Dinamici'},{titolo:'Web Application'},{titolo:'Le API'}] },
       { id:'capitolo-02-git-github', numero:2, titolo:'Git e GitHub', icona:'◎', colore:'#f05033',

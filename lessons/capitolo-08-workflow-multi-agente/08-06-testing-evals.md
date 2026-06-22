@@ -3,7 +3,6 @@ titolo: "Testing e Valutazione degli LLM"
 durata_stimata: "25 min"
 difficolta: "Avanzato"
 ---
-
 # Testing e Valutazione degli LLM
 
 Testare un sistema AI non è come testare software tradizionale. Non esiste un assert che ti dice se una risposta è "corretta". Eppure senza testing sistematico, non puoi sapere se il tuo agente funziona — né se sta peggiorando.

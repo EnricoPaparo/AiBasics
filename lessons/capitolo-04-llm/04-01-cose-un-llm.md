@@ -1,13 +1,13 @@
 ---
-id: "03-01"
+id: "04-01"
 titolo: "Cos'è un LLM: previsione del token successivo come intelligenza emergente"
 sottotitolo: "Il momento in cui tutto ciò che abbiamo costruito converge in una domanda precisa"
-capitolo: 3
-capitolo_titolo: "I Modelli Linguistici di Grandi Dimensioni (LLM)"
+capitolo: 4
+capitolo_titolo: "I Modelli Linguistici (LLM)"
 lezione: 1
 durata_stimata: "55 minuti"
 difficolta: "base"
-prerequisiti: ["02-05"]
+prerequisiti: ["03-05"]
 concetti_chiave:
   - LLM
   - token
@@ -24,12 +24,14 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Cos'è un LLM: previsione del token successivo come intelligenza emergente
+
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Capirai cosa fa *davvero* un modello come ChatGPT o Claude.
+> Prevede la parola successiva, una alla volta. Da questa idea semplice nasce tutto: token, parametri, e la differenza tra “modello” e “prodotto”.
 
 > **Quick Recap — da dove arriviamo**
 >
-> Nei capitoli precedenti abbiamo costruito la comprensione pezzo per pezzo: le reti neurali come sistemi che apprendono dai dati (Cap. 2), il deep learning come architettura a strati che estrae rappresentazioni via via più astratte, la backpropagation come meccanismo di apprendimento che aggiusta i pesi sulla base degli errori. Abbiamo visto come il Transformer ha risolto il problema di rappresentare il linguaggio in modo efficiente e scalabile — aprendo la strada a modelli addestrati su quantità di testo senza precedenti. Il linguaggio, in tutto questo percorso, è emerso come il dominio ideale su cui applicare questa architettura: ricco, strutturato, e disponibile in quantità enorme su Internet.
+> Nei capitoli precedenti abbiamo costruito la comprensione pezzo per pezzo: le reti neurali come sistemi che apprendono dai dati (Cap. 3), il deep learning come architettura a strati che estrae rappresentazioni via via più astratte, la backpropagation come meccanismo di apprendimento che aggiusta i pesi sulla base degli errori. Abbiamo visto come il Transformer ha risolto il problema di rappresentare il linguaggio in modo efficiente e scalabile — aprendo la strada a modelli addestrati su quantità di testo senza precedenti. Il linguaggio, in tutto questo percorso, è emerso come il dominio ideale su cui applicare questa architettura: ricco, strutturato, e disponibile in quantità enorme su Internet.
 >
 > **Una distinzione fondamentale prima di procedere:** il modello che stai per conoscere è il modello BASE — quello che prevede il token successivo, addestrato su grandi quantità di testo grezzo. Quello che usi in Claude.ai o ChatGPT è già stato ulteriormente addestrato tramite RLHF (Reinforcement Learning from Human Feedback — lo vedremo in 04-02) per diventare un assistente utile, sicuro, e allineato alle preferenze umane. Sono cose diverse, e confonderle porta a incomprensioni importanti su come funzionano davvero questi sistemi.
 
@@ -37,9 +39,9 @@ In questo capitolo arriveremo finalmente al cuore della materia: capire cosa son
 
 ## Introduzione
 
-Siamo arrivati al momento in cui tutto il Capitolo 2 converge in una risposta precisa. Abbiamo visto le reti neurali (2.3), il problema di rappresentare il linguaggio con numeri (2.4), e l'architettura Transformer che risolve quel problema in modo scalabile (2.5). Un **LLM** — Large Language Model, modello linguistico di grandi dimensioni — è, in termini essenziali, un'architettura Transformer (tipicamente solo-decoder, come visto nella lezione precedente) addestrata su quantità di testo straordinariamente grandi, con un numero di parametri che si misura in miliardi.
+Siamo arrivati al momento in cui tutto il Capitolo 3 converge in una risposta precisa. Abbiamo visto le reti neurali (3.3), il problema di rappresentare il linguaggio con numeri (3.4), e l'architettura Transformer che risolve quel problema in modo scalabile (3.5). Un **LLM** — Large Language Model, modello linguistico di grandi dimensioni — è, in termini essenziali, un'architettura Transformer (tipicamente solo-decoder, come visto nella lezione precedente) addestrata su quantità di testo straordinariamente grandi, con un numero di parametri che si misura in miliardi.
 
-Questa lezione ha un obiettivo che va oltre la definizione tecnica: vuole costruire in te un modello mentale **corretto e resistente alle esagerazioni** di cosa sia davvero un LLM. Capire con precisione che un LLM è, alla base, un sistema che prevede il token successivo — e capire come da questo compito apparentemente meccanico emergano capacità sorprendenti — è la base di ogni decisione progettuale che prenderemo costruendo agenti, dal Capitolo 5 in poi.
+Questa lezione ha un obiettivo che va oltre la definizione tecnica: vuole costruire in te un modello mentale **corretto e resistente alle esagerazioni** di cosa sia davvero un LLM. Capire con precisione che un LLM è, alla base, un sistema che prevede il token successivo — e capire come da questo compito apparentemente meccanico emergano capacità sorprendenti — è la base di ogni decisione progettuale che prenderemo costruendo agenti, dal Capitolo 6 in poi.
 
 ---
 
@@ -74,7 +76,7 @@ elemento successivo nel suo vocabolario:
 ...
 ```
 
-Il modello, dopo aver calcolato queste probabilità per ogni possibile elemento del suo vocabolario, ne seleziona uno (con meccanismi che vedremo nella Lezione 3.4 a proposito della "temperature"), lo aggiunge al testo, e ripete l'intero processo da capo per generare l'elemento successivo, e poi il successivo ancora — fino a costruire, parola per parola (più precisamente, token per token), un'intera risposta.
+Il modello, dopo aver calcolato queste probabilità per ogni possibile elemento del suo vocabolario, ne seleziona uno (con meccanismi che vedremo nella Lezione 4.4 a proposito della "temperature"), lo aggiunge al testo, e ripete l'intero processo da capo per generare l'elemento successivo, e poi il successivo ancora — fino a costruire, parola per parola (più precisamente, token per token), un'intera risposta.
 
 Questo è, letteralmente, tutto quello che un LLM fa al livello più fondamentale. Non c'è un modulo separato per "comprendere", un altro per "ragionare", un altro per "decidere cosa è vero": c'è un singolo meccanismo, ripetuto milioni di volte, che prevede l'elemento successivo più probabile dato tutto il contesto fino a quel momento.
 
@@ -121,13 +123,13 @@ Questo fenomeno — capacità sofisticate che emergono come sottoprodotto necess
 
 ### Una cautela importante
 
-È fondamentale non scambiare questa emergenza per comprensione nel senso umano, né per garanzia di correttezza. Un modello che prevede statisticamente il token successivo più probabile può produrre testo grammaticalmente perfetto e stilisticamente convincente che è, nei fatti, sbagliato — perché il suo obiettivo di addestramento è "cosa è statisticamente plausibile dato il contesto", non "cosa è vero". Questa distinzione sarà al centro della Lezione 3.5, quando parleremo delle allucinazioni.
+È fondamentale non scambiare questa emergenza per comprensione nel senso umano, né per garanzia di correttezza. Un modello che prevede statisticamente il token successivo più probabile può produrre testo grammaticalmente perfetto e stilisticamente convincente che è, nei fatti, sbagliato — perché il suo obiettivo di addestramento è "cosa è statisticamente plausibile dato il contesto", non "cosa è vero". Questa distinzione sarà al centro della Lezione 4.5, quando parleremo delle allucinazioni.
 
 ---
 
 ## 4. I parametri: cosa significano i "miliardi"
 
-Nella Lezione 2.3 abbiamo definito i pesi come i numeri regolabili di una rete neurale, aggiustati durante l'addestramento tramite backpropagation. Quando si parla di un LLM con "70 miliardi di parametri" o "un trilione di parametri", ci si riferisce esattamente a questo: il numero totale di pesi regolabili distribuiti in tutti gli strati dell'architettura Transformer che compone il modello.
+Nella Lezione 3.3 abbiamo definito i pesi come i numeri regolabili di una rete neurale, aggiustati durante l'addestramento tramite backpropagation. Quando si parla di un LLM con "70 miliardi di parametri" o "un trilione di parametri", ci si riferisce esattamente a questo: il numero totale di pesi regolabili distribuiti in tutti gli strati dell'architettura Transformer che compone il modello.
 
 Più parametri significano, in generale (anche se non in modo strettamente lineare né garantito), una maggiore capacità del modello di catturare pattern complessi e sottili nei dati di addestramento — ma comportano anche costi computazionali proporzionalmente più alti, sia per l'addestramento sia per l'utilizzo (l'inferenza, cioè il momento in cui il modello genera effettivamente una risposta).
 
@@ -142,24 +144,19 @@ Un'ultima distinzione, essenziale per evitare confusioni che si ripercuoteranno 
 - **Claude Sonnet 4.6** è un modello: un insieme di pesi (parametri) addestrati, accessibile tecnicamente tramite API (esattamente come visto nella Lezione 1.5)
 - **Claude.ai** è un prodotto: un'applicazione web (una Web Application, secondo la definizione della Lezione 1.4) che usa quel modello come componente, aggiungendo un'interfaccia di chat, gestione della cronologia, funzionalità di ricerca, e molto altro
 
-```
-        PRODOTTO (es. Claude.ai, ChatGPT)
-        ┌─────────────────────────────────┐
-        │  Interfaccia di chat              │
-        │  Gestione cronologia conversazioni│
-        │  Funzionalità aggiuntive          │
-        │  (ricerca, generazione file, ...) │
-        │                                    │
-        │   ┌───────────────────────┐       │
-        │   │       MODELLO           │       │
-        │   │  (es. Claude Sonnet 4.6)│       │
-        │   │  i pesi/parametri        │       │
-        │   │  addestrati              │       │
-        │   └───────────────────────┘       │
-        └─────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph P["PRODOTTO · es. Claude.ai, ChatGPT"]
+        F1["Interfaccia di chat"]
+        F2["Gestione cronologia conversazioni"]
+        F3["Funzionalità aggiuntive: ricerca, file, ..."]
+        subgraph MO["MODELLO"]
+            W["i pesi/parametri addestrati · es. Claude Sonnet 4.6"]
+        end
+    end
 ```
 
-Questa distinzione è esattamente quella che ci permetterà, dal Capitolo 4 in poi, di costruire **i nostri stessi prodotti** attorno al modello: il modello resta lo stesso (lo stesso insieme di parametri accessibile via API), ma noi costruiremo attorno a esso strumenti, memoria, logica di orchestrazione — esattamente come Anthropic ha costruito Claude.ai attorno al modello Claude.
+Questa distinzione è esattamente quella che ci permetterà, dal Capitolo 5 in poi, di costruire **i nostri stessi prodotti** attorno al modello: il modello resta lo stesso (lo stesso insieme di parametri accessibile via API), ma noi costruiremo attorno a esso strumenti, memoria, logica di orchestrazione — esattamente come Anthropic ha costruito Claude.ai attorno al modello Claude.
 
 ---
 
@@ -167,7 +164,7 @@ Questa distinzione è esattamente quella che ci permetterà, dal Capitolo 4 in p
 
 Prendi una frase qualsiasi, ad esempio: "L'intelligenza artificiale sta trasformando il modo in cui lavoriamo."
 
-Usando la regola empirica approssimativa di circa 4 caratteri per token (valida soprattutto per l'inglese, leggermente meno precisa per l'italiano), questa frase di circa 75 caratteri occuperebbe grossolanamente 18-20 token. Questo tipo di stima rapida è un'abilità pratica che userai costantemente quando, nel Capitolo 4, dovrai ragionare su quanto testo "entra" nel context window di un modello, o su quanto costerà, in termini di token elaborati, una determinata chiamata API.
+Usando la regola empirica approssimativa di circa 4 caratteri per token (valida soprattutto per l'inglese, leggermente meno precisa per l'italiano), questa frase di circa 75 caratteri occuperebbe grossolanamente 18-20 token. Questo tipo di stima rapida è un'abilità pratica che userai costantemente quando, nel Capitolo 5, dovrai ragionare su quanto testo "entra" nel context window di un modello, o su quanto costerà, in termini di token elaborati, una determinata chiamata API.
 
 Molti provider (incluso Anthropic) offrono strumenti online per contare esattamente i token di un testo specifico: vale la pena, quando inizierai a costruire sistemi reali, familiarizzare con questi strumenti per sviluppare un'intuizione precisa.
 
@@ -226,7 +223,7 @@ Classifica come **modello** o **prodotto**: (a) Claude Sonnet 4.6, (b) Claude.ai
 
 Cosa aggiunge il prodotto attorno al modello: interfaccia di chat, gestione della cronologia delle conversazioni, autenticazione/account, e funzionalità extra (ricerca web, caricamento file, generazione di immagini…). Il modello è il "motore"; il prodotto è l'auto costruita attorno.
 
-Questa distinzione è ciò che ci permetterà, dal Capitolo 4, di costruire **i nostri** prodotti/agenti attorno allo stesso modello via API.
+Questa distinzione è ciò che ci permetterà, dal Capitolo 5, di costruire **i nostri** prodotti/agenti attorno allo stesso modello via API.
 
 </details>
 
@@ -237,11 +234,11 @@ Se un LLM "prevede solo il token successivo", come fa a restare coerente su un i
 <details>
 <summary>💡 Mostra soluzione</summary>
 
-**Coerenza:** a ogni previsione il modello considera **tutto il contesto fino a quel punto** (grazie all'attention, Lezione 2.5), inclusi i token che ha appena generato. Ogni nuovo token diventa contesto per il successivo. Così la "coerenza" emerge: ogni passo è condizionato da tutto ciò che precede, non è una catena di scelte indipendenti.
+**Coerenza:** a ogni previsione il modello considera **tutto il contesto fino a quel punto** (grazie all'attention, Lezione 3.5), inclusi i token che ha appena generato. Ogni nuovo token diventa contesto per il successivo. Così la "coerenza" emerge: ogni passo è condizionato da tutto ciò che precede, non è una catena di scelte indipendenti.
 
 **Plausibile ≠ vero:** l'obiettivo di addestramento è "qual è il token più probabile dato il contesto", **non** "qual è la verità". Un'affermazione falsa può essere statisticamente molto plausibile (suona giusta, è grammaticale, assomiglia a frasi viste nei dati). Il modello non ha un modulo di verifica della verità.
 
-**Conseguenza pratica:** mai fidarsi ciecamente di un output, specie su fatti, numeri, citazioni. Servono verifica, fonti (RAG, Lezione 4.3), strumenti per i calcoli (Function Calling, Lezione 4.4) e supervisione. È la radice delle allucinazioni (Lezione 3.5).
+**Conseguenza pratica:** mai fidarsi ciecamente di un output, specie su fatti, numeri, citazioni. Servono verifica, fonti (RAG, Lezione 5.3), strumenti per i calcoli (Function Calling, Lezione 5.4) e supervisione. È la radice delle allucinazioni (Lezione 4.5).
 
 </details>
 
@@ -260,8 +257,8 @@ Osserva: quanti token sono? Corrispondono alle parole? Perché "artificiale" pot
 
 ## Connessioni
 
-**Viene da:** Lezione 2.5 — il Transformer descritto lì è esattamente l'architettura che, addestrata su scala enorme, costituisce un LLM.
+**Viene da:** Lezione 3.5 — il Transformer descritto lì è esattamente l'architettura che, addestrata su scala enorme, costituisce un LLM.
 
-**Porta a:** Lezione 3.2 (Training, Fine-tuning e RLHF) — vedremo esattamente come, concretamente, un LLM viene addestrato a diventare un assistente utile, partendo dal compito grezzo di previsione del token successivo.
+**Porta a:** Lezione 4.2 (Training, Fine-tuning e RLHF) — vedremo esattamente come, concretamente, un LLM viene addestrato a diventare un assistente utile, partendo dal compito grezzo di previsione del token successivo.
 
-**Ritroverai questi concetti in:** Lezione 3.5 (Limiti e allucinazioni) — la distinzione tra plausibilità statistica e verità, introdotta qui, sarà il fondamento per capire perché e come un LLM allucina. Lezione 4.1 (L'API degli LLM) — vedremo concretamente come si invia una richiesta a un modello come quello descritto in questa lezione, riusando esattamente la struttura di richiesta/risposta API vista nella Lezione 1.5.
+**Ritroverai questi concetti in:** Lezione 4.5 (Limiti e allucinazioni) — la distinzione tra plausibilità statistica e verità, introdotta qui, sarà il fondamento per capire perché e come un LLM allucina. Lezione 5.1 (L'API degli LLM) — vedremo concretamente come si invia una richiesta a un modello come quello descritto in questa lezione, riusando esattamente la struttura di richiesta/risposta API vista nella Lezione 1.5.

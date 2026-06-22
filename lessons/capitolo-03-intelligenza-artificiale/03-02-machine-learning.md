@@ -1,13 +1,13 @@
 ---
-id: "02-02"
+id: "03-02"
 titolo: "Machine Learning: come una macchina impara dai dati"
 sottotitolo: "Il meccanismo concreto dietro la parola 'apprendimento': dati, pattern, previsione"
-capitolo: 2
+capitolo: 3
 capitolo_titolo: "L'Intelligenza Artificiale: Cosa È Davvero"
 lezione: 2
 durata_stimata: "60 minuti"
 difficolta: "base"
-prerequisiti: ["02-01"]
+prerequisiti: ["03-01"]
 concetti_chiave:
   - machine learning
   - apprendimento supervisionato
@@ -27,14 +27,16 @@ obiettivi:
 stato: "pubblicata"
 versione: "1.0"
 ---
-
 # Machine Learning: come una macchina impara dai dati
+
+> 📌 **In breve** · ⏱ ~45 min · 🎯 Capirai come una macchina “impara” dagli esempi invece che da regole scritte a mano.
+> Il cuore dell’AI moderna: dati → pattern → previsione. È il principio su cui si reggono tutti i modelli che useremo.
 
 ## Introduzione
 
 Nella lezione precedente abbiamo introdotto il Machine Learning come l'approccio che "impara dai dati invece di seguire regole scritte a mano", usando l'analogia del riconoscere un frutto maturo. È un'ottima intuizione di partenza, ma resta vaga: cosa significa esattamente "imparare", quando il soggetto che imparare non ha un cervello biologico ma solo numeri e operazioni matematiche?
 
-Questa lezione rende quell'intuizione concreta e precisa. Non serviranno formule complesse — l'obiettivo non è che tu sappia implementare un algoritmo di Machine Learning, ma che tu capisca con chiarezza cosa succede "sotto il cofano" quando un sistema viene addestrato. Questa comprensione è il prerequisito diretto per capire, nella Lezione 2.3, come funzionano le reti neurali, e in ultima analisi per capire perché i modelli linguistici a volte sbagliano in modi specifici e prevedibili.
+Questa lezione rende quell'intuizione concreta e precisa. Non serviranno formule complesse — l'obiettivo non è che tu sappia implementare un algoritmo di Machine Learning, ma che tu capisca con chiarezza cosa succede "sotto il cofano" quando un sistema viene addestrato. Questa comprensione è il prerequisito diretto per capire, nella Lezione 3.3, come funzionano le reti neurali, e in ultima analisi per capire perché i modelli linguistici a volte sbagliano in modi specifici e prevedibili.
 
 ---
 
@@ -65,7 +67,7 @@ etichettate come        certe parole/combinazioni  quelle caratteristiche
 
 Il punto fondamentale è questo: nessuno ha detto esplicitamente al sistema "se contiene la parola X, è spam". Il sistema ha **osservato** migliaia di esempi già classificati da umani, e ha **dedotto statisticamente** quali caratteristiche tendono ad associarsi a quale categoria.
 
-Questo significa anche che il sistema non "capisce" cosa sia lo spam nel senso in cui lo capisci tu (un tentativo di truffa, una comunicazione indesiderata): ha trovato correlazioni statistiche tra caratteristiche del testo e l'etichetta che gli è stata fornita. Questa distinzione — *correlazione statistica scoperta* vs *comprensione semantica* — è una delle idee più importanti di questo intero capitolo, e tornerà con forza quando parleremo delle allucinazioni degli LLM nella Lezione 3.5.
+Questo significa anche che il sistema non "capisce" cosa sia lo spam nel senso in cui lo capisci tu (un tentativo di truffa, una comunicazione indesiderata): ha trovato correlazioni statistiche tra caratteristiche del testo e l'etichetta che gli è stata fornita. Questa distinzione — *correlazione statistica scoperta* vs *comprensione semantica* — è una delle idee più importanti di questo intero capitolo, e tornerà con forza quando parleremo delle allucinazioni degli LLM nella Lezione 4.5.
 
 ---
 
@@ -85,7 +87,7 @@ Email con certo testo     →     "spam"
 Email con altro testo     →     "non spam"
 ```
 
-Il sistema impara, esempio dopo esempio, ad associare input a output corretti. È il paradigma più comune e più facile da capire, ed è anche la base concettuale dell'addestramento iniziale dei modelli linguistici (lo vedremo nella Lezione 3.2 parlando di fine-tuning supervisionato).
+Il sistema impara, esempio dopo esempio, ad associare input a output corretti. È il paradigma più comune e più facile da capire, ed è anche la base concettuale dell'addestramento iniziale dei modelli linguistici (lo vedremo nella Lezione 4.2 parlando di fine-tuning supervisionato).
 
 ### 2.2 Apprendimento Non Supervisionato
 
@@ -109,22 +111,15 @@ OUTPUT: gruppi naturali di clienti simili tra loro
 
 Il sistema non riceve esempi etichettati né dati grezzi da raggruppare: interagisce con un **ambiente**, compie **azioni**, e riceve un segnale di **ricompensa o penalità** in base al risultato. Impara, per tentativi ed errori, quali azioni massimizzano la ricompensa nel tempo.
 
-```
-        ┌─────────────────────────────┐
-        │           AMBIENTE            │
-        └─────────────────────────────┘
-              │                    ▲
-        azione│                    │ricompensa/penalità
-              ▼                    │
-        ┌─────────────────────────────┐
-        │            AGENTE              │
-        │   (sta imparando a comportarsi) │
-        └─────────────────────────────┘
+```mermaid
+flowchart LR
+    AG["AGENTE · sta imparando a comportarsi"] -->|azione| AMB["AMBIENTE"]
+    AMB -->|ricompensa o penalità| AG
 ```
 
-Questo è il paradigma con cui si addestrano sistemi che giocano a scacchi o ai videogiochi a livello sovrumano: il sistema gioca milioni di partite, riceve "vittoria" o "sconfitta" come segnale, e affina progressivamente la propria strategia. È anche, sorprendentemente, un ingrediente cruciale nella costruzione degli assistenti AI moderni: la tecnica RLHF che vedremo nella Lezione 3.2 (Reinforcement Learning from Human Feedback) usa esattamente questo principio, con la valutazione umana nel ruolo di "ricompensa".
+Questo è il paradigma con cui si addestrano sistemi che giocano a scacchi o ai videogiochi a livello sovrumano: il sistema gioca milioni di partite, riceve "vittoria" o "sconfitta" come segnale, e affina progressivamente la propria strategia. È anche, sorprendentemente, un ingrediente cruciale nella costruzione degli assistenti AI moderni: la tecnica RLHF che vedremo nella Lezione 4.2 (Reinforcement Learning from Human Feedback) usa esattamente questo principio, con la valutazione umana nel ruolo di "ricompensa".
 
-> Nota terminologica importante: la parola "agente" qui, nel contesto dell'apprendimento per rinforzo, ha un significato tecnico specifico (l'entità che agisce nell'ambiente) leggermente diverso, ma concettualmente affine, a "agente AI" nel senso che useremo dal Capitolo 5 in poi (un sistema che persegue un obiettivo attraverso azioni). Non è una coincidenza terminologica: l'idea di un sistema che agisce, osserva il risultato, e si adatta è il filo conduttore di entrambi i concetti.
+> Nota terminologica importante: la parola "agente" qui, nel contesto dell'apprendimento per rinforzo, ha un significato tecnico specifico (l'entità che agisce nell'ambiente) leggermente diverso, ma concettualmente affine, a "agente AI" nel senso che useremo dal Capitolo 6 in poi (un sistema che persegue un obiettivo attraverso azioni). Non è una coincidenza terminologica: l'idea di un sistema che agisce, osserva il risultato, e si adatta è il filo conduttore di entrambi i concetti.
 
 ---
 
@@ -148,7 +143,7 @@ Dopo l'addestramento: i parametri sono "stabili", il modello
 produce output utili su input mai visti prima
 ```
 
-Quando, nel Capitolo 3, sentirai parlare di modelli con "miliardi di parametri", ora sai esattamente cosa significa: un numero enorme di questi valori numerici regolabili, tutti aggiustati durante un processo di addestramento su quantità di dati altrettanto enormi.
+Quando, nel Capitolo 4, sentirai parlare di modelli con "miliardi di parametri", ora sai esattamente cosa significa: un numero enorme di questi valori numerici regolabili, tutti aggiustati durante un processo di addestramento su quantità di dati altrettanto enormi.
 
 ---
 
@@ -234,7 +229,7 @@ Prova a determinare quale dei tre paradigmi di apprendimento (supervisionato, no
 
 2. Riprendi l'analogia dello studente che memorizza le risposte (overfitting). Cosa dovrebbe fare, concretamente, per evitare questo problema e imparare davvero il principio sottostante? Come si traduce questa intuizione in una possibile strategia per chi addestra un modello?
 
-3. Nella Lezione 2.1 abbiamo detto che il Machine Learning "scopre pattern" invece di seguire regole scritte. Alla luce di questa lezione, in che modo l'apprendimento supervisionato è comunque guidato dall'uomo, anche se non tramite regole esplicite?
+3. Nella Lezione 3.1 abbiamo detto che il Machine Learning "scopre pattern" invece di seguire regole scritte. Alla luce di questa lezione, in che modo l'apprendimento supervisionato è comunque guidato dall'uomo, anche se non tramite regole esplicite?
 
 ---
 
@@ -276,7 +271,7 @@ Nota: se invece fosse stato 62% su training E 60% su test, il problema sarebbe *
 
 ### Esercizio 3 — Correlazione statistica vs comprensione 🔴 Avanzato
 
-La lezione insiste sulla differenza tra "correlazione statistica scoperta" e "comprensione semantica". Spiega questa distinzione con un esempio e anticipa perché sarà la chiave per capire le allucinazioni degli LLM (Lezione 3.5).
+La lezione insiste sulla differenza tra "correlazione statistica scoperta" e "comprensione semantica". Spiega questa distinzione con un esempio e anticipa perché sarà la chiave per capire le allucinazioni degli LLM (Lezione 4.5).
 
 <details>
 <summary>💡 Mostra soluzione</summary>
@@ -293,8 +288,8 @@ La lezione insiste sulla differenza tra "correlazione statistica scoperta" e "co
 
 ## Connessioni
 
-**Viene da:** Lezione 2.1 — qui rendiamo concreto il meccanismo di "apprendimento dai dati" solo accennato in precedenza.
+**Viene da:** Lezione 3.1 — qui rendiamo concreto il meccanismo di "apprendimento dai dati" solo accennato in precedenza.
 
-**Porta a:** Lezione 2.3 (Reti Neurali e Deep Learning) — vedremo la struttura specifica di funzione matematica (la rete neurale) che rende possibile l'apprendimento su problemi estremamente complessi come il linguaggio.
+**Porta a:** Lezione 3.3 (Reti Neurali e Deep Learning) — vedremo la struttura specifica di funzione matematica (la rete neurale) che rende possibile l'apprendimento su problemi estremamente complessi come il linguaggio.
 
-**Ritroverai questi concetti in:** Lezione 3.2 (Training, Fine-tuning e RLHF) — il pre-training di un LLM è essenzialmente apprendimento supervisionato su scala massiccia, e RLHF è una forma diretta di apprendimento per rinforzo. Lezione 3.5 (Limiti degli LLM) — la distinzione tra "correlazione statistica scoperta" e "comprensione semantica" introdotta qui sarà la chiave per capire perché i modelli linguistici allucinano.
+**Ritroverai questi concetti in:** Lezione 4.2 (Training, Fine-tuning e RLHF) — il pre-training di un LLM è essenzialmente apprendimento supervisionato su scala massiccia, e RLHF è una forma diretta di apprendimento per rinforzo. Lezione 4.5 (Limiti degli LLM) — la distinzione tra "correlazione statistica scoperta" e "comprensione semantica" introdotta qui sarà la chiave per capire perché i modelli linguistici allucinano.

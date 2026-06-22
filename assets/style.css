@@ -15,8 +15,8 @@
   --orange:      #ff6b00;
   --magenta:     #ff00ff;
   --teal:        #00ffcc;
-  --text:        #c8d8e8;
-  --text-dim:    #5a7080;
+  --text:        #cfdeec;
+  --text-dim:    #8ba0b2;  /* schiarito per contrasto WCAG AA su sfondo scuro */
   --text-bright: #eaf4ff;
   --sidebar-w:   300px;
   --header-h:    64px;
@@ -24,6 +24,48 @@
   --glow-cyan:   0 0 10px #00d4ff66, 0 0 30px #00d4ff22;
   --glow-pink:   0 0 10px #ff008066, 0 0 30px #ff008022;
 }
+
+/* ── Tema chiaro (attivato da data-theme="light" su <html>) ─────── */
+:root[data-theme="light"] {
+  --bg:          #f4f7fb;
+  --bg2:         #ffffff;
+  --bg3:         #eaeff5;
+  --border:      #ccd6e0;
+  --green:       #0a7d2c;
+  --cyan:        #0a66c2;
+  --pink:        #c01e6b;
+  --purple:      #6a35c9;
+  --gold:        #8a6500;
+  --orange:      #c2540a;
+  --magenta:     #b81e8f;
+  --teal:        #0a7d6b;
+  --text:        #1b2733;
+  --text-dim:    #51616f;
+  --text-bright: #0a1118;
+  --glow-green:  none;
+  --glow-cyan:   none;
+  --glow-pink:   none;
+}
+/* Su tema chiaro spegni gli effetti di bagliore/scia che servono solo sul nero */
+:root[data-theme="light"] .grid-bg { opacity: .5; }
+:root[data-theme="light"] .orb,
+:root[data-theme="light"] .particles { display: none; }
+:root[data-theme="light"] .hero-title { text-shadow: none; }
+
+/* Pulsante toggle tema (header corso + nav landing) */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1;
+  width: 34px; height: 30px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.theme-toggle:hover { color: var(--cyan); border-color: var(--cyan); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -666,6 +708,32 @@ body {
 .sidebar-search input::placeholder { color: var(--text-dim); }
 .sidebar-search input:focus { border-color: var(--cyan); }
 
+/* ── Filtro / badge "Percorso Core" ───────────────────────────── */
+.core-filter {
+  display: flex; align-items: center; gap: .4rem;
+  margin-top: .55rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+.core-filter input { accent-color: var(--gold); cursor: pointer; }
+.core-filter .core-star { color: var(--gold); }
+.lesson-core-badge {
+  margin-left: auto;
+  color: var(--gold);
+  font-size: .8rem;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+.meta-tag.core {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(255,215,0,.06);
+  letter-spacing: .06em;
+}
+
 /* ── Roadmap Button ────────────────────────────────────────── */
 .sidebar-roadmap-btn {
   display: flex; align-items: center; gap: .75rem;
@@ -704,7 +772,7 @@ body {
   display: flex; flex-wrap: wrap; align-items: center; gap: .75rem;
   margin-bottom: 2rem;
   font-family: 'Share Tech Mono', monospace;
-  font-size: .72rem;
+  font-size: .8rem;
   color: var(--text-dim);
   letter-spacing: .08em;
 }
@@ -723,7 +791,7 @@ body {
   display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
   margin-bottom: 1.5rem;
   font-family: 'Share Tech Mono', monospace;
-  font-size: .7rem;
+  font-size: .78rem;
 }
 .prereq-label { color: var(--text-dim); letter-spacing: .06em; }
 .meta-tag.prereq {
@@ -786,11 +854,14 @@ body {
   margin: 1.5rem 0 .5rem;
 }
 
+.md-content {
+  font-size: 1.02rem;
+}
 .md-content p {
   margin-bottom: 1.25rem;
   color: var(--text);
-  font-size: .95rem;
-  line-height: 1.8;
+  font-size: 1.02rem;
+  line-height: 1.85;
 }
 
 .md-content strong { color: var(--text-bright); font-weight: 600; }
@@ -802,9 +873,9 @@ body {
 .md-content ul, .md-content ol {
   margin: 1rem 0 1.25rem 1.5rem;
   color: var(--text);
-  font-size: .95rem;
+  font-size: 1.02rem;
 }
-.md-content li { margin-bottom: .4rem; line-height: 1.7; }
+.md-content li { margin-bottom: .45rem; line-height: 1.75; }
 .md-content li::marker { color: var(--green); }
 
 .md-content blockquote {
@@ -841,25 +912,61 @@ body {
   border: 1px solid var(--border);
   border-left: 3px solid var(--green);
   border-radius: 2px;
-  padding: 1.25rem 1.5rem;
+  padding: 1.6rem 1.5rem 1.25rem;
   overflow-x: auto;
   margin: 1.5rem 0;
   position: relative;
 }
 .md-content pre::before {
   content: '> EXEC';
-  position: absolute; top: .5rem; right: 1rem;
+  position: absolute; top: .5rem; left: 1rem;
   font-family: 'Share Tech Mono', monospace;
   font-size: .65rem;
   color: var(--text-dim);
   letter-spacing: .15em;
 }
+/* Pulsante "Copia" sui blocchi di codice */
+.copy-btn {
+  position: absolute; top: .35rem; right: .5rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .62rem; letter-spacing: .1em;
+  color: var(--text-dim);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: .15rem .5rem;
+  cursor: pointer;
+  opacity: .65;
+  transition: opacity .15s, color .15s, border-color .15s;
+}
+.copy-btn:hover { opacity: 1; color: var(--cyan); border-color: var(--cyan); }
+.copy-btn.copied { color: var(--green); border-color: var(--green); opacity: 1; }
 .md-content pre code {
   background: none; border: none; padding: 0;
   color: var(--text);
   font-size: .85rem;
   line-height: 1.7;
 }
+
+/* ── Syntax highlighting (highlight.js) legato alla palette ──────── */
+.hljs-comment, .hljs-quote { color: var(--text-dim); font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name, .hljs-tag { color: var(--pink); }
+.hljs-string, .hljs-title, .hljs-section, .hljs-attribute, .hljs-literal,
+.hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-addition { color: var(--green); }
+.hljs-number, .hljs-symbol, .hljs-bullet, .hljs-meta, .hljs-link { color: var(--gold); }
+.hljs-title.function_, .hljs-function .hljs-title, .hljs-attr { color: var(--cyan); }
+.hljs-variable, .hljs-params { color: var(--text-bright); }
+.hljs-deletion { color: var(--orange); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }
+
+/* ── Diagrammi Mermaid ─────────────────────────────────────────── */
+.mermaid-diagram {
+  margin: 1.75rem 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid-diagram svg { max-width: 100%; height: auto; }
 
 .md-content table {
   width: 100%;
@@ -1109,4 +1216,82 @@ body {
      the breadcrumb is redundant (title is shown in the content). */
   .site-header { padding: 0 1rem; gap: .75rem; }
   .header-breadcrumb { display: none; }
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  ACCESSIBILITÀ — Riduzione del movimento                   ║
+   ║  Rispetta la preferenza di sistema "riduci animazioni":    ║
+   ║  utile per disturbi vestibolari/fotosensibilità e in aula. ║
+   ╚══════════════════════════════════════════════════════════╝ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto; }
+  /* Sfondi/decori in costante movimento: fermati e attenuati */
+  .grid-bg { animation: none !important; }
+  .particles, .particle { display: none !important; }
+  .scroll-arrow { animation: none !important; }
+  .orb { animation: none !important; }
+  /* Glitch del titolo: niente effetto, testo stabile e leggibile */
+  .hero-title::before, .hero-title::after { display: none !important; }
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  STAMPA — dispense leggibili su carta (sfondo bianco)      ║
+   ╚══════════════════════════════════════════════════════════╝ */
+@media print {
+  :root { --text: #111; --text-dim: #444; --text-bright: #000; --border: #ccc; }
+  * { animation: none !important; transition: none !important;
+      box-shadow: none !important; text-shadow: none !important; }
+  body { background: #fff !important; color: #111 !important; }
+
+  /* Nascondi tutto ciò che non è contenuto della lezione */
+  .grid-bg, .orb, .particles, .sidebar, .sidebar-overlay,
+  .site-header, .site-footer, .lesson-nav,
+  .hero-scroll-hint, .corner { display: none !important; }
+
+  .course-layout { display: block !important; }
+  .content-area { position: static !important; height: auto !important;
+    overflow: visible !important; background: #fff !important; }
+  .content-inner { max-width: 100% !important; padding: 0 !important; }
+
+  .md-content, .md-content p, .md-content li { color: #111 !important; }
+  .md-content h1, .md-content h2, .md-content h3 { color: #000 !important; }
+  .md-content a { color: #000 !important; text-decoration: underline; }
+  .md-content pre, .md-content code {
+    background: #f4f4f4 !important; color: #111 !important;
+    border: 1px solid #ddd; }
+  .md-content blockquote {
+    background: #f7f7f7 !important; border-left: 3px solid #888 !important; }
+
+  /* Espandi le soluzioni a scomparsa così finiscono sul foglio */
+  details { display: block !important; }
+  details > summary { display: none !important; }
+  details[open], details:not([open]) > *:not(summary) { display: block !important; }
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  TABLET — layout intermedio (769–1024px)                  ║
+   ╚══════════════════════════════════════════════════════════╝ */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root { --sidebar-w: 244px; }
+  .content-inner { padding: 2.5rem 2rem 5rem; }
+  .lesson-link { font-size: .8rem; }
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  TOUCH — aree toccabili più ampie su dispositivi a dito    ║
+   ╚══════════════════════════════════════════════════════════╝ */
+@media (pointer: coarse) {
+  .lesson-link { padding-top: .8rem; padding-bottom: .8rem; }
+  .chapter-header { min-height: 48px; }
+  .sidebar-roadmap-btn { min-height: 46px; }
+  .nav-btn { min-height: 48px; }
+  .header-home-btn, .theme-toggle, .sidebar-toggle { min-height: 40px; min-width: 40px; }
+  .copy-btn { padding: .35rem .7rem; font-size: .7rem; opacity: .85; }
+  .core-filter { padding: .3rem 0; }
 }

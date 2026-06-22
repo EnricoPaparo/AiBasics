@@ -3,7 +3,6 @@ titolo: "Struttura di un Progetto Python Reale"
 durata_stimata: "20 min"
 difficolta: "Base"
 ---
-
 # Struttura di un Progetto Python Reale
 
 Sai scrivere codice Python. Sai usare le API di un LLM. Ma quando passi da "script che funziona sul mio computer" a "progetto che posso condividere, mantenere, e deployare", hai bisogno di struttura. Questa lezione copre le convenzioni usate nei progetti Python professionali.

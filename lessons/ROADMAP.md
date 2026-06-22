@@ -1,7 +1,21 @@
 # ROADMAP — Piano Completo del Corso
 
 **Corso:** Intelligenza Artificiale Applicata — Dalla Teoria alla Costruzione di Agenti Professionali
-**Struttura:** 9 Capitoli · 64 Lezioni
+**Struttura:** 10 Capitoli · 68 Lezioni
+
+---
+
+---
+
+## CAPITOLO 0 — Prima di Iniziare
+
+**Obiettivo:** Agganciare e attrezzare. Prima il "perché" (cosa costruirai e perché vale la pena), poi il "come" (l'ambiente di sviluppo pronto in pochi minuti). È anche il punto in cui si introduce il **percorso Core** pensato per le superiori.
+
+### Benvenuto: cosa costruirai
+La "prima magia" da provare subito nel browser senza installare niente, gli obiettivi concreti del corso, il metodo di studio e un primo patto sull'uso responsabile dell'AI.
+
+### Ambiente di Sviluppo
+Python, ambiente virtuale, chiave API, file `.env`, primo "Hello, Claude" funzionante. La base per ogni lezione che contiene codice.
 
 ---
 
@@ -135,6 +149,9 @@ Anthropic SDK streaming, SSE, FastAPI backend, frontend JavaScript, streaming co
 ### Lezione 5.11 — Debugging e Osservabilità degli Agenti
 Logging strutturato LLM calls, LangSmith tracing, local trace system, prompt inspector, bug comuni e fix.
 
+### Lezione 5.12 — Come Testare un Agente
+Perché testare sistemi non deterministici, test di unità sui tool, mock dell'LLM, asserzioni su comportamento e tracce, soglie di qualità.
+
 ---
 
 ## CAPITOLO 6 — Agenti AI: Architettura e Ragionamento
@@ -249,22 +266,26 @@ Bias e fairness, GDPR, EU AI Act, disclosure AI, responsabilità professionale.
 ### Lezione 9.7 — Pubblicare e Monetizzare un Progetto AI
 PyPI, Streamlit/Gradio, API as a Service, plugin/extension. Freemium, pay-per-use, SaaS. Rate limiting, costi, compliance.
 
+### Lezione 9.8 — AI e Diritto in Italia
+Quadro normativo italiano ed europeo, EU AI Act, GDPR e dati personali, responsabilità e tutela del minore, uso dell'AI a scuola.
+
 ---
 
 ## Riepilogo del Percorso
 
 | Cap. | Titolo | Lez. | Nuclei Tematici |
 |------|--------|------|-----------------|
+| 0 | Prima di Iniziare | 2 | Benvenuto e aggancio, ambiente di sviluppo, Python, chiave API, "Hello, Claude" |
 | 1 | Il Web come lo Conosciamo | 5 | HTTP, client/server, web app, API, JSON/YAML |
 | 2 | Git e GitHub | 4 | Version control, branch, GitHub, CI/CD |
 | 3 | L'Intelligenza Artificiale | 5 | ML, DL, NLP, Transformer, Attention |
 | 4 | I Modelli Linguistici (LLM) | 9 | LLM, training, prompting, limiti, context, costi, fine-tuning |
-| 5 | Strumenti e Infrastruttura AI | 11 | API, RAG, tool use, MCP, memory, embeddings, struttura progetto, streaming, debugging |
+| 5 | Strumenti e Infrastruttura AI | 12 | API, RAG, tool use, MCP, memory, embeddings, struttura progetto, streaming, debugging, testing |
 | 6 | Agenti AI: Architettura | 8 | Loop agentivo, ReAct, orchestratore, multi-agent, robustezza, harness, sicurezza, async |
 | 7 | L'Agent Package | 8 | YAML, package, agent card, prompt artefatti, contratti, handoff, skills, versioning |
 | 8 | Workflow Multi-Agente | 7 | Grafo, LangGraph, review layer, HITL, valutazione, testing, deployment |
-| 9 | Sistemi Auto-Evolutivi | 7 | Self-reflection, prompt evolutivi, knowledge, governance, progetto finale, etica, monetizzazione |
-| **Totale** | | **64 lezioni** | **Fondamenti → Strumenti → Agenti → Produzione → Auto-miglioramento** |
+| 9 | Sistemi Auto-Evolutivi | 8 | Self-reflection, prompt evolutivi, knowledge, governance, progetto finale, etica, monetizzazione, diritto |
+| **Totale** | | **68 lezioni** | **Fondamenti → Strumenti → Agenti → Produzione → Auto-miglioramento** |
 
 ---
 
