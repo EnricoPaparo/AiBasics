@@ -55,20 +55,12 @@ Il nome "rete neurale" deriva da un'ispirazione, molto libera e semplificata, al
 
 Un singolo neurone artificiale fa tre cose, in sequenza:
 
-```
-INPUT (x1, x2, x3, ...)
-       │
-       ▼
-1. MOLTIPLICA ogni input per un peso (w1, x2 per w2, ...)
-       │
-       ▼
-2. SOMMA tutti i risultati (più un valore detto "bias")
-       │
-       ▼
-3. APPLICA una funzione di attivazione al totale
-       │
-       ▼
-OUTPUT (un singolo numero)
+```mermaid
+flowchart TB
+    IN["Input: x1, x2, x3, ..."] --> S1["1 · Moltiplica ogni input per un peso"]
+    S1 --> S2["2 · Somma i risultati, più il bias"]
+    S2 --> S3["3 · Applica una funzione di attivazione"]
+    S3 --> OUT["Output: un singolo numero"]
 ```
 
 Vediamolo con numeri concreti e semplici. Immagina un neurone con tre input, ciascuno moltiplicato per un peso specifico:
@@ -101,18 +93,9 @@ La **funzione di attivazione** introduce questa non-linearità. Una delle più s
 
 Un singolo neurone, da solo, può fare pochissimo. La potenza emerge quando si organizzano moltissimi neuroni in **strati** (in inglese, *layers*), collegati in sequenza.
 
-```
-STRATO DI INPUT     STRATI NASCOSTI (hidden)      STRATO DI OUTPUT
-
-   ●                    ●        ●
-   ●    ──────────►     ●   ──►  ●    ──────────►      ●
-   ●                    ●        ●
-   ●                    ●        ●
-
- (i dati          (elaborazioni intermedie,         (il risultato
-  in ingresso)     ogni neurone riceve gli           finale, es. una
-                    output di TUTTI i neuroni         classificazione
-                    dello strato precedente)          o una previsione)
+```mermaid
+flowchart LR
+    IN["Strato di input · i dati in ingresso"] --> H["Strati nascosti · elaborazioni intermedie"] --> OUT["Strato di output · il risultato finale"]
 ```
 
 Ogni neurone in uno strato riceve come input gli output di **tutti** i neuroni dello strato precedente (in questa configurazione, chiamata "completamente connessa"). Ogni collegamento ha il proprio peso specifico, regolabile indipendentemente. Una rete con anche solo poche centinaia di neuroni per strato e alcuni strati ha già milioni di pesi regolabili — e i modelli linguistici moderni ne hanno miliardi.

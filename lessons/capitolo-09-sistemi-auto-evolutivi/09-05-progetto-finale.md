@@ -75,45 +75,21 @@ VINCOLI:
 
 Applicando il vocabolario della Lezione 8.1, disegniamo il grafo completo del sistema:
 
-```
-[Nodo: Ingestione Cartella]
-       │
-       ├──────────┬──────────┐
-       ▼          ▼          ▼
- [Estrazione  [Estrazione  [Estrazione
-   PDF]         Audio]       Immagini]
-   (paralleli, Lezione 8.2)
-       │          │          │
-       └──────────┴──────────┘
-                  ▼
-       [Nodo: Requirement Analyst]
-       (usa skill "rilevamento-ambiguita",
-        Lezione 7.7)
-                  ▼
-       [Nodo: Review — Critic-Agent]
-       (Lezione 8.3, rubrica strutturata)
-                  │
-        ┌─────────┼─────────┐
-        ▼         ▼          ▼
-    APPROVA   RICHIEDI    ESCALA
-        │     REVISIONE   A UMANO
-        │         │         │
-        │    (torna ad      ▼
-        │     Analyst)  [CHECKPOINT
-        │               UMANO]
-        │               (async review,
-        │                Lezione 8.4)
-        │                   │
-        └─────────┬─────────┘
-                  ▼
-       [Nodo: Costruisci Handoff]
-       (Lezione 7.6, conforme al
-        contratto Lezione 7.5)
-                  ▼
-       [Handoff → Architect Agent]
-                  ▼
-       [Nodo: Registra Episodio]
-       (memoria episodica, Lezione 9.3)
+```mermaid
+flowchart TB
+    ING["Ingestione cartella"] --> EX1["Estrazione PDF"]
+    ING --> EX2["Estrazione audio"]
+    ING --> EX3["Estrazione immagini"]
+    EX1 --> RA["Requirement Analyst · skill rilevamento-ambiguità · Lez. 7.7"]
+    EX2 --> RA
+    EX3 --> RA
+    RA --> REV["Review · Critic-Agent · rubrica · Lez. 8.3"]
+    REV -->|approva| HO["Costruisci Handoff · Lez. 7.6"]
+    REV -->|richiedi revisione| RA
+    REV -->|escala a umano| CK["Checkpoint umano · async review · Lez. 8.4"]
+    CK --> HO
+    HO --> AR["Handoff verso Architect Agent"]
+    AR --> EP["Registra episodio · memoria episodica · Lez. 9.3"]
 ```
 
 Questo grafo **non è un nuovo concetto**: è la composizione esatta di pattern già costruiti — nodi paralleli (8.2), review layer (8.3), HITL asincrono (8.4), handoff con contratto (6.5, 6.6), registrazione per riassorbimento futuro (9.3). Il valore di questa lezione è mostrare che questi pattern **si compongono naturalmente** in un sistema reale, senza richiedere alcuna invenzione architetturale aggiuntiva.

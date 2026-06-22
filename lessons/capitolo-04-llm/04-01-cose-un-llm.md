@@ -144,21 +144,16 @@ Un'ultima distinzione, essenziale per evitare confusioni che si ripercuoteranno 
 - **Claude Sonnet 4.6** è un modello: un insieme di pesi (parametri) addestrati, accessibile tecnicamente tramite API (esattamente come visto nella Lezione 1.5)
 - **Claude.ai** è un prodotto: un'applicazione web (una Web Application, secondo la definizione della Lezione 1.4) che usa quel modello come componente, aggiungendo un'interfaccia di chat, gestione della cronologia, funzionalità di ricerca, e molto altro
 
-```
-        PRODOTTO (es. Claude.ai, ChatGPT)
-        ┌─────────────────────────────────┐
-        │  Interfaccia di chat              │
-        │  Gestione cronologia conversazioni│
-        │  Funzionalità aggiuntive          │
-        │  (ricerca, generazione file, ...) │
-        │                                    │
-        │   ┌───────────────────────┐       │
-        │   │       MODELLO           │       │
-        │   │  (es. Claude Sonnet 4.6)│       │
-        │   │  i pesi/parametri        │       │
-        │   │  addestrati              │       │
-        │   └───────────────────────┘       │
-        └─────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph P["PRODOTTO · es. Claude.ai, ChatGPT"]
+        F1["Interfaccia di chat"]
+        F2["Gestione cronologia conversazioni"]
+        F3["Funzionalità aggiuntive: ricerca, file, ..."]
+        subgraph MO["MODELLO"]
+            W["i pesi/parametri addestrati · es. Claude Sonnet 4.6"]
+        end
+    end
 ```
 
 Questa distinzione è esattamente quella che ci permetterà, dal Capitolo 5 in poi, di costruire **i nostri stessi prodotti** attorno al modello: il modello resta lo stesso (lo stesso insieme di parametri accessibile via API), ma noi costruiremo attorno a esso strumenti, memoria, logica di orchestrazione — esattamente come Anthropic ha costruito Claude.ai attorno al modello Claude.

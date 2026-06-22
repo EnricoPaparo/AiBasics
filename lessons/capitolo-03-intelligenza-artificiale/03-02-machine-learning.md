@@ -111,17 +111,10 @@ OUTPUT: gruppi naturali di clienti simili tra loro
 
 Il sistema non riceve esempi etichettati né dati grezzi da raggruppare: interagisce con un **ambiente**, compie **azioni**, e riceve un segnale di **ricompensa o penalità** in base al risultato. Impara, per tentativi ed errori, quali azioni massimizzano la ricompensa nel tempo.
 
-```
-        ┌─────────────────────────────┐
-        │           AMBIENTE            │
-        └─────────────────────────────┘
-              │                    ▲
-        azione│                    │ricompensa/penalità
-              ▼                    │
-        ┌─────────────────────────────┐
-        │            AGENTE              │
-        │   (sta imparando a comportarsi) │
-        └─────────────────────────────┘
+```mermaid
+flowchart LR
+    AG["AGENTE · sta imparando a comportarsi"] -->|azione| AMB["AMBIENTE"]
+    AMB -->|ricompensa o penalità| AG
 ```
 
 Questo è il paradigma con cui si addestrano sistemi che giocano a scacchi o ai videogiochi a livello sovrumano: il sistema gioca milioni di partite, riceve "vittoria" o "sconfitta" come segnale, e affina progressivamente la propria strategia. È anche, sorprendentemente, un ingrediente cruciale nella costruzione degli assistenti AI moderni: la tecnica RLHF che vedremo nella Lezione 4.2 (Reinforcement Learning from Human Feedback) usa esattamente questo principio, con la valutazione umana nel ruolo di "ricompensa".

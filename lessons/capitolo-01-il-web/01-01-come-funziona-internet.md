@@ -75,13 +75,13 @@ Il principio organizzativo fondamentale di quasi tutto ciò che succede in rete 
 - Il **client** è il dispositivo o programma che fa la richiesta. Il tuo browser è un client. La tua applicazione Python che chiama un'API è un client. Il tuo telefono che scarica la posta è un client.
 - Il **server** è il dispositivo o programma che riceve la richiesta, la elabora, e restituisce una risposta. Il computer di Google che ti manda la pagina di ricerca è un server. Il sistema di Anthropic che elabora la tua domanda e genera una risposta è un server.
 
-```
-CLIENT                          SERVER
-  │                                │
-  │──── richiesta ────────────────►│
-  │                                │  (elaborazione)
-  │◄─── risposta ──────────────────│
-  │                                │
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: richiesta
+    Note right of S: elaborazione
+    S-->>C: risposta
 ```
 
 Questa struttura — richiesta e risposta — è il pattern che vedrai ovunque nel corso. Quando un agente AI usa uno strumento esterno, sta facendo una richiesta a un server. Quando riceve il risultato, sta ricevendo una risposta. Quando il tuo workflow chiama un LLM, il tuo programma è il client e il datacenter di Anthropic o OpenAI è il server.

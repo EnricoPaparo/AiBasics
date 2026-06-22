@@ -84,16 +84,16 @@ Questo approccio funziona bene per problemi ben definiti e limitati, ma si scont
 
 Il **Machine Learning** rovescia il problema: invece di scrivere le regole, si forniscono al sistema moltissimi **esempi** (dati), e si lascia che il sistema **scopra da solo** i pattern che permettono di distinguere, classificare, prevedere.
 
-```
-APPROCCIO A REGOLE               APPROCCIO MACHINE LEARNING
-
-Umano scrive le regole           Umano fornisce esempi
-       │                                  │
-       ▼                                  ▼
-Sistema applica le regole        Sistema "impara" i pattern
-       │                                  │
-       ▼                                  ▼
-   Risultato                          Risultato
+```mermaid
+flowchart TB
+    subgraph R["Approccio a REGOLE"]
+        direction TB
+        R1["Umano scrive le regole"] --> R2["Il sistema applica le regole"] --> R3["Risultato"]
+    end
+    subgraph M["Approccio MACHINE LEARNING"]
+        direction TB
+        M1["Umano fornisce esempi"] --> M2["Il sistema impara i pattern"] --> M3["Risultato"]
+    end
 ```
 
 Questa svolta — dal "programmare regole" al "fornire esempi e lasciare che il sistema impari" — è la base concettuale di tutta l'AI moderna, inclusi i modelli linguistici che useremo per costruire i nostri agenti. Approfondiremo esattamente come funziona questo "apprendere dai dati" nella prossima lezione.
@@ -104,31 +104,17 @@ Questa svolta — dal "programmare regole" al "fornire esempi e lasciare che il 
 
 Il termine "Intelligenza Artificiale" è un cappello molto ampio, sotto il quale vivono discipline con scopi diversi. Vediamo come si posizionano l'una rispetto all'altra, perché capirlo evita confusioni terminologiche che altrimenti si trascinano per tutto il corso.
 
-```
-┌─────────────────────────────────────────────────────┐
-│              INTELLIGENZA ARTIFICIALE                │
-│        (il campo più ampio: sistemi che svolgono     │
-│         compiti "intelligenti")                       │
-│                                                         │
-│   ┌─────────────────────────────────────────────┐    │
-│   │           MACHINE LEARNING                    │    │
-│   │   (sistemi che imparano dai dati invece di    │    │
-│   │    seguire regole scritte a mano)             │    │
-│   │                                                 │    │
-│   │     ┌───────────────────────────────────┐     │    │
-│   │     │        DEEP LEARNING               │     │    │
-│   │     │  (Machine Learning con reti neurali│     │    │
-│   │     │   a molti strati)                  │     │    │
-│   │     └───────────────────────────────────┘     │    │
-│   └─────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────┘
-
-         APPLICAZIONI TRASVERSALI (usano Deep Learning):
-
-   NLP                          COMPUTER VISION
-   (comprensione e              (comprensione e
-   generazione di               interpretazione
-   linguaggio)                  di immagini/video)
+```mermaid
+flowchart TB
+    subgraph AI["INTELLIGENZA ARTIFICIALE"]
+        subgraph ML["MACHINE LEARNING"]
+            DL["DEEP LEARNING · reti neurali a molti strati"]
+        end
+    end
+    NLP["NLP · comprensione e generazione del linguaggio"]
+    CV["Computer Vision · immagini e video"]
+    DL -.-> NLP
+    DL -.-> CV
 ```
 
 - **Machine Learning** è un sottoinsieme dell'AI: l'approccio "impara dai dati" descritto sopra

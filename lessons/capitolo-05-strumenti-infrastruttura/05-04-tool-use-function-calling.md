@@ -161,18 +161,11 @@ Nota la struttura dei `messages` nella seconda chiamata: includiamo l'intera cro
 - **Tool Manifest**: l'elenco degli strumenti disponibili **a uno specifico agente** — dichiara "questo agente può usare esattamente questi strumenti, e nessun altro"
 - **Tool Registry**: il catalogo **centralizzato** di tutti gli strumenti disponibili nell'intero sistema, da cui i singoli agenti possono "pescare" un sottoinsieme specifico
 
-```
-        TOOL REGISTRY (centralizzato)
-    ─────────────────────────────────────
-    - ottieni_meteo     - invia_email
-    - cerca_sul_web     - interroga_database
-             │                    │
-    ┌────────┘              ┌─────┘
-    TOOL MANIFEST           TOOL MANIFEST
-    Agente "Meteo"          Agente "Clienti"
-    - ottieni_meteo         - cerca_sul_web
-                            - invia_email
-                            - interroga_database
+```mermaid
+flowchart TB
+    REG["TOOL REGISTRY (centralizzato) · ottieni_meteo, cerca_sul_web, invia_email, interroga_database"]
+    REG --> M1["Manifest · Agente Meteo · ottieni_meteo"]
+    REG --> M2["Manifest · Agente Clienti · cerca_sul_web, invia_email, interroga_database"]
 ```
 
 ---

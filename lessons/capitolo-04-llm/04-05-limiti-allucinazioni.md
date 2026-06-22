@@ -89,20 +89,14 @@ Le allucinazioni tendono a presentarsi con maggiore frequenza in alcune circosta
 
 Ricorda dalla Lezione 4.2 che il pre-training avviene su una quantità enorme di testo raccolto **fino a un certo momento nel tempo**. Tutto ciò che è accaduto dopo quel momento — il **knowledge cutoff** — semplicemente non fa parte dei dati che il modello ha visto, e quindi non può "sapere" nulla a riguardo, in alcun modo diretto.
 
-```
-ADDESTRAMENTO                    DOPO IL CUTOFF
-
-[Tutto il testo raccolto         [Eventi, notizie, scoperte
- fino alla data X]                successive alla data X]
-        │                                  │
-        ▼                                  ▼
-  Il modello "conosce"            Il modello NON può sapere
-  (in senso statistico)           nulla di questo, a meno
-  tutto questo                    che non gli venga fornito
-                                   esplicitamente come contesto
-                                   nel prompt (anticipando
-                                   il principio del RAG,
-                                   Lezione 5.3)
+```mermaid
+flowchart TB
+    subgraph A["Addestramento"]
+        A1["Tutto il testo raccolto fino alla data X"] --> A2["Il modello conosce, in senso statistico, tutto questo"]
+    end
+    subgraph Bk["Dopo il cutoff"]
+        B1["Eventi e notizie successivi alla data X"] --> B2["Il modello NON può saperlo, se non fornito nel prompt · vedi RAG, Lez. 5.3"]
+    end
 ```
 
 Questo limite ha un'implicazione pratica spesso sottovalutata: se chiedi a un modello informazioni su eventi molto recenti rispetto al suo addestramento, due cose possono accadere, ed è importante distinguerle: il modello può onestamente dichiarare di non avere informazioni recenti (un comportamento spesso rinforzato proprio da RLHF, Lezione 4.2, che premia l'onestà sui propri limiti), oppure — nei casi peggiori — può generare un'allucinazione, "indovinando" plausibilmente cosa potrebbe essere successo, basandosi su pattern e tendenze osservate nei dati precedenti al cutoff.
