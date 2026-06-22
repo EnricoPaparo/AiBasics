@@ -53,40 +53,28 @@ Ricorda dalla Lezione 4.4 il principio del chain-of-thought: istruire il modello
 
 **ReAct** (Reasoning + Acting, ragionamento + azione) applica esattamente questo stesso principio al loop agentivo: prima di ogni singola azione (l'uso di uno strumento), il modello viene istruito a esplicitare **perché** sta scegliendo quell'azione specifica.
 
+**Senza ReAct** — il loop "muto" della Lezione 6.1:
+
+```mermaid
+flowchart LR
+    s1["Obiettivo"] --> s2["il modello decide in silenzio"] --> s3["Azione"]
 ```
-SENZA ReAct (il loop "muto" della Lezione 6.1):
 
-  Obiettivo → [il modello decide silenziosamente] → Azione
+Non vediamo *il perché* della scelta — solo il risultato.
 
-  Non vediamo IL PERCHÉ della scelta — solo il risultato
+**Con ReAct** — il ragionamento diventa esplicito a ogni passo:
 
-
-CON ReAct:
-
-  Obiettivo
-     │
-     ▼
-  PENSIERO: "Per rispondere a questa domanda, devo prima
-             sapere il prezzo attuale, quindi userò lo
-             strumento di ricerca prezzi"
-     │
-     ▼
-  AZIONE: cerca_prezzo(prodotto="X")
-     │
-     ▼
-  OSSERVAZIONE: "Il prezzo è 49,99€"
-     │
-     ▼
-  PENSIERO: "Ora ho il prezzo, ma l'utente vuole sapere
-             se conviene rispetto al mese scorso, quindi
-             devo anche cercare lo storico prezzi"
-     │
-     ▼
-  AZIONE: cerca_storico_prezzi(prodotto="X")
-     │
-     ▼
-  ... (continua finché il PENSIERO conclude che
-       si hanno informazioni sufficienti)
+```mermaid
+flowchart TB
+    G["Obiettivo"] --> T1["PENSIERO: prima mi serve il prezzo attuale"]
+    T1 --> A1["AZIONE: cerca_prezzo(prodotto X)"]
+    A1 --> O1["OSSERVAZIONE: il prezzo è 49,99 euro"]
+    O1 --> T2["PENSIERO: ora serve lo storico prezzi"]
+    T2 --> A2["AZIONE: cerca_storico_prezzi(prodotto X)"]
+    A2 --> O2["OSSERVAZIONE: ..."]
+    O2 --> D{"Informazioni sufficienti?"}
+    D -->|no| T2
+    D -->|sì| F["Risposta finale"]
 ```
 
 Il nome del pattern descrive esattamente questa alternanza: **Reasoning** (il PENSIERO esplicito) e **Acting** (l'AZIONE concreta), in un ciclo ripetuto.
