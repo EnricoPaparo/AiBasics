@@ -1251,7 +1251,7 @@ body {
 
   /* Nascondi tutto ciò che non è contenuto della lezione */
   .grid-bg, .orb, .particles, .sidebar, .sidebar-overlay,
-  .site-header, .site-footer, .landing-nav, .lesson-nav,
+  .site-header, .site-footer, .lesson-nav,
   .hero-scroll-hint, .corner { display: none !important; }
 
   .course-layout { display: block !important; }

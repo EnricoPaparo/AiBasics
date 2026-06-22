@@ -9,36 +9,6 @@
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* Landing-only extras */
-    .landing-nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 52px;
-      background: rgba(7, 9, 13, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 255, 65, 0.08);
-    }
-    .landing-nav-logo { height: 28px; width: auto; }
-    .landing-nav-cta {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: .75rem;
-      letter-spacing: .1em;
-      color: var(--green);
-      text-decoration: none;
-      border: 1px solid rgba(0, 255, 65, 0.35);
-      padding: .35rem .9rem;
-      border-radius: 3px;
-      transition: background .2s, box-shadow .2s;
-    }
-    .landing-nav-cta:hover {
-      background: rgba(0, 255, 65, 0.08);
-      box-shadow: var(--glow-green);
-    }
     .hero-scroll-hint {
       position: absolute;
       bottom: 2rem;
@@ -126,12 +96,6 @@
   </style>
 </head>
 <body>
-
-<!-- ══ TOP NAV ══════════════════════════════════════════════════ -->
-<nav class="landing-nav">
-  <img src="assets/logo.svg" alt="MACHINA" class="landing-nav-logo">
-  <a href="corso.html" class="landing-nav-cta">Inizia il Corso →</a>
-</nav>
 
 <!-- Background layers -->
 <div class="grid-bg"></div>
